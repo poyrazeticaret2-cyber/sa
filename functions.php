@@ -789,6 +789,28 @@ function ensure_installed(): void
     if (is_installed()) {
         return;
     }
+
+    /* Ilk kurulum ~10.000 satir yazar. Paylasimli sunucularda varsayilan
+       max_execution_time buna yetmeyip "500 Internal Server Error" uretebilir.
+       Once limitleri yukseltmeyi dene. */
+    $limitRaised = false;
+    if (function_exists('set_time_limit') && !in_array('set_time_limit', explode(',', str_replace(' ', '', (string)ini_get('disable_functions'))), true)) {
+        $limitRaised = @set_time_limit(0);
+    }
+    @ini_set('memory_limit', '256M');
+    if (function_exists('ignore_user_abort')) {
+        ignore_user_abort(true);
+    }
+
+    /* Limit yukseltilemediyse ve mevcut sure riskliyse, kurulumu bu istekte
+       yapma: kullaniciyi kurulum sayfasina yonlendir. Orada islem adim adim
+       ve ilerleme gostererek yapilir, boylece zaman asimi olusmaz. */
+    $maxTime = (int)ini_get('max_execution_time');
+    $risky = !$limitRaised && $maxTime > 0 && $maxTime < 120;
+    if ($risky && current_path() !== 'install.php' && PHP_SAPI !== 'cli') {
+        redirect('/install.php?otomatik=1');
+    }
+
     require_once __DIR__ . '/installer.php';
     almancapro_run_install();
 }

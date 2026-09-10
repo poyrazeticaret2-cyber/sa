@@ -13,6 +13,11 @@ require_once __DIR__ . '/bootstrap.php';
 require_once __DIR__ . '/installer.php';
 require_once __DIR__ . '/admin-auth.php';
 
+/* Kurulum uzun surebilir; bu sayfada limitleri sonuna kadar ac. */
+@set_time_limit(0);
+@ini_set('memory_limit', '256M');
+ignore_user_abort(true);
+
 app_session_start();
 send_security_headers();
 
@@ -26,6 +31,16 @@ $locked = $installed && !$isAdmin;
 $result = null;
 $saved = false;
 $errors = [];
+
+/* ensure_installed() zaman asimi riski nedeniyle buraya yonlendirdiyse
+   kurulumu dogrudan baslat: kullanicidan ek bir tiklama beklenmez. */
+if (!$installed && !$locked && (string)input('otomatik', '') === '1') {
+    $result = almancapro_run_install();
+    $installed = $result['ok'];
+    if ($installed) {
+        $dbOk = true;
+    }
+}
 
 if (is_post() && !$locked) {
     csrf_require();
@@ -63,13 +78,20 @@ if (is_post() && !$locked) {
 
             setting_set('smtp_host', trim((string)input('smtp_host', '')));
             setting_set('smtp_port', (string)max(1, min(65535, input_int('smtp_port', 587))));
-            setting_set('smtp_username', trim((string)input('smtp_username', '')));
+            $smtpUser = trim((string)input('smtp_username', ''));
+            if ($smtpUser === '') {
+                $smtpUser = almancapro_noreply_address();
+            }
+            setting_set('smtp_username', $smtpUser);
             $smtpPass = (string)($_POST['smtp_password'] ?? '');
             if ($smtpPass !== '') {
                 setting_set('smtp_password', $smtpPass, true);
             }
             $enc = (string)input('smtp_encryption', 'tls');
             setting_set('smtp_encryption', in_array($enc, ['tls', 'ssl', 'none'], true) ? $enc : 'tls');
+            if ($mailFrom === '') {
+                $mailFrom = almancapro_noreply_address();
+            }
             setting_set('mail_from', $mailFrom);
             setting_set('mail_from_name', trim((string)input('mail_from_name', APP_NAME)) ?: APP_NAME);
 
@@ -188,6 +210,14 @@ render_head('Kurulum · ' . APP_NAME, ['noindex' => true]);
           </div>
 
           <h2 style="margin-top: 26px;">SMTP (e-posta gönderimi)</h2>
+          <div class="alert alert--info">
+            <span class="alert__icon" aria-hidden="true">i</span>
+            <span>Doğrulama kodları ve şifre sıfırlama bağlantıları
+              <strong><?= e((string)($s['mail_from'] ?? '') ?: 'noreply@alanadiniz.com') ?></strong>
+              adresinden gönderilir. Plesk &gt; <em>Mail</em> bölümünden bu adreste bir posta kutusu oluşturun ve
+              şifresini aşağıya yazın. Sunucu, port ve şifreleme alanları alan adınıza göre önceden dolduruldu.
+              Boş bırakırsanız site yine tam çalışır; yalnızca e-posta gönderilemez.</span>
+          </div>
           <div class="grid grid-2" style="gap: 12px;">
             <div class="field">
               <label for="smtp_host">SMTP sunucusu</label>

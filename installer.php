@@ -24,6 +24,39 @@ if (isset($_SERVER['SCRIPT_FILENAME'])
  *
  * @return int Uygulanan guncelleme sayisi.
  */
+/**
+ * Sitenin calistigi alan adini www olmadan dondurur.
+ * Plesk'te giden/gelen posta sunucusu bu alan adiyla aynidir.
+ */
+function almancapro_mail_host(): string
+{
+    $host = (string)setting('site_url', '');
+    if ($host !== '') {
+        $host = (string)parse_url($host, PHP_URL_HOST);
+    }
+    if ($host === '' && isset($_SERVER['HTTP_HOST'])) {
+        $host = (string)$_SERVER['HTTP_HOST'];
+    }
+    if ($host === '' && isset($_SERVER['SERVER_NAME'])) {
+        $host = (string)$_SERVER['SERVER_NAME'];
+    }
+    $host = strtolower(trim(explode(':', $host)[0]));
+    $host = preg_replace('/^www\./', '', $host) ?? $host;
+
+    /* Gecerli bir alan adi degilse bos don; kurulum sihirbazi sorar. */
+    if ($host === '' || !preg_match('/^[a-z0-9.\-]+\.[a-z]{2,}$/', $host)) {
+        return '';
+    }
+    return $host;
+}
+
+/** Dogrulama ve sifre sifirlama e-postalarinin gonderen adresi. */
+function almancapro_noreply_address(): string
+{
+    $host = almancapro_mail_host();
+    return $host === '' ? '' : 'noreply@' . $host;
+}
+
 function almancapro_migrations(): int
 {
     $applied = 0;
@@ -208,11 +241,14 @@ function almancapro_seed_settings(): void
         'unlock_threshold'     => (string)MASTERY_UNLOCK_THRESHOLD,
         'default_timezone'     => APP_DEFAULT_TIMEZONE,
 
-        'smtp_host'            => '',
-        'smtp_port'            => '587',
-        'smtp_username'        => '',
-        'smtp_encryption'      => 'tls',
-        'mail_from'            => '',
+        /* SMTP: Plesk'te posta alan adiyla ayni sunucuda durur.
+           Alan adi ve noreply@ adresi kurulumda otomatik doldurulur;
+           yoneticinin girmesi gereken tek deger posta kutusu sifresidir. */
+        'smtp_host'            => almancapro_mail_host(),
+        'smtp_port'            => '465',
+        'smtp_username'        => almancapro_noreply_address(),
+        'smtp_encryption'      => 'ssl',
+        'mail_from'            => almancapro_noreply_address(),
         'mail_from_name'       => APP_NAME,
 
         'telegram_bot_username'=> '',
@@ -253,6 +289,20 @@ function almancapro_seed_settings(): void
             db_exec('INSERT INTO site_settings (setting_key, setting_value, is_secret) VALUES (?, ?, 1)', [$secret, $value]);
         }
     }
+    /* Alan adina bagli varsayilanlar: daha once bos kaldiysa simdi doldur.
+       (Ilk kurulum CLI'dan yapildiysa alan adi bilinmiyor olabilir.) */
+    $noreply = almancapro_noreply_address();
+    if ($noreply !== '') {
+        foreach (['smtp_host' => almancapro_mail_host(),
+                  'smtp_username' => $noreply,
+                  'mail_from' => $noreply] as $key => $value) {
+            $current = db_value('SELECT setting_value FROM site_settings WHERE setting_key = ?', [$key]);
+            if ($current === null || trim((string)$current) === '') {
+                db_exec('UPDATE site_settings SET setting_value = ? WHERE setting_key = ?', [$value, $key]);
+            }
+        }
+    }
+
     settings_all(true);
 }
 

@@ -17,11 +17,43 @@ if (isset($_SERVER['SCRIPT_FILENAME'])
     exit;
 }
 
+/**
+ * SMTP gercekten kullanilabilir mi?
+ *
+ * Ayarlar kurulumda bos dize olarak olusturuldugu icin "null degil" kontrolu
+ * yeterli degildir; degerlerin dolu olmasi gerekir. Plesk'te giden posta
+ * sunucusu kimlik dogrulamasi zorunlu kildigindan kullanici adi ve sifre de
+ * aranir. Eksikse site calismaya devam eder, yalnizca e-posta gonderilemez.
+ */
 function smtp_is_configured(): bool
 {
-    return setting('smtp_host') !== null
-        && setting('smtp_port') !== null
-        && setting('mail_from') !== null;
+    foreach (['smtp_host', 'smtp_username', 'smtp_password', 'mail_from'] as $key) {
+        if (trim((string)setting($key, '')) === '') {
+            return false;
+        }
+    }
+    return (int)setting('smtp_port', '0') > 0;
+}
+
+/** Eksik olan SMTP alanlarini yoneticiye gostermek icin listeler. */
+function smtp_missing_fields(): array
+{
+    $labels = [
+        'smtp_host'     => 'Sunucu adresi',
+        'smtp_username' => 'Kullanıcı adı (noreply@ adresi)',
+        'smtp_password' => 'Posta kutusu şifresi',
+        'mail_from'     => 'Gönderen adres',
+    ];
+    $missing = [];
+    foreach ($labels as $key => $label) {
+        if (trim((string)setting($key, '')) === '') {
+            $missing[] = $label;
+        }
+    }
+    if ((int)setting('smtp_port', '0') <= 0) {
+        $missing[] = 'Port';
+    }
+    return $missing;
 }
 
 /**

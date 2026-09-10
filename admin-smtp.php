@@ -101,9 +101,20 @@ render_admin_start($admin, 'SMTP Ayarları');
   <div class="alert alert--warn">
     <span class="alert__icon" aria-hidden="true">●</span>
     <span><strong>SMTP yapılandırılmadı.</strong> Site çalışmaya devam eder, ancak doğrulama kodu ve şifre sıfırlama
-    e-postaları gönderilemez. Kullanıcılara bu durum açıkça bildirilir.</span>
+    e-postaları gönderilemez. Kullanıcılara bu durum açıkça bildirilir.
+    <?php $miss = smtp_missing_fields(); if ($miss !== []): ?>
+      <br>Eksik alan<?= count($miss) > 1 ? 'lar' : '' ?>: <strong><?= e(implode(', ', $miss)) ?></strong>.
+    <?php endif; ?></span>
   </div>
 <?php endif; ?>
+
+<div class="alert alert--info">
+  <span class="alert__icon" aria-hidden="true">i</span>
+  <span>Doğrulama ve şifre sıfırlama e-postaları <strong><?= e((string)setting('mail_from', '') ?: 'noreply@' . (string)($_SERVER['HTTP_HOST'] ?? 'alanadiniz.com')) ?></strong>
+  adresinden gönderilir. Plesk'te <em>Mail</em> bölümünden bu adreste bir posta kutusu oluşturup şifresini
+  aşağıdaki <strong>Şifre</strong> alanına yazmanız yeterlidir. Sunucu, port ve şifreleme alanları
+  Plesk'in verdiği değerlerle önceden dolduruldu.</span>
+</div>
 
 <div class="stat-grid">
   <div class="card stat"><div class="stat__label">Durum</div><div class="stat__value"><?= $configured ? 'Hazır' : 'Eksik' ?></div></div>

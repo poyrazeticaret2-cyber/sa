@@ -134,17 +134,32 @@ loglar ve sırlar bu dosyada **yer almaz**.
 
 E-posta gönderimi Composer'sız, saf PHP ile (soket + STARTTLS) yapılır.
 
-Yönetim paneli > **SMTP Ayarları**:
+Doğrulama kodları ve şifre sıfırlama bağlantıları **`noreply@alanadiniz.com`**
+adresinden gönderilir. Kurulum sırasında sunucu, port, kullanıcı adı ve gönderen
+adresi **alan adınıza göre otomatik doldurulur**; sizin girmeniz gereken tek değer
+posta kutusunun şifresidir.
 
-| Alan | Örnek |
+**Adım adım:**
+
+1. Plesk > *Mail* > **Create Email Address** ile `noreply@alanadiniz.com` kutusunu oluşturun.
+2. Bir şifre belirleyin.
+3. Yönetim paneli > **SMTP Ayarları** sayfasını açın; alanların dolu geldiğini göreceksiniz.
+4. Yalnızca **Şifre** alanına o posta kutusunun şifresini yazıp kaydedin.
+5. **Test E-postası Gönder** ile doğrulayın.
+
+Otomatik doldurulan değerler (Plesk'in *Mail Client Setup* ekranındakilerle aynıdır):
+
+| Alan | Değer |
 |---|---|
-| SMTP sunucusu | `mail.alanadiniz.com` |
-| Port | `587` (STARTTLS) veya `465` (SSL) |
-| Şifreleme | STARTTLS (önerilen) |
-| Kullanıcı adı | `noreply@alanadiniz.com` |
+| SMTP sunucusu | `alanadiniz.com` |
+| Port | `465` |
+| Şifreleme | SSL/TLS |
+| Kullanıcı adı | `noreply@alanadiniz.com` (tam adres) |
 | Şifre | (yalnızca yazılır, panelde okunamaz) |
 | Gönderen e-posta | `noreply@alanadiniz.com` |
 | Gönderen adı | `AlmancaPro` |
+
+> Sunucunuz 465 yerine STARTTLS istiyorsa portu `587`, şifrelemeyi *STARTTLS* yapın.
 
 Kaydettikten sonra **Test E-postası Gönder** düğmesiyle gerçek bir gönderim yapabilirsiniz.
 Sonuç `mail_log` tablosuna yazılır. SMTP hataları loglanır; **SMTP şifresi asla loglanmaz**.
@@ -351,6 +366,46 @@ error_page 404 /404.php;
 
 ## 12. Sorun giderme
 
+### Önce buraya bakın: `500 Internal Server Error`
+
+Sitede 500 hatası görüyorsanız **ilk yapılacak şey** tarayıcıdan şu adresi açmaktır:
+
+```
+https://alanadiniz.com/tani.php
+```
+
+Bu sayfa kasıtlı olarak eski PHP söz dizimiyle yazılmıştır; sunucudaki PHP sürümü
+yetersiz olsa bile çalışır ve sorunu adı adına söyler: PHP sürümü, eksik eklentiler,
+eksik dosyalar, `.htaccess` riskleri, zaman aşımı limitleri ve veritabanı bağlantısı.
+**Sorun çözülünce `tani.php` dosyasını sunucudan silin.**
+
+`tani.php` de açılmıyorsa 500'ün nedeni Apache yapılandırmasıdır. Sırayla deneyin:
+
+1. **PHP sürümü.** Plesk > *Websites & Domains* > alan adı > *PHP Settings* >
+   **PHP 8.2 veya üzeri**, *Run PHP as*: **FPM application served by Apache**.
+   En sık neden budur. (AlmancaPro'nun `index.php` dosyası bu durumu yakalayıp
+   500 yerine açıklayıcı bir sayfa gösterir; yine de 500 görüyorsanız neden başkadır.)
+2. **`.htaccess`.** Dosya yöneticisinde adını geçici olarak `.htaccess.bak` yapın ve
+   siteyi yenileyin. Hata kayboluyorsa sunucunuz `AllowOverride` ile bazı satırları
+   yasaklıyor demektir. Bu paketteki `.htaccess` riskli `Options` ve `php_flag`
+   satırlarını zaten içermez; özelleştirdiyseniz onları geri alın.
+3. **Dosya konumu.** `index.php` doğrudan `httpdocs` altında olmalıdır. ZIP ayıklanırken
+   fazladan bir `AlmancaPro/` klasörü oluştuysa dosyaları bir üst dizine taşıyın.
+4. **Dosya izinleri.** Klasörler `755`, dosyalar `644` olmalıdır.
+5. **Sunucu hata günlüğü.** Plesk > *Logs* > `error_log` son satırları kesin nedeni verir.
+
+### İlk açılış uzun sürüyor veya zaman aşımına uğruyor
+
+İlk açılışta yaklaşık 10.000 satır yazılır (müfredat, kelimeler, alıştırmalar).
+Paylaşımlı sunucuda varsayılan `max_execution_time` buna yetmeyebilir.
+
+AlmancaPro bunu kendisi yönetir: süre limitini yükseltmeyi dener, yükseltemezse
+kurulumu ana sayfada yapmak yerine `/install.php` adresine yönlendirir ve orada
+zaman aşımı olmadan tamamlar. Yine de takılırsanız doğrudan `https://alanadiniz.com/install.php`
+adresini açın.
+
+### "Veritabanına bağlanılamadı"
+
 **"Veritabanına bağlanılamadı"**
 Plesk'te veritabanı kullanıcısının aktif olduğundan ve veritabanı adının
 `lxsadauz_almanca` olduğundan emin olun. Bağlantı bilgileri güvenlik gereği
@@ -395,7 +450,9 @@ Bütün çalıştırılabilir PHP dosyaları **kök dizindedir**. `/src/`, `/app
 
 ```
 httpdocs/
-├── index.php               Açılış sayfası
+├── index.php               Giriş noktası (PHP sürümünü kontrol eder)
+├── home.php                Açılış sayfası gövdesi
+├── tani.php                Kurulum teşhis aracı (sorun çözülünce silin)
 ├── register.php            Kayıt
 ├── verify.php              E-posta doğrulama
 ├── login.php  logout.php   Giriş / çıkış

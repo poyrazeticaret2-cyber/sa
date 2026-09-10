@@ -10,8 +10,19 @@
 
 # ---------------------------------------------------------------------
 # Dizin listelemeyi kapat
+#
+# DIKKAT: "Options" satiri yalnizca sunucuda AllowOverride Options (veya All)
+# tanimliysa calisir. Bazi Plesk kurulumlarinda bu kapalidir ve satir
+# "Internal Server Error 500" verir. Bu yuzden varsayilan olarak KAPALI
+# birakildi; dizin listeleme zaten asagidaki mod_autoindex blogu ve
+# her klasordeki index dosyalari ile engellenir.
+#
+# Sunucunuz izin veriyorsa asagidaki satirin basindaki # isaretini kaldirin:
+# Options -Indexes
 # ---------------------------------------------------------------------
-Options -Indexes +FollowSymLinks
+<IfModule mod_autoindex.c>
+    IndexIgnore *
+</IfModule>
 
 # ---------------------------------------------------------------------
 # Varsayılan belge
@@ -62,7 +73,9 @@ AddDefaultCharset UTF-8
 </FilesMatch>
 
 # .git ve benzeri dizinler
-RedirectMatch 404 /\.(git|svn|hg|env)(/|$)
+<IfModule mod_alias.c>
+    RedirectMatch 404 /\.(git|svn|hg|env)(/|$)
+</IfModule>
 
 # ---------------------------------------------------------------------
 # Güvenlik başlıkları (PHP tarafında da gönderilir; burada statik
@@ -104,14 +117,13 @@ RedirectMatch 404 /\.(git|svn|hg|env)(/|$)
 ErrorDocument 404 /404.php
 
 # ---------------------------------------------------------------------
-# PHP ayarları (Plesk'te PHP FPM kullanılıyorsa yok sayılabilir;
-# aynı ayarlar Plesk > PHP Ayarları bölümünden de yapılabilir)
+# PHP ayarları
+#
+# Buraya php_flag / php_value YAZILMAZ: Plesk PHP-FPM kullandığında bu
+# satırlar 500 hatası verir. Aynı ayarlar zaten config.php içinde
+# ini_set() ile yapılıyor. Sunucu genelinde değiştirmek isterseniz
+# Plesk > PHP Ayarları bölümünü kullanın.
 # ---------------------------------------------------------------------
-<IfModule mod_php.c>
-    php_flag display_errors Off
-    php_flag log_errors On
-    php_value default_charset "UTF-8"
-</IfModule>
 
 # ---------------------------------------------------------------------
 # HTTPS yönlendirmesi
