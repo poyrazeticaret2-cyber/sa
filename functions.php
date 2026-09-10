@@ -587,7 +587,9 @@ function scrub_secrets(string $text): string
     foreach ($patterns as $p => $r) {
         $text = preg_replace($p, $r, $text) ?? $text;
     }
-    if (DB_PASSWORD !== '') {
+    /* Cok kisa degerler metnin icinde tesadufen gecebilir; maskeleme
+       yalnizca gercekci uzunluktaki sirlar icin uygulanir. */
+    if (strlen(DB_PASSWORD) >= 6) {
         $text = str_replace(DB_PASSWORD, '[gizli]', $text);
     }
 
@@ -608,9 +610,91 @@ function scrub_secrets(string $text): string
     return $text;
 }
 
+/**
+ * Uygulama log dosyasinin yolu.
+ * Once storage/ denenir; yazilamazsa sistem gecici dizini kullanilir.
+ * Basarisiz olursa bos dize doner ve yalnizca PHP error_log kullanilir.
+ */
+function app_log_path(): string
+{
+    static $path = null;
+    if ($path !== null) {
+        return $path;
+    }
+    $dir = APP_ROOT . '/storage';
+    if (!is_dir($dir)) {
+        @mkdir($dir, 0755, true);
+        /* Dizin listelenmesin ve dogrudan indirilemesin. */
+        @file_put_contents($dir . '/.htaccess', "Require all denied
+Deny from all
+");
+        @file_put_contents($dir . '/index.html', '');
+    }
+    /* Dosya adi .php ile biter ve ilk satiri "exit" dir: sunucu .htaccess'i
+       yok saysa bile (or. yalnizca nginx) icerik tarayiciya sizmaz. */
+    if (is_dir($dir) && is_writable($dir)) {
+        return $path = $dir . '/almancapro-log.php';
+    }
+    $tmp = sys_get_temp_dir();
+    if ($tmp !== '' && is_writable($tmp)) {
+        return $path = $tmp . '/almancapro-log.php';
+    }
+    return $path = '';
+}
+
+/** Log dosyasinin ilk satiri: dogrudan cagrilirsa hicbir sey yazdirmaz. */
+const APP_LOG_GUARD = "<?php exit; /* AlmancaPro hata gunlugu - dogrudan okunamaz */ ?>\n";
+
+/** Log dosyasini asiri buyumeye karsi kirpar. */
+function app_log_rotate(string $file): void
+{
+    if (is_file($file) && filesize($file) > 512000) {
+        $lines = @file($file);
+        if ($lines !== false) {
+            @file_put_contents($file, APP_LOG_GUARD . implode('', array_slice($lines, -300)));
+        }
+    }
+}
+
 function app_log(string $message): void
 {
-    error_log('[AlmancaPro] ' . scrub_secrets($message));
+    $clean = scrub_secrets($message);
+    error_log('[AlmancaPro] ' . $clean);
+
+    $file = app_log_path();
+    if ($file === '') {
+        return;
+    }
+    if (!is_file($file)) {
+        @file_put_contents($file, APP_LOG_GUARD);
+    }
+    app_log_rotate($file);
+    @file_put_contents(
+        $file,
+        gmdate('Y-m-d H:i:s') . ' UTC  ' . $clean . "\n",
+        FILE_APPEND | LOCK_EX
+    );
+}
+
+/**
+ * Beklenmeyen bir hatayi kaydeder ve kullaniciya gosterilecek kisa bir
+ * referans kodu dondurur. Ayrintilar yalnizca sunucudaki loga yazilir.
+ */
+function app_log_exception(Throwable $e, string $context = ''): string
+{
+    $ref = strtoupper(substr(bin2hex(random_bytes(4)), 0, 8));
+    $file = str_replace(APP_ROOT . '/', '', $e->getFile());
+    app_log(sprintf(
+        'HATA [%s] %s%s: %s @ %s:%d',
+        $ref,
+        $context !== '' ? $context . ' · ' : '',
+        get_class($e),
+        $e->getMessage(),
+        $file,
+        $e->getLine()
+    ));
+    app_log('HATA [' . $ref . '] izleme: ' . str_replace(APP_ROOT . '/', '', $e->getTraceAsString()));
+    return $ref;
 }
 
 function admin_log(?int $adminId, string $action, ?string $targetType = null, ?string $targetId = null, array $metadata = []): void
@@ -812,5 +896,20 @@ function ensure_installed(): void
     }
 
     require_once __DIR__ . '/installer.php';
-    almancapro_run_install();
+    $result = almancapro_run_install();
+
+    if (empty($result['ok'])) {
+        /* Kurulum yarim kaldi. Sessizce devam edersek her sayfa
+           "eksik tablo" hatasi verir; bunun yerine acikca soyle. */
+        $failed = [];
+        foreach (($result['steps'] ?? []) as $step) {
+            if (($step['status'] ?? '') !== 'ok') {
+                $failed[] = $step['name'] . ' (' . $step['detail'] . ')';
+            }
+        }
+        app_log('Kurulum tamamlanamadi: ' . ($result['error'] ?? 'bilinmeyen')
+            . ($failed !== [] ? ' · ' . implode('; ', $failed) : ''));
+
+        throw new RuntimeException('install_incomplete:' . ($result['error'] ?? 'unknown'));
+    }
 }

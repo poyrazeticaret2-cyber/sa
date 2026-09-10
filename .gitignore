@@ -8,3 +8,6 @@ config.local.php
 .DS_Store
 Thumbs.db
 *.log
+
+# Calisma zamani log dizini
+storage/

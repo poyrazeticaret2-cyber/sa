@@ -379,6 +379,22 @@ yetersiz olsa bile çalışır ve sorunu adı adına söyler: PHP sürümü, eks
 eksik dosyalar, `.htaccess` riskleri, zaman aşımı limitleri ve veritabanı bağlantısı.
 **Sorun çözülünce `tani.php` dosyasını sunucudan silin.**
 
+AlmancaPro artık hiçbir sayfada ham 500 göstermez: beklenmeyen bir hata olursa
+ne olduğunu anlatan bir sayfa ve kısa bir **hata referansı** çıkar. Ayrıntı
+(dosya, satır, yığın izi) yalnızca sunucudaki `storage/almancapro-log.php`
+dosyasına yazılır ve `tani.php` sayfasında listelenir. Bu dosya web'den
+okunamaz; ilk satırı `<?php exit;` olduğu için doğrudan açılsa bile boş döner.
+
+Yönetici olarak giriş yaptıysanız hata ayrıntısı ekranda da gösterilir.
+
+**Sık karşılaşılan durum — bazı sayfalar açılıyor, bazıları 500 veriyor:**
+Bu neredeyse her zaman *yarım kalmış kurulum* demektir. Ana sayfa veritabanı
+okumalarını yedekli yaptığı için açılır; `support.php`, `register.php` gibi
+gerçekten tablo sorgulayan sayfalar hata verir. Çözüm: `/install.php` adresini
+açıp kurulumu tamamlayın. `tani.php` eksik tabloları adıyla listeler ve
+veritabanı kullanıcısının **tablo oluşturma yetkisi** olup olmadığını canlı test eder
+(Plesk'te bu yetki eksikse kurulum sessizce yarım kalır).
+
 `tani.php` de açılmıyorsa 500'ün nedeni Apache yapılandırmasıdır. Sırayla deneyin:
 
 1. **PHP sürümü.** Plesk > *Websites & Domains* > alan adı > *PHP Settings* >
@@ -453,6 +469,7 @@ httpdocs/
 ├── index.php               Giriş noktası (PHP sürümünü kontrol eder)
 ├── home.php                Açılış sayfası gövdesi
 ├── tani.php                Kurulum teşhis aracı (sorun çözülünce silin)
+├── storage/                Çalışma anında oluşur; hata günlüğü (web'e kapalı)
 ├── register.php            Kayıt
 ├── verify.php              E-posta doğrulama
 ├── login.php  logout.php   Giriş / çıkış

@@ -117,6 +117,19 @@ function smtp_send_raw(
 ): array {
     $timeout = 20;
     $transport = ($encryption === 'ssl') ? 'ssl://' : '';
+    /* Bazi paylasimli sunucular soket fonksiyonlarini kapatir. Bu durumda
+       "Call to undefined function" fatal hatasi olusup sayfa 500 dondurur;
+       onun yerine anlasilir bir hata mesaji don. */
+    foreach (['stream_socket_client', 'stream_context_create', 'stream_socket_enable_crypto'] as $fn) {
+        if (!function_exists($fn)) {
+            return [
+                'ok' => false,
+                'error' => 'Sunucuda ' . $fn . '() kapatılmış; SMTP ile e-posta gönderilemiyor. '
+                    . 'Hosting sağlayıcınızdan disable_functions listesinden çıkarmasını isteyin.',
+            ];
+        }
+    }
+
     $context = stream_context_create([
         'ssl' => ['verify_peer' => true, 'verify_peer_name' => true, 'SNI_enabled' => true],
     ]);

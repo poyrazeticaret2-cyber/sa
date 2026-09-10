@@ -166,22 +166,84 @@ if ($dbName === '') {
                 . 'Plesk > Veritabanlari bolumunden duzeltin.';
         }
 
+        /* CREATE yetkisi gercekten var mi? Kurulum bu yetki olmadan tamamlanamaz. */
+        try {
+            $pdo->exec('CREATE TABLE IF NOT EXISTS almancapro_yetki_testi (id INT) ENGINE=InnoDB');
+            $pdo->exec('DROP TABLE IF EXISTS almancapro_yetki_testi');
+            $ok[] = 'Veritabani kullanicisinin CREATE/DROP yetkisi var.';
+        } catch (Exception $ex) {
+            $err[] = 'Veritabani kullanicisinin TABLO OLUSTURMA yetkisi YOK (' . $ex->getCode() . '). '
+                . 'Kurulum bu yuzden tamamlanamaz ve sayfalar hata verir. '
+                . 'Plesk > Veritabanlari > Kullanicilar bolumunden bu kullaniciya tam yetki verin '
+                . 'veya veritabanina "Tum ayricaliklar" atayin.';
+        }
+
         $st = $pdo->query("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = DATABASE()");
         $tableCount = (int)$st->fetchColumn();
         if ($tableCount === 0) {
-            $warn[] = 'Veritabani BOS (0 tablo). Kurulum henuz yapilmadi. /install.php adresini acin.';
+            $err[] = 'Veritabani BOS (0 tablo). Kurulum hic yapilmamis. '
+                . 'https://' . (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'alanadiniz.com')
+                . '/install.php adresini acip "KURULUMU BASLAT" deyin.';
         } else {
-            $ok[] = 'Veritabaninda ' . $tableCount . ' tablo var.';
-            try {
-                $c = (int)$pdo->query('SELECT COUNT(*) FROM lessons')->fetchColumn();
-                $v = (int)$pdo->query('SELECT COUNT(*) FROM vocabulary')->fetchColumn();
-                $e = (int)$pdo->query('SELECT COUNT(*) FROM exercises')->fetchColumn();
-                $ok[] = 'Icerik: ' . $c . ' ders, ' . $v . ' kelime, ' . $e . ' alistirma.';
-                if ($c === 0 || $e === 0) {
-                    $warn[] = 'Tablolar var ama icerik eksik. /install.php adresinden kurulumu tamamlayin.';
+            /* Beklenen tablolarin hepsi var mi? */
+            $expected = array('site_settings','admins','users','modules','lessons','lesson_sections',
+                'lesson_prerequisites','skills','vocabulary','exercises','exercise_options',
+                'grammar_topics','error_categories','user_skill_mastery','user_vocabulary_mastery',
+                'study_sessions','session_items','exercise_attempts','daily_plans','daily_plan_items',
+                'donations','donation_expenses','scenarios','scenario_turns','scenario_options',
+                'knowledge_base','notification_queue','telegram_connections','questions','answers');
+            $have = array();
+            $rs = $pdo->query("SELECT TABLE_NAME FROM information_schema.tables WHERE table_schema = DATABASE()");
+            while ($r = $rs->fetch(PDO::FETCH_NUM)) { $have[strtolower($r[0])] = true; }
+            $lack = array();
+            foreach ($expected as $t) {
+                if (!isset($have[$t])) { $lack[] = $t; }
+            }
+            if (count($lack) > 0) {
+                $err[] = 'Veritabaninda ' . $tableCount . ' tablo var ama ' . count($lack)
+                    . ' tanesi EKSIK: ' . implode(', ', array_slice($lack, 0, 8))
+                    . (count($lack) > 8 ? ' ...' : '')
+                    . '  >>> Kurulum yarim kalmis. /install.php adresini acip kurulumu tamamlayin. '
+                    . '(Bu, bazi sayfalarin acilip bazilarinin 500 vermesinin tipik nedenidir.)';
+            } else {
+                $ok[] = 'Veritabaninda ' . $tableCount . ' tablo var; beklenen tablolarin hepsi mevcut.';
+            }
+
+            /* Kurulum bayragi */
+            if (isset($have['site_settings'])) {
+                try {
+                    $q = $pdo->prepare("SELECT setting_value FROM site_settings WHERE setting_key = 'install_completed'");
+                    $q->execute();
+                    $flag = $q->fetchColumn();
+                    if ($flag === '1') {
+                        $ok[] = 'Kurulum tamamlandi olarak isaretli.';
+                    } else {
+                        $err[] = 'Kurulum TAMAMLANMAMIS olarak isaretli (install_completed = '
+                            . ($flag === false ? 'yok' : var_export($flag, true)) . '). '
+                            . '/install.php adresini acin.';
+                    }
+                } catch (Exception $ex) {
+                    $warn[] = 'Kurulum bayragi okunamadi: ' . $ex->getMessage();
                 }
-            } catch (Exception $ex) {
-                $warn[] = 'Tablolar var ama icerik tablolari eksik. /install.php adresini acin.';
+            }
+
+            if (count($lack) === 0) {
+                try {
+                    $c = (int)$pdo->query('SELECT COUNT(*) FROM lessons')->fetchColumn();
+                    $v = (int)$pdo->query('SELECT COUNT(*) FROM vocabulary')->fetchColumn();
+                    $e = (int)$pdo->query('SELECT COUNT(*) FROM exercises')->fetchColumn();
+                    $a = (int)$pdo->query('SELECT COUNT(*) FROM admins')->fetchColumn();
+                    $ok[] = 'Icerik: ' . $c . ' ders, ' . $v . ' kelime, ' . $e . ' alistirma, ' . $a . ' yonetici.';
+                    if ($c === 0 || $e === 0) {
+                        $err[] = 'Tablolar var ama EGITIM ICERIGI YUKLENMEMIS (' . $c . ' ders, ' . $e
+                            . ' alistirma). /install.php adresini acip kurulumu tamamlayin.';
+                    }
+                    if ($a === 0) {
+                        $warn[] = 'Yonetici hesabi yok. /install.php adresini acin; hesap otomatik olusturulur.';
+                    }
+                } catch (Exception $ex) {
+                    $warn[] = 'Icerik sayilari okunamadi: ' . $ex->getMessage();
+                }
             }
         }
     } catch (Exception $ex) {
@@ -199,7 +261,34 @@ if ($dbName === '') {
     }
 }
 
-/* ---------- 9) Son PHP hatasi ---------- */
+/* ---------- 9) AlmancaPro hata gunlugu ---------- */
+$appLog = '';
+$appLogFiles = array(
+    __DIR__ . '/storage/almancapro-log.php',
+    sys_get_temp_dir() . '/almancapro-log.php',
+);
+foreach ($appLogFiles as $lf) {
+    if (@is_readable($lf)) {
+        $lines = @file($lf);
+        if ($lines && count($lines) > 1) {
+            /* Ilk satir koruma satiridir, gosterme. */
+            if (count($lines) && strpos($lines[0], '<?php exit;') === 0) {
+                array_shift($lines);
+            }
+            $appLog = count($lines)
+                ? htmlspecialchars(implode('', array_slice($lines, -25)), ENT_QUOTES, 'UTF-8')
+                : '';
+            $ok[] = 'Uygulama hata gunlugu bulundu: ' . str_replace(__DIR__ . '/', '', $lf)
+                . ' (' . count($lines) . ' satir)';
+            break;
+        }
+    }
+}
+if ($appLog === '') {
+    $ok[] = 'Uygulama hata gunlugunde kayit yok.';
+}
+
+/* ---------- 10) Son PHP hatasi ---------- */
 $lastError = '';
 $logCandidates = array(
     dirname(dirname(__DIR__)) . '/logs/error_log',
@@ -209,7 +298,7 @@ $logCandidates = array(
 foreach ($logCandidates as $lg) {
     if ($lg && is_string($lg) && @is_readable($lg)) {
         $lines = @file($lg);
-        if ($lines && count($lines)) {
+        if ($lines && count($lines) > 1) {
             $tail = array_slice($lines, -12);
             $lastError = htmlspecialchars(implode('', $tail), ENT_QUOTES, 'UTF-8');
             break;
@@ -249,6 +338,11 @@ ap_box('ÇÖZÜLMESİ GEREKENLER', $err, '#C0271F', '✕');
 ap_box('UYARILAR', $warn, '#A8621A', '●');
 ap_box('UYGUN', $ok, '#1E7A4C', '✓');
 ?>
+
+<?php if ($appLog !== ''): ?>
+  <h2 style="font-size:16px;margin:26px 0 10px">AlmancaPro hata günlüğü (son kayıtlar)</h2>
+  <pre><?php echo $appLog; ?></pre>
+<?php endif; ?>
 
 <?php if ($lastError !== ''): ?>
   <h2 style="font-size:16px;margin:26px 0 10px">Sunucu hata günlüğü (son satırlar)</h2>
