@@ -92,8 +92,10 @@ function app_session_start(): void
         'httponly' => true,
         'samesite' => 'Lax',
     ]);
-    ini_set('session.use_strict_mode', '1');
-    ini_set('session.use_only_cookies', '1');
+    if (function_exists('ini_set')) {
+        @ini_set('session.use_strict_mode', '1');
+        @ini_set('session.use_only_cookies', '1');
+    }
     session_start();
 
     if (!isset($_SESSION['__created'])) {
@@ -868,32 +870,44 @@ function is_installed(): bool
 }
 
 /** Kurulum tamamlanmamissa kurulumu tetikler (idempotent). */
+/**
+ * Uzun surecek isler icin calisma limitlerini yukseltmeye calisir.
+ *
+ * Paylasimli sunucular set_time_limit / ini_set gibi fonksiyonlari
+ * disable_functions ile kapatabilir. Kapali bir fonksiyonu cagirmak
+ * "Call to undefined function" olumcul hatasi verir ve @ bunu ENGELLEMEZ;
+ * bu yuzden her cagri once function_exists ile denetlenir.
+ */
+function raise_runtime_limits(int $seconds = 0, string $memory = '256M'): void
+{
+    if (function_exists('set_time_limit')) {
+        @set_time_limit($seconds);
+    }
+    if (function_exists('ini_set')) {
+        @ini_set('memory_limit', $memory);
+    }
+    if (function_exists('ignore_user_abort')) {
+        @ignore_user_abort(true);
+    }
+}
+
 function ensure_installed(): void
 {
     if (is_installed()) {
         return;
     }
 
-    /* Ilk kurulum ~10.000 satir yazar. Paylasimli sunucularda varsayilan
-       max_execution_time buna yetmeyip "500 Internal Server Error" uretebilir.
-       Once limitleri yukseltmeyi dene. */
-    $limitRaised = false;
-    if (function_exists('set_time_limit') && !in_array('set_time_limit', explode(',', str_replace(' ', '', (string)ini_get('disable_functions'))), true)) {
-        $limitRaised = @set_time_limit(0);
-    }
-    @ini_set('memory_limit', '256M');
-    if (function_exists('ignore_user_abort')) {
-        ignore_user_abort(true);
+    /* Kurulum tek istekte bitmeyebilir (~10.000 satir). Bu yuzden normal
+       sayfalarda kurulum CALISTIRILMAZ: kullanici adim adim ilerleyen
+       kurulum sayfasina gonderilir. Orada her istek yalnizca bir adim
+       yapar, boylece PHP zaman asimi kurulumu yarida birakamaz. */
+    $muaf = ['install.php', 'tani.php', 'cron.php', 'telegram-webhook.php'];
+    if (PHP_SAPI !== 'cli' && !in_array(current_path(), $muaf, true)) {
+        redirect('/install.php?kur=1');
     }
 
-    /* Limit yukseltilemediyse ve mevcut sure riskliyse, kurulumu bu istekte
-       yapma: kullaniciyi kurulum sayfasina yonlendir. Orada islem adim adim
-       ve ilerleme gostererek yapilir, boylece zaman asimi olusmaz. */
-    $maxTime = (int)ini_get('max_execution_time');
-    $risky = !$limitRaised && $maxTime > 0 && $maxTime < 120;
-    if ($risky && current_path() !== 'install.php' && PHP_SAPI !== 'cli') {
-        redirect('/install.php?otomatik=1');
-    }
+    /* CLI ve kurulum sayfasi: limitleri acabildigin kadar ac. */
+    raise_runtime_limits();
 
     require_once __DIR__ . '/installer.php';
     $result = almancapro_run_install();

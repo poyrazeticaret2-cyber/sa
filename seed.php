@@ -72,7 +72,7 @@ function skill_id_map(bool $fresh = false): array
 /* ==================================================================
  * Kelime hazinesi
  * ================================================================== */
-function seed_vocabulary(): int
+function seed_vocabulary(?string $onlyLevel = null): int
 {
     require_once __DIR__ . '/content-vocab-a0.php';
     require_once __DIR__ . '/content-vocab-a1.php';
@@ -88,6 +88,9 @@ function seed_vocabulary(): int
 
     $n = 0;
     foreach ($sets as $level => $rows) {
+        if ($onlyLevel !== null && $level !== $onlyLevel) {
+            continue;
+        }
         foreach ($rows as $v) {
             $german = (string)$v['g'];
             $pos = (string)($v['pos'] ?? 'noun');
@@ -173,7 +176,14 @@ function vocab_id_map(bool $fresh = false): array
 /* ==================================================================
  * Mufredat: modul, ders, bolum, egzersiz
  * ================================================================== */
-function seed_curriculum(bool $refresh): array
+/**
+ * Mufredati yukler.
+ *
+ * $onlyLevel verilirse yalnizca o seviye islenir; sira sayaclari yine de
+ * butun mufredat uzerinden ilerler, boylece parcali kurulumda ders sirasi
+ * tek seferlik kurulumla birebir ayni olur.
+ */
+function seed_curriculum(bool $refresh, ?string $onlyLevel = null): array
 {
     require_once __DIR__ . '/content-a0.php';
     require_once __DIR__ . '/content-a1.php';
@@ -196,6 +206,12 @@ function seed_curriculum(bool $refresh): array
 
     /* Once tum dersleri olustur (onkosullar icin id gerekiyor). */
     foreach ($curriculum as $module) {
+        if ($onlyLevel !== null && (string)$module['level'] !== $onlyLevel) {
+            /* Bu seviye simdi islenmiyor ama sira numaralari kaymamali. */
+            $moduleOrder++;
+            $lessonOrder += count($module['lessons']);
+            continue;
+        }
         db_exec(
             'INSERT INTO modules (slug, cefr_level, title, description, sort_order)
              VALUES (?, ?, ?, ?, ?)
@@ -230,6 +246,9 @@ function seed_curriculum(bool $refresh): array
 
     /* Ders detaylari */
     foreach ($curriculum as $module) {
+        if ($onlyLevel !== null && (string)$module['level'] !== $onlyLevel) {
+            continue;
+        }
         foreach ($module['lessons'] as $lesson) {
             $lessonId = $lessonIds[$lesson['slug']] ?? 0;
             if ($lessonId === 0) {

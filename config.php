@@ -63,9 +63,12 @@ define('MASTERY_WEAK', 45);
 /* Hata gosterimi: uretimde asla ekrana basma */
 define('APP_DEBUG', (getenv('ALMANCAPRO_DEBUG') === '1'));
 
-ini_set('display_errors', APP_DEBUG ? '1' : '0');
-ini_set('display_startup_errors', APP_DEBUG ? '1' : '0');
-ini_set('log_errors', '1');
+/* Bazi sunucularda ini_set kapatilmis olabilir; cagirmadan once denetle. */
+if (function_exists('ini_set')) {
+    @ini_set('display_errors', APP_DEBUG ? '1' : '0');
+    @ini_set('display_startup_errors', APP_DEBUG ? '1' : '0');
+    @ini_set('log_errors', '1');
+}
 error_reporting(APP_DEBUG ? E_ALL : (E_ALL & ~E_DEPRECATED & ~E_NOTICE));
 
 date_default_timezone_set('UTC');

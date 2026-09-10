@@ -40,6 +40,7 @@ function render_head(string $title, array $opts = []): void
 <?php foreach ($css as $file): ?>
 <link rel="stylesheet" href="/assets/css/<?= e($file) ?>?v=<?= e(APP_VERSION) ?>">
 <?php endforeach; ?>
+<?= $opts['head_extra'] ?? '' ?>
 </head>
 <body<?= $bodyClass !== '' ? ' class="' . e($bodyClass) . '"' : '' ?>>
 <a class="skip-link" href="#main">İçeriğe geç</a>

@@ -410,15 +410,22 @@ veritabanı kullanıcısının **tablo oluşturma yetkisi** olup olmadığını 
 4. **Dosya izinleri.** Klasörler `755`, dosyalar `644` olmalıdır.
 5. **Sunucu hata günlüğü.** Plesk > *Logs* > `error_log` son satırları kesin nedeni verir.
 
-### İlk açılış uzun sürüyor veya zaman aşımına uğruyor
+### Kurulum nasıl çalışır (zaman aşımına takılmaz)
 
-İlk açılışta yaklaşık 10.000 satır yazılır (müfredat, kelimeler, alıştırmalar).
-Paylaşımlı sunucuda varsayılan `max_execution_time` buna yetmeyebilir.
+İlk kurulumda yaklaşık 10.000 satır yazılır. Paylaşımlı sunucularda bu iş tek
+istekte bitmez ve PHP zaman aşımı onu keserse kurulum yarım kalır.
 
-AlmancaPro bunu kendisi yönetir: süre limitini yükseltmeyi dener, yükseltemezse
-kurulumu ana sayfada yapmak yerine `/install.php` adresine yönlendirir ve orada
-zaman aşımı olmadan tamamlar. Yine de takılırsanız doğrudan `https://alanadiniz.com/install.php`
-adresini açın.
+AlmancaPro bu yüzden kurulumu **34 küçük adıma** böler. Siteyi ilk açtığınızda
+kurulum sayfasına yönlendirilirsiniz; sayfa kendi kendine ilerler ve
+**her istek yalnızca bir adım** çalıştırır. En uzun adım bir saniyenin altındadır,
+yani hiçbir zaman aşımı kurulumu öldüremez.
+
+Nerede kalındığı veritabanında tutulur. Bağlantı kopsa, sekmeyi kapatsanız veya
+sunucu isteği kesse bile kurulum **kaldığı yerden** devam eder; baştan başlamaz
+ve veri tekrarlanmaz. Bir adım hata verirse ekran nedenini yazar ve
+"Devam Et" düğmesi sizi aynı yerden sürdürür.
+
+Kurulum bitmeden hiçbir sayfa hata vermez; hepsi kurulum sayfasına yönlendirir.
 
 ### "Veritabanına bağlanılamadı"
 

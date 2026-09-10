@@ -98,26 +98,45 @@ function almancapro_migrations(): int
 }
 
 /**
- * @return array{ok:bool, steps:array<int,array{name:string,status:string,detail:string}>, error:string}
+ * Varsayilan yonetici hesabini olusturur (yoksa).
+ * Sifre asla duz metin saklanmaz; ilk giriste degistirilmesi zorunludur.
  */
-function almancapro_run_install(bool $forceContentRefresh = false): array
+function almancapro_seed_admin(): string
 {
-    $steps = [];
-    $add = static function (array &$steps, string $name, string $status, string $detail = ''): void {
-        $steps[] = ['name' => $name, 'status' => $status, 'detail' => $detail];
-    };
-
-    /* 1) Baglanti */
-    try {
-        db();
-        $add($steps, 'Veritabanı bağlantısı', 'ok', 'Bağlantı kuruldu.');
-    } catch (Throwable $e) {
-        $add($steps, 'Veritabanı bağlantısı', 'error', 'Bağlantı kurulamadı.');
-        return ['ok' => false, 'steps' => $steps, 'error' => 'database_unavailable'];
+    $adminCount = (int)db_value('SELECT COUNT(*) FROM admins', [], 0);
+    if ($adminCount > 0) {
+        return $adminCount . ' yönetici mevcut.';
     }
+    db_exec(
+        'INSERT INTO admins (username, password_hash, display_name, is_active, must_change_password, password_changed_at)
+         VALUES (?, ?, ?, 1, 1, UTC_TIMESTAMP())',
+        [DEFAULT_ADMIN_USERNAME, password_hash_app(DEFAULT_ADMIN_PASSWORD), 'Yönetici']
+    );
+    return 'Varsayılan yönetici oluşturuldu. İlk girişte şifre değiştirilmelidir.';
+}
 
-    /* 2) Şema */
-    try {
+/* ==================================================================
+ * Parcali (adim adim) kurulum
+ *
+ * Ilk kurulum ~10.000 satir yazar. Paylasimli sunucularda bu is tek
+ * istekte bitmeyip PHP zaman asimina takilabilir; o zaman kurulum yarim
+ * kalir ve sayfalar "eksik tablo" hatasi verir.
+ *
+ * Cozum: is kucuk adimlara bolunur. Her istek YALNIZCA BIR adim calistirir
+ * ve nerede kalindigi kaydedilir. Zaman asimi bir adimi keserse bile
+ * bir sonraki istek kaldigi yerden devam eder. Butun adimlar idempotenttir.
+ * ================================================================== */
+
+/**
+ * Kurulum adimlari, sirasiyla.
+ *
+ * @return array<int, array{key:string, label:string, run:callable}>
+ */
+function almancapro_install_plan(): array
+{
+    $plan = [];
+
+    $plan[] = ['key' => 'schema', 'label' => 'Tablolar', 'run' => static function (): string {
         $created = 0;
         foreach (almancapro_schema_statements() as $table => $sql) {
             $existed = db_table_exists($table);
@@ -127,106 +146,250 @@ function almancapro_run_install(bool $forceContentRefresh = false): array
             }
         }
         $total = count(almancapro_schema_statements());
-        $add($steps, 'Tablolar', 'ok', $created > 0 ? $created . ' yeni tablo oluşturuldu (toplam ' . $total . ').' : $total . ' tablo mevcut.');
-    } catch (Throwable $e) {
-        app_log('Şema oluşturulamadı: ' . $e->getMessage());
-        $add($steps, 'Tablolar', 'error', 'Şema oluşturulamadı.');
-        return ['ok' => false, 'steps' => $steps, 'error' => 'schema_failed'];
+        return $created > 0
+            ? $created . ' yeni tablo oluşturuldu (toplam ' . $total . ').'
+            : $total . ' tablo mevcut.';
+    }];
+
+    $plan[] = ['key' => 'migrations', 'label' => 'Şema güncellemeleri', 'run' => static function (): string {
+        $n = almancapro_migrations();
+        return $n > 0 ? $n . ' güncelleme uygulandı.' : 'Güncelleme gerekmiyor.';
+    }];
+
+    $plan[] = ['key' => 'settings', 'label' => 'Site ayarları', 'run' => static function (): string {
+        almancapro_seed_settings();
+        return 'Varsayılan ayarlar hazır.';
+    }];
+
+    $plan[] = ['key' => 'errors', 'label' => 'Hata kategorileri', 'run' => static function (): string {
+        return seed_error_categories() . ' kategori hazır.';
+    }];
+
+    $plan[] = ['key' => 'skills', 'label' => 'Skill tanımları', 'run' => static function (): string {
+        return seed_skills() . ' skill hazır.';
+    }];
+
+    foreach (cefr_levels() as $level) {
+        $plan[] = [
+            'key'   => 'vocab_' . strtolower($level),
+            'label' => 'Kelime hazinesi · ' . $level,
+            'run'   => static function () use ($level): string {
+                return seed_vocabulary($level) . ' kelime işlendi.';
+            },
+        ];
     }
 
-    /* 2b) Şema güncellemeleri (mevcut kurulumlar için, idempotent) */
-    try {
-        $applied = almancapro_migrations();
-        if ($applied > 0) {
-            $add($steps, 'Şema güncellemeleri', 'ok', $applied . ' güncelleme uygulandı.');
-        }
-    } catch (Throwable $e) {
-        app_log('Şema güncellemesi uygulanamadı: ' . $e->getMessage());
-        $add($steps, 'Şema güncellemeleri', 'warn', 'Bazı güncellemeler uygulanamadı.');
+    foreach (cefr_levels() as $level) {
+        $plan[] = [
+            'key'   => 'curriculum_' . strtolower($level),
+            'label' => 'Müfredat · ' . $level,
+            'run'   => static function () use ($level): string {
+                $c = seed_curriculum(false, $level);
+                return sprintf('%d modül, %d ders, %d bölüm, %d alıştırma.',
+                    $c['modules'], $c['lessons'], $c['sections'], $c['exercises']);
+            },
+        ];
     }
 
-    /* 3) İçerik sürümü kontrolü */
-    $installedVersion = db_value("SELECT setting_value FROM site_settings WHERE setting_key = 'content_version'");
-    $refresh = $forceContentRefresh || ($installedVersion !== ALMANCAPRO_CONTENT_VERSION);
+    $plan[] = ['key' => 'grammar', 'label' => 'Dilbilgisi kütüphanesi', 'run' => static function (): string {
+        return seed_grammar_topics(false) . ' konu hazır.';
+    }];
 
-    try {
-        $n = seed_error_categories();
-        $add($steps, 'Hata kategorileri', 'ok', $n . ' kategori hazır.');
+    /* Kelime alistirmalari en agir adim: 60 kelimelik gruplara bolunur.
+       seed_generated_exercises() yalnizca alistirmasi olmayan kelimeleri
+       isledigi icin tekrar cagrildikca kaldigi yerden devam eder. */
+    for ($i = 1; $i <= 12; $i++) {
+        $plan[] = [
+            'key'   => 'genex_' . $i,
+            'label' => 'Kelime alıştırmaları (' . $i . '/12)',
+            'run'   => static function (): string {
+                $n = seed_generated_exercises(60);
+                return $n > 0 ? $n . ' alıştırma üretildi.' : 'Tamamlandı.';
+            },
+        ];
+    }
 
-        $n = seed_skills();
-        $add($steps, 'Skill tanımları', 'ok', $n . ' skill hazır.');
+    $plan[] = ['key' => 'truefalse', 'label' => 'Doğru/yanlış alıştırmaları', 'run' => static function (): string {
+        return seed_true_false_exercises() . ' alıştırma hazır.';
+    }];
 
-        $n = seed_vocabulary();
-        $add($steps, 'Kelime hazinesi', 'ok', $n . ' kelime işlendi.');
+    $plan[] = ['key' => 'matching', 'label' => 'Eşleştirme alıştırmaları', 'run' => static function (): string {
+        return seed_matching_exercises() . ' alıştırma hazır.';
+    }];
 
-        $c = seed_curriculum($refresh);
-        $add($steps, 'Müfredat', 'ok', sprintf(
-            '%d modül, %d ders, %d bölüm, %d alıştırma.',
-            $c['modules'], $c['lessons'], $c['sections'], $c['exercises']
-        ));
+    $plan[] = ['key' => 'scenarios', 'label' => 'Senaryolar', 'run' => static function (): string {
+        return seed_scenarios(false) . ' senaryo hazır.';
+    }];
 
-        $n = seed_grammar_topics($refresh);
-        $add($steps, 'Dilbilgisi kütüphanesi', 'ok', $n . ' konu hazır.');
+    $plan[] = ['key' => 'scenario_ex', 'label' => 'Senaryo alıştırmaları', 'run' => static function (): string {
+        return seed_scenario_response_exercises() . ' alıştırma hazır.';
+    }];
 
-        $n = seed_generated_exercises();
-        $add($steps, 'Kelime alıştırmaları', 'ok', $n . ' alıştırma üretildi.');
+    $plan[] = ['key' => 'kb', 'label' => 'Bilgi bankası', 'run' => static function (): string {
+        return seed_knowledge_base() . ' kayıt hazır.';
+    }];
 
-        $tf = seed_true_false_exercises();
-        $mt = seed_matching_exercises();
-        $add($steps, 'Ek alıştırma türleri', 'ok', $tf . ' doğru/yanlış, ' . $mt . ' eşleştirme.');
-
-        $n = seed_scenarios($refresh);
-        $add($steps, 'Senaryolar', 'ok', $n . ' senaryo hazır.');
-
-        $sr = seed_scenario_response_exercises();
-        $add($steps, 'Senaryo alıştırmaları', 'ok', $sr . ' senaryo cevabı alıştırması.');
-
-        $n = seed_knowledge_base();
-        $add($steps, 'Bilgi tabanı', 'ok', $n . ' kayıt hazır.');
-
+    $plan[] = ['key' => 'expenses', 'label' => 'Destek sayfası verileri', 'run' => static function (): string {
         seed_donation_expenses();
-        $add($steps, 'Destek sayfası verileri', 'ok', 'Gider tablosu hazır.');
+        return 'Hazır.';
+    }];
+
+    $plan[] = ['key' => 'admin', 'label' => 'Yönetici hesabı', 'run' => static function (): string {
+        return almancapro_seed_admin();
+    }];
+
+    $plan[] = ['key' => 'finish', 'label' => 'Kurulum kilidi', 'run' => static function (): string {
+        setting_set('content_version', ALMANCAPRO_CONTENT_VERSION);
+        setting_set('app_version', APP_VERSION);
+        setting_set('installed_at', now_utc());
+        setting_set('install_completed', '1');
+        @file_put_contents(APP_ROOT . '/.install.lock', 'installed ' . now_utc());
+        settings_all(true);
+        return 'Kurulum tamamlandı.';
+    }];
+
+    return $plan;
+}
+
+/** Kurulumun nerede kaldigini okur. */
+function almancapro_install_position(): int
+{
+    if (!db_table_exists('site_settings')) {
+        return 0;
+    }
+    $v = db_value("SELECT setting_value FROM site_settings WHERE setting_key = 'install_position'");
+    return $v === null ? 0 : max(0, (int)$v);
+}
+
+/** Kurulumun nerede kaldigini kaydeder. */
+function almancapro_install_position_set(int $pos): void
+{
+    if (!db_table_exists('site_settings')) {
+        return;
+    }
+    db_exec(
+        "INSERT INTO site_settings (setting_key, setting_value, is_secret) VALUES ('install_position', ?, 0)
+         ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)",
+        [(string)$pos]
+    );
+}
+
+/**
+ * TEK bir kurulum adimini calistirir.
+ *
+ * @return array{ok:bool, done:bool, index:int, total:int, percent:int,
+ *                label:string, detail:string, error:string}
+ */
+function almancapro_install_chunk(): array
+{
+    $plan = almancapro_install_plan();
+    $total = count($plan);
+    $pos = almancapro_install_position();
+
+    if ($pos >= $total) {
+        return ['ok' => true, 'done' => true, 'index' => $total, 'total' => $total,
+                'percent' => 100, 'label' => 'Tamamlandı', 'detail' => '', 'error' => ''];
+    }
+
+    $step = $plan[$pos];
+    try {
+        $detail = (string)($step['run'])();
     } catch (Throwable $e) {
-        app_log('İçerik yüklenemedi: ' . $e->getMessage());
-        $add($steps, 'İçerik', 'error', 'İçerik yüklenirken hata oluştu.');
-        return ['ok' => false, 'steps' => $steps, 'error' => 'seed_failed'];
+        app_log('Kurulum adimi basarisiz (' . $step['key'] . '): ' . $e->getMessage());
+        return ['ok' => false, 'done' => false, 'index' => $pos, 'total' => $total,
+                'percent' => (int)round(100 * $pos / $total), 'label' => $step['label'],
+                'detail' => '', 'error' => almancapro_install_hint($e)];
     }
 
-    /* 4) Varsayılan ayarlar */
-    almancapro_seed_settings();
-    $add($steps, 'Site ayarları', 'ok', 'Varsayılan ayarlar hazır.');
+    almancapro_install_position_set($pos + 1);
 
-    /* 5) Yönetici hesabı */
-    $adminCount = (int)db_value('SELECT COUNT(*) FROM admins', [], 0);
-    if ($adminCount === 0) {
-        db_exec(
-            'INSERT INTO admins (username, password_hash, display_name, is_active, must_change_password, password_changed_at)
-             VALUES (?, ?, ?, 1, 1, UTC_TIMESTAMP())',
-            [DEFAULT_ADMIN_USERNAME, password_hash_app(DEFAULT_ADMIN_PASSWORD), 'Yönetici']
-        );
-        $add($steps, 'Yönetici hesabı', 'ok', 'Varsayılan yönetici oluşturuldu. İlk girişte şifre değiştirilmelidir.');
-    } else {
-        $add($steps, 'Yönetici hesabı', 'ok', $adminCount . ' yönetici mevcut.');
+    return ['ok' => true, 'done' => ($pos + 1) >= $total, 'index' => $pos + 1, 'total' => $total,
+            'percent' => (int)round(100 * ($pos + 1) / $total),
+            'label' => $step['label'], 'detail' => $detail, 'error' => ''];
+}
+
+/** Veritabani hatasini yoneticinin anlayacagi bir oneriye cevirir. */
+function almancapro_install_hint(Throwable $e): string
+{
+    $code = (string)$e->getCode();
+    $msg = $e->getMessage();
+
+    if (str_contains($msg, 'command denied') || str_contains($msg, '1142')) {
+        return 'Veritabanı kullanıcısının tablo oluşturma yetkisi yok. '
+             . 'Plesk > Veritabanları > Kullanıcılar bölümünden bu kullanıcıya tam yetki verin.';
+    }
+    if ($code === '1045') {
+        return 'Veritabanı kullanıcı adı veya şifresi hatalı.';
+    }
+    if ($code === '1049') {
+        return 'Bu adda bir veritabanı yok. Plesk > Veritabanları bölümünden oluşturun.';
+    }
+    if ($code === '2002' || str_contains($msg, 'gone away') || str_contains($msg, 'Lost connection')) {
+        return 'Veritabanı bağlantısı koptu. Sayfayı yenileyin; kurulum kaldığı yerden devam eder.';
+    }
+    if (str_contains($msg, 'Disk full') || str_contains($msg, 'No space')) {
+        return 'Sunucuda disk alanı dolu.';
+    }
+    return 'Veritabanı hatası (' . $code . '). Sayfayı yenileyin; kurulum kaldığı yerden devam eder.';
+}
+
+/**
+ * @return array{ok:bool, steps:array<int,array{name:string,status:string,detail:string}>, error:string}
+ */
+function almancapro_run_install(bool $forceContentRefresh = false): array
+{
+    $steps = [];
+
+    /* 1) Baglanti */
+    try {
+        db();
+        $steps[] = ['name' => 'Veritabanı bağlantısı', 'status' => 'ok', 'detail' => 'Bağlantı kuruldu.'];
+    } catch (Throwable $e) {
+        $steps[] = ['name' => 'Veritabanı bağlantısı', 'status' => 'error', 'detail' => 'Bağlantı kurulamadı.'];
+        return ['ok' => false, 'steps' => $steps, 'error' => 'database_unavailable'];
     }
 
-    /* 6) Kurulum kilidi */
-    setting_set('content_version', ALMANCAPRO_CONTENT_VERSION);
-    setting_set('install_completed', '1');
-    setting_set('installed_at', now_utc());
-    setting_set('app_version', APP_VERSION);
-    $add($steps, 'Kurulum kilidi', 'ok', 'Kurulum tamamlandı olarak işaretlendi.');
-
-    /* Dosya kilidi (yazilabilirse) */
-    $lockFile = __DIR__ . '/.install.lock';
-    if (!file_exists($lockFile)) {
-        @file_put_contents($lockFile, 'installed ' . now_utc() . "\n");
+    /* Icerik surumu degistiyse veya zorlanıyorsa bastan kur. */
+    $installedVersion = db_table_exists('site_settings')
+        ? db_value("SELECT setting_value FROM site_settings WHERE setting_key = 'content_version'")
+        : null;
+    if ($forceContentRefresh || ($installedVersion !== null && $installedVersion !== ALMANCAPRO_CONTENT_VERSION)) {
+        almancapro_install_position_set(0);
     }
 
-    settings_all(true);
+    /* 2) Adimlari sirayla calistir. Her adim kendi basina idempotenttir;
+          yarida kesilse bile bir sonraki calisma kaldigi yerden devam eder. */
+    $guard = count(almancapro_install_plan()) + 5;
+    while ($guard-- > 0) {
+        $res = almancapro_install_chunk();
+        if (!$res['ok']) {
+            $steps[] = ['name' => $res['label'], 'status' => 'error', 'detail' => $res['error']];
+            return ['ok' => false, 'steps' => $steps, 'error' => 'step_failed:' . $res['label']];
+        }
+        if ($res['detail'] !== '') {
+            $steps[] = ['name' => $res['label'], 'status' => 'ok', 'detail' => $res['detail']];
+        }
+        if ($res['done']) {
+            break;
+        }
+    }
+
+    if (!is_installed_fresh()) {
+        return ['ok' => false, 'steps' => $steps, 'error' => 'incomplete'];
+    }
+
     return ['ok' => true, 'steps' => $steps, 'error' => ''];
 }
 
-/** Varsayilan site ayarlarini olusturur (mevcut degerleri ezmez). */
+/** Onbellege takilmadan kurulum durumunu okur. */
+function is_installed_fresh(): bool
+{
+    if (!db_table_exists('site_settings')) {
+        return false;
+    }
+    return db_value("SELECT setting_value FROM site_settings WHERE setting_key = 'install_completed'") === '1';
+}
+
 function almancapro_seed_settings(): void
 {
     $defaults = [

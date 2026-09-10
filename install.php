@@ -13,10 +13,9 @@ require_once __DIR__ . '/bootstrap.php';
 require_once __DIR__ . '/installer.php';
 require_once __DIR__ . '/admin-auth.php';
 
-/* Kurulum uzun surebilir; bu sayfada limitleri sonuna kadar ac. */
-@set_time_limit(0);
-@ini_set('memory_limit', '256M');
-ignore_user_abort(true);
+/* Kurulum uzun surebilir; bu sayfada limitleri acabildigin kadar ac.
+   (Fonksiyonlar kapatilmis olabilir; raise_runtime_limits bunu denetler.) */
+raise_runtime_limits();
 
 app_session_start();
 send_security_headers();
@@ -32,13 +31,20 @@ $result = null;
 $saved = false;
 $errors = [];
 
-/* ensure_installed() zaman asimi riski nedeniyle buraya yonlendirdiyse
-   kurulumu dogrudan baslat: kullanicidan ek bir tiklama beklenmez. */
-if (!$installed && !$locked && (string)input('otomatik', '') === '1') {
-    $result = almancapro_run_install();
-    $installed = $result['ok'];
-    if ($installed) {
-        $dbOk = true;
+/* --------------------------------------------------------------------
+ * Adim adim kurulum
+ *
+ * ?kur=1 ile gelindiginde her istek YALNIZCA BIR adim calistirir ve
+ * sayfa kendini yeniler. Boylece hicbir istek uzun surmez; PHP zaman
+ * asimi kurulumu oldurmez. Kaldigi yer veritabaninda tutulur.
+ * -------------------------------------------------------------------- */
+$chunk = null;
+$kurulumModu = (string)input('kur', '') === '1' && !$locked && $dbOk;
+
+if ($kurulumModu && !$installed) {
+    $chunk = almancapro_install_chunk();
+    if ($chunk['done'] && $chunk['ok']) {
+        $installed = true;
     }
 }
 
@@ -127,7 +133,12 @@ if ($siteBase === '') {
     $siteBase = site_url();
 }
 
-render_head('Kurulum · ' . APP_NAME, ['noindex' => true]);
+$opts = ['noindex' => true];
+if ($kurulumModu && !$installed && $chunk !== null && $chunk['ok'] && !$chunk['done']) {
+    /* Bir sonraki adima gec. JS kapali olsa da calisir. */
+    $opts['head_extra'] = '<meta http-equiv="refresh" content="0; url=/install.php?kur=1">';
+}
+render_head('Kurulum · ' . APP_NAME, $opts);
 ?>
 <div class="page">
   <div class="focus-area">
@@ -164,20 +175,45 @@ render_head('Kurulum · ' . APP_NAME, ['noindex' => true]);
         </div>
       <?php endif; ?>
 
-      <?php if (!$installed): ?>
-        <p>Veritabanı bağlantısı hazır. Aşağıdaki düğme şunları yapar:</p>
+      <?php if (!$installed && $chunk !== null && !$chunk['ok']): ?>
+        <div class="alert alert--error"><span class="alert__icon" aria-hidden="true">✕</span>
+          <span><strong><?= e($chunk['label']) ?></strong> adımı tamamlanamadı.<br><?= e($chunk['error']) ?></span></div>
+        <p class="small">Sorunu giderdikten sonra aşağıdaki düğmeye basın; kurulum
+          <strong>kaldığı yerden</strong> devam eder, baştan başlamaz.</p>
+        <a class="btn btn--lg btn--block" href="/install.php?kur=1">DEVAM ET</a>
+        <p class="small" style="margin-top:14px"><a href="/tani.php">Ayrıntılı kontrol listesi →</a></p>
+
+      <?php elseif (!$installed && $kurulumModu): ?>
+        <p class="eyebrow" style="margin-top:6px">Kuruluyor</p>
+        <h2 style="font-size:20px;margin:0 0 6px"><?= e($chunk['label']) ?></h2>
+        <p class="small"><?= e($chunk['detail']) ?></p>
+
+        <div class="progress progress--lg" role="progressbar"
+             aria-valuenow="<?= (int)$chunk['percent'] ?>" aria-valuemin="0" aria-valuemax="100"
+             aria-label="Kurulum ilerlemesi" style="margin:18px 0 10px">
+          <span class="progress__fill" style="width:<?= (int)$chunk['percent'] ?>%"></span>
+        </div>
+        <p class="small mono"><?= (int)$chunk['index'] ?> / <?= (int)$chunk['total'] ?> adım ·
+          %<?= (int)$chunk['percent'] ?></p>
+
+        <p class="small muted">Bu sayfa kendi kendine ilerliyor. Kapatmayın.
+          Bağlantı kesilse bile kurulum kaldığı yerden devam eder.</p>
+        <noscript>
+          <p class="small">Otomatik ilerlemezse: <a href="/install.php?kur=1">Devam et</a></p>
+        </noscript>
+
+      <?php elseif (!$installed): ?>
+        <p>Veritabanı bağlantısı hazır. Kurulum şunları yapar:</p>
         <ul class="small">
           <li>Tabloları, indeksleri ve foreign key'leri oluşturur</li>
           <li>Müfredatı, kelime hazinesini, dilbilgisi konularını ve alıştırmaları yükler</li>
           <li>Senaryoları ve bilgi tabanını yükler</li>
           <li>Varsayılan yönetici hesabını oluşturur</li>
         </ul>
-        <p class="small muted">İşlem idempotenttir: ikinci kez çalıştırılırsa veriler tekrarlanmaz.</p>
-        <form method="post" action="/install.php" data-guard>
-          <?= csrf_field() ?>
-          <input type="hidden" name="action" value="install">
-          <button class="btn btn--lg btn--block" type="submit">KURULUMU BAŞLAT</button>
-        </form>
+        <p class="small muted">İşlem <?= count(almancapro_install_plan()) ?> küçük adıma bölünmüştür.
+          Her adım ayrı bir istekte çalışır, bu yüzden sunucu zaman aşımı kurulumu yarıda bırakamaz.
+          İşlem idempotenttir: ikinci kez çalıştırılırsa veriler tekrarlanmaz.</p>
+        <a class="btn btn--lg btn--block" href="/install.php?kur=1">KURULUMU BAŞLAT</a>
 
       <?php else: ?>
         <?php if ($saved): ?>
