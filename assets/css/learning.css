@@ -1,0 +1,245 @@
+/* ==========================================================================
+   AlmancaPro - Öğrenme ekranları: ders, kelime kartı, quiz, yol haritası
+   ========================================================================== */
+
+/* ---------------- Ders üst barı ---------------- */
+.lesson-bar {
+  position: sticky; top: 0; z-index: 55;
+  background: var(--surface); border-bottom: 1px solid var(--line);
+  padding: 10px var(--page-pad);
+}
+.lesson-bar__inner {
+  max-width: var(--content-max); margin: 0 auto;
+  display: flex; align-items: center; gap: 16px; justify-content: space-between;
+}
+.lesson-bar__exit { font-size: 13px; color: var(--ink-2); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
+.lesson-bar__mid { flex: 1; max-width: 420px; display: flex; align-items: center; gap: 10px; }
+.lesson-bar__step { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--ink-2); white-space: nowrap; }
+.lesson-bar__level { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; }
+
+/* ---------------- Ders içeriği ---------------- */
+.lesson { max-width: var(--focus-max); margin: 0 auto; padding: 32px var(--page-pad) 120px; }
+.lesson__title { font-size: 44px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; margin: 0 0 10px; }
+.lesson__objective { font-size: 15px; color: var(--ink-3); margin-bottom: 26px; }
+.lesson-section { margin-bottom: 22px; }
+.lesson-section__head { font-size: 17px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+.lesson-section__body { font-size: 16px; line-height: 1.65; color: var(--ink-2); }
+.lesson-section__body p { margin: 0 0 12px; }
+.lesson-section--explanation { border-left: 3px solid var(--ink); padding-left: 18px; }
+.lesson-section--why { border-left: 3px solid var(--brass); padding-left: 18px; }
+.lesson-section--tr_contrast { border-left: 3px solid var(--info); padding-left: 18px; }
+.lesson-section--rule, .lesson-section--table {
+  background: var(--surface); border: 1px solid var(--line); padding: 18px 20px;
+}
+.lesson-section--table .lesson-section__body { font-family: var(--mono); font-size: 14px; line-height: 1.8; }
+.lesson-section--common_mistake { border-left: 3px solid var(--danger); padding-left: 18px; }
+.lesson-section--memory_tip { border-left: 3px solid var(--warn); padding-left: 18px; }
+.lesson-section--exception { border-left: 3px solid var(--warn); padding-left: 18px; }
+
+.example-card { background: var(--surface); border: 1px solid var(--line-strong); padding: 20px; margin-bottom: 22px; }
+.example-card__de { font-size: 20px; font-weight: 700; color: var(--ink); line-height: 1.4; margin-bottom: 10px; white-space: pre-wrap; }
+.example-card__tr { font-size: 15px; color: var(--ink-2); white-space: pre-wrap; }
+.example-card mark { background: var(--brass-tint); color: var(--ink); box-shadow: inset 0 -3px 0 var(--brass); padding: 0 2px; }
+
+.lesson-note {
+  font-size: 13px; color: var(--ink-3); margin-top: 12px;
+}
+.lesson-cta { margin-top: 34px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+
+/* ---------------- Kelime kartı ---------------- */
+.wordcard { background: var(--surface); border: 1px solid var(--line-strong); padding: 26px; }
+.wordcard__top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+.wordcard__gender { font-size: 13px; color: var(--ink-3); }
+.wordcard__word { font-size: 52px; font-weight: 700; letter-spacing: -0.035em; color: var(--ink); line-height: 1.05; margin: 0 0 8px; }
+.wordcard__tr { font-size: 19px; color: var(--ink-2); margin-bottom: 14px; }
+.wordcard__meta { font-family: var(--mono); font-size: 13px; color: var(--ink-3); margin-bottom: 16px; }
+.wordcard__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); margin: 18px 0; }
+.wordcard__cell { background: var(--surface); padding: 14px; }
+.wordcard__cell dt { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 5px; }
+.wordcard__cell dd { margin: 0; font-size: 15px; font-weight: 700; color: var(--ink); }
+.wordcard__example { border-left: 3px solid var(--brass); padding-left: 16px; margin: 18px 0; }
+.wordcard__example-de { font-size: 17px; color: var(--ink); font-weight: 700; margin-bottom: 4px; }
+.wordcard__example-tr { font-size: 14px; color: var(--ink-2); }
+.wordcard__actions { display: flex; gap: 12px; margin-top: 20px; }
+.wordcard__actions .btn { flex: 1; }
+.wordcard__actions .btn--secondary { flex: 1; }
+.speak-btn { display: inline-flex; align-items: center; gap: 7px; }
+
+/* ---------------- Quiz ---------------- */
+.quiz { max-width: var(--focus-max); margin: 0 auto; padding: 28px var(--page-pad) 130px; }
+.quiz__question { font-size: 30px; line-height: 1.3; color: var(--ink); margin: 0 0 8px; font-weight: 700; letter-spacing: -0.02em; }
+.quiz__context { font-size: 15px; color: var(--ink-3); margin-bottom: 20px; white-space: pre-wrap; }
+.quiz__options { display: flex; flex-direction: column; gap: 12px; margin: 24px 0; }
+.quiz-option {
+  display: flex; align-items: center; gap: 14px; width: 100%; min-height: 64px;
+  padding: 14px 18px; background: var(--surface); border: 1px solid var(--line-strong);
+  color: var(--ink); font-size: 16px; text-align: left; cursor: pointer; font-family: var(--sans);
+  transition: border-color 150ms ease-out, background-color 150ms ease-out;
+}
+.quiz-option:hover { border-color: var(--ink); }
+.quiz-option:active { transform: scale(0.99); }
+.quiz-option__letter {
+  font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--ink-3);
+  border: 1px solid var(--line-strong); width: 28px; height: 28px; flex: none;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.quiz-option__text { flex: 1; }
+.quiz-option.is-correct { border-color: var(--success); background: var(--success-tint); }
+.quiz-option.is-wrong { border-color: var(--danger); background: var(--danger-tint); }
+.quiz-option.is-selected { border-color: var(--ink); }
+.quiz-option[disabled] { cursor: default; opacity: 1; }
+.quiz-option__mark { font-weight: 700; font-family: var(--mono); }
+
+.quiz__input { min-height: 60px; font-size: 20px; }
+.quiz__submit-row { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+
+/* Geri bildirim */
+.feedback { border: 1px solid var(--line-strong); background: var(--surface); margin-top: 24px; }
+.feedback--ok { border-left: 4px solid var(--success); }
+.feedback--bad { border-left: 4px solid var(--danger); }
+.feedback__head {
+  display: flex; align-items: center; gap: 10px; padding: 16px 20px;
+  border-bottom: 1px solid var(--line); font-weight: 700; font-size: 16px;
+}
+.feedback--ok .feedback__head { color: var(--success); }
+.feedback--bad .feedback__head { color: var(--danger); }
+.feedback__body { padding: 18px 20px; font-size: 15px; color: var(--ink-2); }
+.feedback__compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); margin-bottom: 16px; }
+.feedback__cell { background: var(--surface); padding: 14px; }
+.feedback__cell dt { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px; }
+.feedback__cell dd { margin: 0; font-size: 16px; font-weight: 700; }
+.feedback__cell--yours dd { color: var(--danger); box-shadow: inset 0 -3px 0 var(--danger); display: inline-block; }
+.feedback__cell--right dd { color: var(--success); }
+.feedback__label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); margin: 14px 0 6px; }
+.feedback__queue { font-size: 13px; color: var(--ink-3); margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+
+.breakdown { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.breakdown__row { display: flex; align-items: center; gap: 10px; font-size: 15px; }
+.breakdown__mark { font-family: var(--mono); font-weight: 700; width: 18px; flex: none; }
+.breakdown__row.is-ok .breakdown__mark { color: var(--success); }
+.breakdown__row.is-bad .breakdown__mark { color: var(--danger); }
+.breakdown__label { font-weight: 700; color: var(--ink); min-width: 110px; }
+.breakdown__note { color: var(--ink-3); font-size: 14px; }
+
+/* ---------------- Mastery gösterimi ---------------- */
+.mastery { border: 1px solid var(--line); background: var(--surface); }
+.mastery__head { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.mastery__score { font-family: var(--mono); font-size: 26px; font-weight: 700; color: var(--ink); }
+.mastery__axes { padding: 6px 0; }
+.mastery__axis {
+  display: flex; align-items: center; gap: 12px; padding: 11px 20px;
+  border-bottom: 1px solid var(--line); font-size: 14px;
+}
+.mastery__axis:last-child { border-bottom: 0; }
+.mastery__axis-label { flex: 1; color: var(--ink-2); }
+.mastery__axis-state { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.mastery__axis.is-strong .mastery__axis-state { color: var(--success); }
+.mastery__axis.is-progress .mastery__axis-state { color: var(--brass-lo); }
+.mastery__axis.is-untested .mastery__axis-state { color: var(--ink-3); }
+.mastery__missing { padding: 16px 20px; border-top: 1px solid var(--line); background: var(--brass-tint); font-size: 14px; color: #6b4f06; }
+.mastery__missing ul { margin: 8px 0 0; padding-left: 18px; }
+
+/* ---------------- Yol haritası ---------------- */
+.path-level { margin-bottom: 34px; }
+.path-level__head { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; flex-wrap: wrap; }
+.path-module { border: 1px solid var(--line); background: var(--surface); margin-bottom: 16px; }
+.path-module__head {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  padding: 16px 20px; border-bottom: 1px solid var(--line); flex-wrap: wrap;
+}
+.path-module__title { font-weight: 700; color: var(--ink); font-size: 16px; }
+.path-module__desc { font-size: 13px; color: var(--ink-3); margin-top: 4px; max-width: 640px; }
+.path-lessons { display: flex; flex-direction: column; }
+.path-lesson {
+  display: flex; align-items: center; gap: 14px; padding: 14px 20px;
+  border-bottom: 1px solid var(--line); text-decoration: none; color: inherit;
+  background: var(--surface); min-height: 60px;
+}
+.path-lesson:last-child { border-bottom: 0; }
+.path-lesson:hover { background: var(--surface-2); }
+.path-lesson__num { font-family: var(--mono); font-size: 11px; color: var(--ink-3); width: 26px; flex: none; }
+.path-lesson__body { flex: 1; min-width: 0; }
+.path-lesson__title { font-weight: 700; color: var(--ink); font-size: 15px; }
+.path-lesson__meta { font-size: 12px; color: var(--ink-3); margin-top: 3px; }
+.path-lesson--locked { background: var(--surface-2); }
+.path-lesson--locked .path-lesson__title { color: var(--ink-3); }
+
+/* Kilit gerekçesi */
+.lock-reasons { display: flex; flex-direction: column; gap: 12px; margin: 18px 0; }
+.lock-req { display: flex; align-items: center; gap: 12px; font-size: 14px; flex-wrap: wrap; }
+.lock-req__name { flex: 1; min-width: 140px; color: var(--ink); font-weight: 700; }
+.lock-req .progress { width: 120px; flex: none; }
+.lock-req__val { font-family: var(--mono); font-size: 13px; min-width: 66px; text-align: right; }
+.lock-req__state { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; }
+.lock-req.is-ok .lock-req__state { color: var(--success); }
+.lock-req.is-missing .lock-req__state { color: var(--warn); }
+
+/* ---------------- Tekrar oturumu ---------------- */
+.review-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+.review-stats__cell { background: var(--surface); padding: 18px; }
+.review-stats__num { font-family: var(--mono); font-size: 30px; font-weight: 700; color: var(--ink); line-height: 1; }
+.review-stats__label { font-size: 13px; color: var(--ink-3); margin-top: 6px; }
+
+/* ---------------- Kelime listesi ---------------- */
+.vocab-list { display: flex; flex-direction: column; }
+.vocab-row {
+  display: flex; align-items: center; gap: 14px; padding: 14px 18px;
+  border-bottom: 1px solid var(--line); background: var(--surface); flex-wrap: wrap;
+}
+.vocab-row:hover { background: var(--surface-2); }
+.vocab-row__word { font-weight: 700; color: var(--ink); font-size: 16px; }
+.vocab-row__plural { font-family: var(--mono); font-size: 13px; color: var(--ink-3); }
+.vocab-row__tr { flex: 1; min-width: 140px; color: var(--ink-2); font-size: 15px; }
+.filter-bar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 18px; }
+.filter-chip {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 14px;
+  border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink-2);
+  font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; text-decoration: none;
+}
+.filter-chip:hover { border-color: var(--ink); color: var(--ink); }
+.filter-chip.is-active { background: var(--ink); color: var(--ink-inv); border-color: var(--ink); }
+
+/* ---------------- Sohbet (Öğretmene Sor) ---------------- */
+.chat { display: flex; flex-direction: column; gap: 16px; }
+.chat-msg { max-width: 90%; padding: 16px 18px; border: 1px solid var(--line); background: var(--surface); font-size: 15px; line-height: 1.6; }
+.chat-msg--user { align-self: flex-end; background: var(--brass-tint); border-color: var(--brass); }
+.chat-msg--teacher { align-self: flex-start; border-left: 3px solid var(--ink); white-space: pre-wrap; }
+.chat-msg__meta { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 8px; }
+
+/* ---------------- Senaryo ---------------- */
+.scenario-turn { border: 1px solid var(--line); background: var(--surface); padding: 20px; margin-bottom: 18px; }
+.scenario-turn__de { font-size: 19px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+.scenario-turn__tr { font-size: 14px; color: var(--ink-3); }
+.scenario-score { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); margin: 18px 0; }
+.scenario-score__cell { background: var(--surface); padding: 16px; text-align: center; }
+.scenario-score__num { font-family: var(--mono); font-size: 24px; font-weight: 700; color: var(--ink); }
+.scenario-score__label { font-size: 12px; color: var(--ink-3); margin-top: 4px; }
+
+/* ---------------- 30 günlük program ---------------- */
+.plan-item {
+  display: flex; align-items: center; gap: 14px; padding: 14px 18px;
+  border-bottom: 1px solid var(--line); background: var(--surface); min-height: 60px;
+}
+.plan-item:last-child { border-bottom: 0; }
+.plan-item__state { font-family: var(--mono); font-weight: 700; width: 20px; flex: none; }
+.plan-item.is-done .plan-item__state { color: var(--success); }
+.plan-item.is-progress .plan-item__state { color: var(--brass-lo); }
+.plan-item.is-pending .plan-item__state { color: var(--ink-3); }
+.plan-item__title { flex: 1; min-width: 0; color: var(--ink); font-size: 15px; }
+.plan-item.is-done .plan-item__title { color: var(--ink-3); }
+.plan-item__meta { font-family: var(--mono); font-size: 12px; color: var(--ink-3); white-space: nowrap; }
+
+@media (max-width: 767px) {
+  .lesson__title { font-size: 30px; }
+  .wordcard__word { font-size: 40px; }
+  .quiz__question { font-size: 24px; }
+  .wordcard__grid { grid-template-columns: 1fr; }
+  .feedback__compare { grid-template-columns: 1fr; }
+  .review-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .scenario-score { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lesson { padding: 20px 16px 130px; }
+  .quiz { padding: 20px 16px 140px; }
+  .vocab-row { gap: 8px; }
+  .wordcard__actions { flex-direction: column; }
+}

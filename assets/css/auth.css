@@ -1,0 +1,22 @@
+/* AlmancaPro - Auth ekranları ek stilleri */
+.auth-hero { margin-bottom: 22px; }
+.auth-steps { display: flex; gap: 8px; margin-bottom: 22px; }
+.auth-step { flex: 1; height: 4px; background: var(--surface-3); }
+.auth-step.is-done { background: var(--success); }
+.auth-step.is-active { background: var(--brass); }
+.auth-info { font-size: 13px; color: var(--ink-3); margin-top: 14px; }
+.free-note {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--success); background: var(--success-tint); border: 1px solid var(--success);
+  padding: 4px 8px; display: inline-block; margin-bottom: 14px;
+}
+.resend-row { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-top: 16px; }
+.onboard-option {
+  display: flex; align-items: center; gap: 14px; width: 100%; min-height: 64px;
+  padding: 14px 18px; background: var(--surface); border: 1px solid var(--line-strong);
+  color: var(--ink); font-size: 16px; text-align: left; cursor: pointer; font-family: var(--sans);
+}
+.onboard-option:hover { border-color: var(--ink); }
+.onboard-option.is-selected { border-color: var(--brass); background: var(--brass-tint); }
+.onboard-option__hint { display: block; font-size: 13px; color: var(--ink-3); margin-top: 3px; }
+.onboard-grid { display: grid; gap: 12px; }

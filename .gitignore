@@ -1,0 +1,10 @@
+# Yerel gelistirme ayarlari (uretimde bulunmaz)
+config.local.php
+
+# Kurulum kilidi (her sunucuda kendisi olusur)
+.install.lock
+
+# Sistem dosyalari
+.DS_Store
+Thumbs.db
+*.log

@@ -1,0 +1,124 @@
+# =====================================================================
+# AlmancaPro - Apache / Plesk yapılandırması
+#
+# Bu dosya Apache (ve Plesk'in Apache+nginx birleşimi) ortamlarında
+# güvenlik ve performans ayarlarını uygular.
+# Yalnızca nginx kullanan bir sunucuda bu dosya yok sayılır; uygulama
+# yine çalışır, ancak aşağıdaki korumaları nginx tarafında tanımlamanız
+# önerilir (README.md içinde nginx karşılıkları verilmiştir).
+# =====================================================================
+
+# ---------------------------------------------------------------------
+# Dizin listelemeyi kapat
+# ---------------------------------------------------------------------
+Options -Indexes +FollowSymLinks
+
+# ---------------------------------------------------------------------
+# Varsayılan belge
+# ---------------------------------------------------------------------
+DirectoryIndex index.php index.html
+
+# ---------------------------------------------------------------------
+# Karakter seti
+# ---------------------------------------------------------------------
+AddDefaultCharset UTF-8
+
+# ---------------------------------------------------------------------
+# Doğrudan çağrılmaması gereken dosyalar
+# Bu dosyalar zaten kendi içlerinde doğrudan erişimi engeller, ancak
+# sunucu düzeyinde de kapatmak ikinci bir savunma katmanıdır.
+# ---------------------------------------------------------------------
+<FilesMatch "^(config|config\.local|db|schema|seed|installer|functions|bootstrap|layout|auth|admin-auth|learning|planner|mailer|notify|telegram-api|ai|content-[a-z0-9-]+)\.php$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# ---------------------------------------------------------------------
+# Hassas uzantılar ve gizli dosyalar
+# ---------------------------------------------------------------------
+<FilesMatch "\.(sql|log|ini|conf|bak|old|orig|save|swp|dist|json|lock|md|yml|yaml|sh)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+<FilesMatch "^\.">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# .git ve benzeri dizinler
+RedirectMatch 404 /\.(git|svn|hg|env)(/|$)
+
+# ---------------------------------------------------------------------
+# Güvenlik başlıkları (PHP tarafında da gönderilir; burada statik
+# dosyalar için de geçerli olur)
+# ---------------------------------------------------------------------
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "geolocation=(), camera=(), microphone=(self), payment=(), usb=()"
+    Header always unset X-Powered-By
+    Header unset X-Powered-By
+</IfModule>
+
+# ---------------------------------------------------------------------
+# Statik dosya önbelleği (assets sürümlenmiş ?v= ile çağrılır)
+# ---------------------------------------------------------------------
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 30 days"
+    ExpiresByType application/javascript "access plus 30 days"
+    ExpiresByType image/svg+xml "access plus 30 days"
+    ExpiresByType image/png "access plus 30 days"
+    ExpiresByType image/jpeg "access plus 30 days"
+    ExpiresByType image/webp "access plus 30 days"
+    ExpiresByType font/woff2 "access plus 90 days"
+    ExpiresDefault "access plus 1 hour"
+</IfModule>
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml
+    AddOutputFilterByType DEFLATE application/javascript application/json application/xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# ---------------------------------------------------------------------
+# Özel hata sayfası
+# ---------------------------------------------------------------------
+ErrorDocument 404 /404.php
+
+# ---------------------------------------------------------------------
+# PHP ayarları (Plesk'te PHP FPM kullanılıyorsa yok sayılabilir;
+# aynı ayarlar Plesk > PHP Ayarları bölümünden de yapılabilir)
+# ---------------------------------------------------------------------
+<IfModule mod_php.c>
+    php_flag display_errors Off
+    php_flag log_errors On
+    php_value default_charset "UTF-8"
+</IfModule>
+
+# ---------------------------------------------------------------------
+# HTTPS yönlendirmesi
+# Plesk'te "SSL/TLS Sertifikaları > HTTPS'e yönlendir" seçeneğini
+# kullanmanız önerilir. Sunucunuzda o seçenek yoksa aşağıdaki üç satırın
+# başındaki # işaretlerini kaldırın.
+# ---------------------------------------------------------------------
+# RewriteEngine On
+# RewriteCond %{HTTPS} !=on
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]

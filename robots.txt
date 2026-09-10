@@ -1,0 +1,50 @@
+# AlmancaPro
+# Herkese açık sayfalar taranabilir; hesap, öğrenme ve yönetim
+# alanları taranmaz.
+
+User-agent: *
+Allow: /$
+Allow: /index.php
+Allow: /privacy.php
+Allow: /terms.php
+Allow: /support.php
+Allow: /assets/
+
+Disallow: /admin
+Disallow: /admin-
+Disallow: /dashboard.php
+Disallow: /course.php
+Disallow: /lesson.php
+Disallow: /quiz.php
+Disallow: /exercise.php
+Disallow: /review.php
+Disallow: /checkpoint.php
+Disallow: /vocabulary.php
+Disallow: /grammar.php
+Disallow: /progress.php
+Disallow: /weak-areas.php
+Disallow: /intensive.php
+Disallow: /program.php
+Disallow: /work-german.php
+Disallow: /workplace.php
+Disallow: /scenario.php
+Disallow: /ask.php
+Disallow: /profile.php
+Disallow: /settings.php
+Disallow: /telegram.php
+Disallow: /delete-account.php
+Disallow: /onboarding.php
+Disallow: /placement-test.php
+Disallow: /verify.php
+Disallow: /login.php
+Disallow: /register.php
+Disallow: /logout.php
+Disallow: /forgot-password.php
+Disallow: /reset-password.php
+Disallow: /install.php
+Disallow: /cron.php
+Disallow: /telegram-webhook.php
+Disallow: /donation-notify.php
+Disallow: /path.php
+
+Crawl-delay: 5
