@@ -93,10 +93,8 @@ Framework kullanılmaz. Kurulum için terminale ihtiyaç yoktur.
 
 ## 4. Veritabanı
 
-Veritabanı bağlantı bilgileri sunucu tarafında `config.php` içinde sabittir ve
-kurulum sırasında **sorulmaz**. Bu bilgiler hiçbir HTML sayfasında, JavaScript
-dosyasında, JSON yanıtında, hata ekranında, logda, kullanıcı panelinde veya
-yönetim panelinde görünmez.
+Bağlantı bilgileri `config.php` içinde sabit olarak gelir ve **çalıştığı sürece
+size hiçbir şey sorulmaz**:
 
 | Ayar | Değer |
 |---|---|
@@ -105,6 +103,33 @@ yönetim panelinde görünmez.
 | Veritabanı | `lxsadauz_almanca` |
 | Kullanıcı | `lxsadauz_almanca` |
 | Karakter seti | `utf8mb4` |
+
+### Bu bilgiler sizin sunucunuzda çalışmıyorsa
+
+Plesk veritabanı adlarını abonelik önekiyle oluşturur (`lxsadauz_`, `tekvagon_`
+gibi). Paketle gelen bilgiler **başka bir aboneliğe** aitse bu sunucuda
+bağlantı kurulamaz.
+
+Bu durumda kurulum sayfası size sorunu adıyla söyler ("Sunucuda bu adda bir
+veritabanı yok", "Kullanıcı adı veya şifresi kabul edilmedi" gibi) ve
+**doğru bilgileri girebileceğiniz bir form açar**:
+
+1. Plesk > **Veritabanları** bölümünü açın. Veritabanı yoksa
+   **Veritabanı Ekle** ile oluşturun ve bir kullanıcı atayın.
+2. Kurulum sayfasındaki forma veritabanı adını, kullanıcı adını ve şifreyi girin.
+   Sunucu alanı Plesk'te neredeyse her zaman `localhost` kalır.
+3. **Bağlantıyı Test Et ve Devam Et** düğmesine basın.
+
+Bilgiler doğruysa `config.local.php` dosyası oluşturulur (izin `0640`) ve kurulum
+kendiliğinden başlar. Bu dosya `config.php`'den önce yüklenir; silerseniz
+varsayılanlara dönülür. Doğrudan çağrıldığında 404 döner, `.htaccess` ile de
+engellenir ve içeriği hiçbir ekranda gösterilmez.
+
+> Form yalnızca **bağlantı kurulamadığında ve site henüz kurulmamışken** görünür.
+> Kurulum tamamlandıktan sonra bu sayfaya yalnızca yönetici girebilir.
+
+Bağlantı bilgileri hiçbir HTML sayfasında, JavaScript dosyasında, JSON yanıtında,
+hata ekranında, logda, kullanıcı panelinde veya yönetim panelinde görünmez.
 
 Bağlantı PDO ile kurulur; `ERRMODE_EXCEPTION`, `FETCH_ASSOC` ve
 `EMULATE_PREPARES = false` ayarlanır. Bütün sorgular hazırlanmış ifadelerle çalışır.

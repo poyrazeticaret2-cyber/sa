@@ -52,6 +52,57 @@ if (is_post() && !$locked) {
     csrf_require();
     $action = (string)input('action', '');
 
+    /* Veritabanina baglanilamiyorsa bilgileri buradan alip config.local.php'ye yaz.
+       Bu form YALNIZCA baglanti kurulamadiginda ve site kurulmamisken gorunur. */
+    if ($action === 'dbayar' && !$dbOk) {
+        $dbHost = trim((string)input('db_host', 'localhost')) ?: 'localhost';
+        $dbPort = max(1, min(65535, input_int('db_port', 3306)));
+        $dbName = trim((string)input('db_name', ''));
+        $dbUser = trim((string)input('db_user', ''));
+        $dbPass = (string)($_POST['db_pass'] ?? '');
+
+        if ($dbName === '' || $dbUser === '') {
+            $errors['db'] = 'Veritabanı adı ve kullanıcı adı zorunludur.';
+        } elseif (!preg_match('/^[A-Za-z0-9_.\-]+$/', $dbHost)) {
+            $errors['db'] = 'Sunucu adresi geçersiz. Genellikle "localhost" yazılır.';
+        } else {
+            $test = Database::testConnection($dbHost, $dbPort, $dbName, $dbUser, $dbPass);
+            if (!$test['ok']) {
+                $errors['db'] = $test['error'];
+            } else {
+                $satirlar = "<?php\n"
+                    . "/**\n"
+                    . " * AlmancaPro - Sunucuya ozel veritabani ayarlari.\n"
+                    . " *\n"
+                    . " * Bu dosya kurulum sihirbazi tarafindan olusturuldu ve config.php'den\n"
+                    . " * ONCE yuklenir. Silerseniz config.php icindeki varsayilanlar gecerli olur.\n"
+                    . " * Icerigi asla tarayiciya gonderilmez.\n"
+                    . " */\n"
+                    . "declare(strict_types=1);\n\n"
+                    . "/* Dogrudan cagrilirsa hicbir sey yazdirma. */\n"
+                    . "if (isset(\$_SERVER['SCRIPT_FILENAME'])\n"
+                    . "    && basename((string)\$_SERVER['SCRIPT_FILENAME']) === basename(__FILE__)\n"
+                    . "    && PHP_SAPI !== 'cli') {\n"
+                    . "    http_response_code(404);\n"
+                    . "    exit;\n"
+                    . "}\n\n"
+                    . "define('DB_HOST', " . var_export($dbHost, true) . ");\n"
+                    . "define('DB_PORT', " . $dbPort . ");\n"
+                    . "define('DB_NAME', " . var_export($dbName, true) . ");\n"
+                    . "define('DB_USER', " . var_export($dbUser, true) . ");\n"
+                    . "define('DB_PASSWORD', " . var_export($dbPass, true) . ");\n";
+
+                if (@file_put_contents(__DIR__ . '/config.local.php', $satirlar) === false) {
+                    $errors['db'] = 'Bağlantı çalışıyor ama ayar dosyası yazılamadı. '
+                        . 'httpdocs klasörünün yazma izni olmalı (755).';
+                } else {
+                    @chmod(__DIR__ . '/config.local.php', 0640);
+                    redirect('/install.php?kur=1');
+                }
+            }
+        }
+    }
+
     if ($action === 'install') {
         $result = almancapro_run_install();
         $installed = $result['ok'];
@@ -148,8 +199,56 @@ render_head('Kurulum · ' . APP_NAME, $opts);
 
     <?php if (!$dbOk): ?>
       <div class="alert alert--error"><span class="alert__icon" aria-hidden="true">✕</span>
-        <span>Veritabanına bağlanılamadı. Sunucudaki veritabanı hesabının aktif olduğundan emin ol.
-          Bağlantı bilgileri sunucu tarafında tanımlıdır ve burada gösterilmez.</span></div>
+        <span><strong><?= e(Database::connectionHint()) ?></strong><br>
+          Paketle gelen varsayılan veritabanı bilgileri bu sunucuda çalışmıyor.
+          Aşağıya bu sunucudaki bilgileri girin; test edilip kaydedilecek ve kurulum devam edecek.</span></div>
+
+      <?php if (isset($errors['db'])): ?>
+        <div class="alert alert--error"><span class="alert__icon" aria-hidden="true">✕</span>
+          <span><?= e($errors['db']) ?></span></div>
+      <?php endif; ?>
+
+      <h2 style="margin-top:24px;font-size:19px">Veritabanı bilgileri</h2>
+      <p class="small">Plesk &gt; <strong>Veritabanları</strong> bölümünde görürsünüz.
+        Veritabanı yoksa <strong>Veritabanı Ekle</strong> ile oluşturun ve bir kullanıcı atayın.
+        Girdiğiniz bilgiler yalnızca sunucuda saklanır, hiçbir ekranda geri gösterilmez.</p>
+
+      <form method="post" action="/install.php" data-guard>
+        <?= csrf_field() ?>
+        <input type="hidden" name="action" value="dbayar">
+
+        <div class="field">
+          <label for="db_name">Veritabanı adı</label>
+          <input id="db_name" name="db_name" type="text" required autocomplete="off" spellcheck="false"
+                 value="<?= e((string)input('db_name', '')) ?>" placeholder="ornek: tekvagon_almanca">
+        </div>
+        <div class="field">
+          <label for="db_user">Veritabanı kullanıcı adı</label>
+          <input id="db_user" name="db_user" type="text" required autocomplete="off" spellcheck="false"
+                 value="<?= e((string)input('db_user', '')) ?>">
+        </div>
+        <?php render_password_field('db_pass', 'db_pass', 'Veritabanı şifresi', 'new-password', false, false); ?>
+
+        <div class="grid grid-2" style="gap:12px">
+          <div class="field">
+            <label for="db_host">Sunucu</label>
+            <input id="db_host" name="db_host" type="text" value="<?= e((string)input('db_host', 'localhost') ?: 'localhost') ?>"
+                   autocomplete="off" spellcheck="false">
+            <div class="hint">Plesk'te neredeyse her zaman <code>localhost</code>.</div>
+          </div>
+          <div class="field">
+            <label for="db_port">Port</label>
+            <input id="db_port" name="db_port" type="number" min="1" max="65535"
+                   value="<?= (int)(input_int('db_port', 3306) ?: 3306) ?>">
+          </div>
+        </div>
+
+        <button class="btn btn--lg btn--block" type="submit">BAĞLANTIYI TEST ET VE DEVAM ET</button>
+      </form>
+
+      <p class="small" style="margin-top:16px">
+        Bilgiler doğruysa kurulum kendiliğinden başlar. Ayrıntılı kontrol için
+        <a href="/tani.php">/tani.php</a> sayfasına bakabilirsiniz.</p>
 
     <?php elseif ($locked): ?>
       <div class="alert alert--success"><span class="alert__icon" aria-hidden="true">✓</span>

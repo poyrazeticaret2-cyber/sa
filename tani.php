@@ -140,8 +140,9 @@ if (file_exists(__DIR__ . '/config.local.php')) {
         if (preg_match("/define\('DB_PASSWORD',\s*'(.*)'\)/", $local, $m)) { $dbPass = $m[1]; }
         $activeConfig = 'config.local.php';
     }
-    $warn[] = 'config.local.php bulundu ve config.php yerine ETKIN. Bu dosya yalnizca gelistirme icindir; '
-        . 'uretim sunucusunda SILIN, aksi halde yanlis veritabanina baglanilir.';
+    $ok[] = 'config.local.php bulundu ve config.php yerine ETKIN. '
+        . 'Bu dosya kurulum sihirbazinin kaydettigi sunucuya ozel veritabani ayarlarini tutar. '
+        . 'Baska bir veritabanina baglanmak isterseniz dosyayi silip siteyi yeniden acin.';
 }
 $ok[] = 'Etkin veritabani yapilandirmasi: ' . $activeConfig;
 
