@@ -5,6 +5,7 @@ Ticari ithalat (beyanname ile):
     GV   = CIF x gv%
     İGV  = CIF x igv%
     ÖTV  = (CIF + GV + İGV) x otv%
+    Yerel = CIF x yerel% + parti sabit masrafı / adet
     KDV  = (CIF + GV + İGV + ÖTV + yerel masraf) x kdv%   -> şirket için indirilebilir
 
 Posta / hızlı kargo (bireysel, <= 1500 €): CIF x maktu oran (AB dışı %60).
@@ -35,7 +36,8 @@ class Maliyet:
 
 
 def ticari_maliyet(fob_usd: float, kategori: dict, kurallar: dict,
-                   navlun_usd_kg: float | None = None) -> Maliyet:
+                   navlun_usd_kg: float | None = None, sabit_usd: float = 0.0) -> Maliyet:
+    """sabit_usd: parti başına sabit masrafın (müşavir, beyanname) birime düşen payı."""
     t = kurallar["ticari_ithalat"]
     navlun_kg = t["navlun_usd_kg"] if navlun_usd_kg is None else navlun_usd_kg
     navlun = float(kategori.get("birim_kg", 0.5)) * navlun_kg
@@ -44,7 +46,7 @@ def ticari_maliyet(fob_usd: float, kategori: dict, kurallar: dict,
     gv = cif * float(kategori.get("gv", 0)) / 100
     igv = cif * float(kategori.get("igv", 0)) / 100
     otv = (cif + gv + igv) * float(kategori.get("otv", 0)) / 100
-    yerel = cif * t["yerel_masraf_pct"] / 100
+    yerel = cif * t["yerel_masraf_pct"] / 100 + sabit_usd
     kdv_oran = float(kategori.get("kdv", kurallar.get("kdv_varsayilan", 20)))
     kdv = (cif + gv + igv + otv + yerel) * kdv_oran / 100
     vergi = gv + igv + otv

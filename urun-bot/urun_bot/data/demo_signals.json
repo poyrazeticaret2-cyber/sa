@@ -245,6 +245,97 @@
    "tr_ilan_sayisi": 0,
    "tr_fiyat_try": 0,
    "trend_tr": 0
+  },
+  "klavye-mouse": {
+   "dunya_siparis": 140000,
+   "dunya_fiyat_usd": 38,
+   "tr_ilan_sayisi": 45000,
+   "tr_fiyat_try": 1900,
+   "trend_tr": 40
+  },
+  "oyun-aksesuar": {
+   "dunya_siparis": 160000,
+   "dunya_fiyat_usd": 42,
+   "tr_ilan_sayisi": 22000,
+   "tr_fiyat_try": 2100,
+   "trend_tr": 30
+  },
+  "masa-duzeni": {
+   "dunya_siparis": 90000,
+   "dunya_fiyat_usd": 28,
+   "tr_ilan_sayisi": 30000,
+   "tr_fiyat_try": 1300,
+   "trend_tr": 35
+  },
+  "arac-kamerasi": {
+   "dunya_siparis": 120000,
+   "dunya_fiyat_usd": 45,
+   "tr_ilan_sayisi": 18000,
+   "tr_fiyat_try": 2400,
+   "trend_tr": 28
+  },
+  "bisiklet-aksesuar": {
+   "dunya_siparis": 110000,
+   "dunya_fiyat_usd": 14,
+   "tr_ilan_sayisi": 9000,
+   "tr_fiyat_try": 700,
+   "trend_tr": 22
+  },
+  "masaj-aleti": {
+   "dunya_siparis": 130000,
+   "dunya_fiyat_usd": 35,
+   "tr_ilan_sayisi": 16000,
+   "tr_fiyat_try": 1800,
+   "trend_tr": 30
+  },
+  "kahve-ekipman": {
+   "dunya_siparis": 85000,
+   "dunya_fiyat_usd": 24,
+   "tr_ilan_sayisi": 7000,
+   "tr_fiyat_try": 1500,
+   "trend_tr": 18
+  },
+  "mutfak-olcum": {
+   "dunya_siparis": 150000,
+   "dunya_fiyat_usd": 9,
+   "tr_ilan_sayisi": 11000,
+   "tr_fiyat_try": 550,
+   "trend_tr": 20
+  },
+  "led-aydinlatma": {
+   "dunya_siparis": 220000,
+   "dunya_fiyat_usd": 12,
+   "tr_ilan_sayisi": 60000,
+   "tr_fiyat_try": 650,
+   "trend_tr": 45
+  },
+  "kamp-aydinlatma": {
+   "dunya_siparis": 100000,
+   "dunya_fiyat_usd": 13,
+   "tr_ilan_sayisi": 12000,
+   "tr_fiyat_try": 600,
+   "trend_tr": 25
+  },
+  "saat-kayisi": {
+   "dunya_siparis": 300000,
+   "dunya_fiyat_usd": 5,
+   "tr_ilan_sayisi": 120000,
+   "tr_fiyat_try": 350,
+   "trend_tr": 55
+  },
+  "telefon-aksesuar": {
+   "dunya_siparis": 400000,
+   "dunya_fiyat_usd": 6,
+   "tr_ilan_sayisi": 350000,
+   "tr_fiyat_try": 300,
+   "trend_tr": 70
+  },
+  "bluetooth-ses": {
+   "dunya_siparis": 500000,
+   "dunya_fiyat_usd": 18,
+   "tr_ilan_sayisi": 250000,
+   "tr_fiyat_try": 900,
+   "trend_tr": 75
   }
  }
 }

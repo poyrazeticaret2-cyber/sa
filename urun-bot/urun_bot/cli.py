@@ -7,7 +7,8 @@ from pathlib import Path
 
 from . import config
 from .report import csv_yaz, dosya_adi, html_yaz, konsol
-from .scoring import score_category, sirala
+from .customs import ticari_maliyet
+from .scoring import basabas_fiyat, satis_basina_kar, score_category, sirala
 from .sources import aliexpress, csv_veri, tcmb, trendyol, trends
 
 TUM_KAYNAKLAR = ("aliexpress", "trendyol", "trends")
@@ -24,6 +25,12 @@ def arguman_ayristir(argv=None) -> argparse.Namespace:
     p.add_argument("--csv", action="append", default=[], metavar="DOSYA",
                    help="Ek veri CSV'si (Alibaba fiyatları vb.); birden fazla verilebilir")
     p.add_argument("--kategori", help="Yalnız bu kategori id'leri (virgülle)")
+    p.add_argument("--segment", choices=["tuketici", "hobi", "b2b"],
+                   help="Yalnız bu segment: tuketici (son kullanıcı), hobi, b2b")
+    p.add_argument("--hesap", nargs=2, type=float, metavar=("ALIS_USD", "SATIS_TL"),
+                   help="Tek ürün kâr hesabı: Alibaba birim fiyatı ($) ve Trendyol KDV dahil fiyatı (TL). "
+                        "--kategori ile tek kategori verin")
+    p.add_argument("--adet", type=int, help="Hesapta parti adedi (varsayılan kural dosyasından)")
     p.add_argument("--riskli-dahil", action="store_true", help="Yüksek riskli kategorileri de listele")
     p.add_argument("--min-puan", type=float, default=0)
     p.add_argument("--ilk", type=int, default=15, help="Konsolda gösterilecek satır")
@@ -45,6 +52,9 @@ def main(argv=None) -> int:
         for k in kategoriler:
             print(f"{k['id']:<22} {k['risk']:<7} {k['ad']}")
         return 0
+
+    if a.hesap:
+        return tek_urun_hesabi(a, kurallar, kategoriler)
 
     if a.kategori:
         secim = {x.strip() for x in a.kategori.split(",")}
@@ -95,13 +105,13 @@ def main(argv=None) -> int:
         kullanilan.append(f"csv:{Path(yol).name}")
 
     sonuclar = [score_category(k, sinyaller[k["id"]], kurallar, usd_try, a.navlun) for k in kategoriler]
-    sirali = sirala(sonuclar, a.riskli_dahil, a.min_puan)
+    sirali = sirala(sonuclar, a.riskli_dahil, a.min_puan, a.segment)
 
     print()
     print(konsol(sirali, a.ilk))
     disarida = [r for r in sonuclar if r not in sirali]
     if disarida:
-        print(f"\nElenen {len(disarida)} kategori (yüksek risk / yasak / düşük puan): "
+        print(f"\nElenen {len(disarida)} kategori (segment dışı / yüksek risk / yasak / düşük puan): "
               + ", ".join(r.kategori["id"] for r in disarida))
 
     dizin = Path(a.cikti)
@@ -109,10 +119,54 @@ def main(argv=None) -> int:
     csv_yaz(sirali, csv_yolu)
     html_yaz(sirali, html_yolu, kurallar, {
         "tarih": f"{datetime.now():%d.%m.%Y %H:%M}", "kaynaklar": ", ".join(kullanilan) or "yok",
-        "usd_try": usd_try, "demo": a.demo})
+        "usd_try": usd_try, "demo": a.demo, "segment": a.segment})
     print(f"\nRapor: {html_yolu}\nCSV:   {csv_yolu}")
 
     if a.telegram:
         from .notify import telegram_gonder
         telegram_gonder(sirali, demo=a.demo)
+    return 0
+
+
+def tek_urun_hesabi(a: argparse.Namespace, kurallar: dict, kategoriler: list[dict]) -> int:
+    """Bir ürün için satış başına kâr dökümü (konsola)."""
+    secili = [k for k in kategoriler if a.kategori and k["id"] == a.kategori.strip()]
+    if not secili:
+        print("--hesap için --kategori <id> verin (vergi oranları oradan alınır). --listele ile bakın.")
+        return 2
+    kat = secili[0]
+    alis, satis = a.hesap
+    if a.adet:
+        kurallar["ticari_ithalat"]["parti_adet"] = a.adet
+    kur = a.usd_try or tcmb.usd_try() or config.env_float("USD_TRY", VARSAYILAN_KUR)
+    t, p = kurallar["ticari_ithalat"], kurallar["pazaryeri"]
+    sabit_usd = t["parti_sabit_masraf_try"] / t["parti_adet"] / kur
+    m = ticari_maliyet(alis, kat, kurallar, a.navlun, sabit_usd)
+    kdv = float(kat.get("kdv", 20))
+    maliyet_try = m.varis_maliyeti_usd * kur
+    kar = satis_basina_kar(satis, maliyet_try, kurallar, kdv)
+    tl = lambda usd: f"{usd * kur:>9.2f} TL"
+    print(f"{kat['ad']}\nKur: {kur:.2f} TL/$ · parti: {t['parti_adet']} adet · GTİP {kat['gtip']}\n")
+    print(f"  Alış (FOB)                 {tl(m.fob_usd)}")
+    print(f"  Navlun + sigorta           {tl(m.navlun_usd + m.sigorta_usd)}")
+    print(f"  GV %{kat['gv']} + İGV %{kat['igv']} + ÖTV     {tl(m.gv_usd + m.igv_usd + m.otv_usd)}")
+    print(f"  Gümrük/yerel masraf payı   {tl(m.yerel_masraf_usd)}")
+    print(f"  = Türkiye'ye geliş maliyeti {maliyet_try:>8.2f} TL   (ithalat KDV {m.kdv_usd * kur:.2f} TL ayrıca, indirilir)\n")
+    kdv_haric = satis / (1 + kdv / 100)
+    kom = satis * p["komisyon_pct"] / 100 / (1 + kdv / 100)
+    sabit = p["kargo_try"] + p["platform_bedeli_try"] + p["ambalaj_try"]
+    print(f"  Satış (KDV dahil)          {satis:>9.2f} TL")
+    print(f"  − KDV %{kdv:.0f}                  {satis - kdv_haric:>9.2f} TL")
+    print(f"  − Komisyon %{p['komisyon_pct']} (KDV hariç)  {kom:>9.2f} TL")
+    print(f"  − Kargo+platform+ambalaj   {sabit:>9.2f} TL")
+    print(f"  − Ürün maliyeti            {maliyet_try:>9.2f} TL")
+    oncesi = kdv_haric - kom - sabit - maliyet_try
+    print(f"  = Vergi öncesi kâr         {oncesi:>9.2f} TL")
+    if oncesi > 0:
+        print(f"  − Gelir/kurumlar vergisi %{p['gelir_vergisi_pct']} {oncesi - kar:>7.2f} TL")
+    print(f"  = SATIŞ BAŞINA NET KÂR     {kar:>9.2f} TL  (satış fiyatının %{kar / satis * 100:.0f}'i)")
+    print(f"\n  Başabaş satış fiyatı: {basabas_fiyat(maliyet_try, kurallar, kdv):.0f} TL")
+    print(f"  {t['parti_adet']} adetin tamamı satılırsa: yatırım ≈ {(maliyet_try + m.kdv_usd * kur) * t['parti_adet']:,.0f} TL "
+          f"(KDV dahil), net kâr ≈ {kar * t['parti_adet']:,.0f} TL")
+    print("\n  Vergi oranları ve pazaryeri kesintileri tahminidir; customs_rules.json'dan güncelleyin.")
     return 0

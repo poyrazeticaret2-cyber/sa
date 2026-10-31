@@ -7,7 +7,6 @@ from dataclasses import dataclass, field
 from .customs import ticari_maliyet, tahmini_vergi_yuku_pct
 
 AGIRLIKLAR = {"talep": 0.25, "bosluk": 0.30, "vergi": 0.20, "mevzuat": 0.15, "marj": 0.10}
-PAZARYERI_KOMISYON_PCT = 15.0
 TOPTAN_INDIRIM = 0.70  # Alibaba fiyatı yoksa AliExpress perakende fiyatının ~%70'i toptan kabul edilir
 
 
@@ -22,6 +21,34 @@ def _log_puan(deger: float, tavan: float) -> float:
     return _sinirla(math.log10(deger + 1) / math.log10(tavan + 1) * 100)
 
 
+def satis_basina_kar(satis_kdv_dahil_try: float, urun_maliyeti_try: float, kurallar: dict,
+                     kdv_pct: float = 20.0) -> float:
+    """Pazaryerinde bir satıştan kalan vergi sonrası net kâr (TL).
+
+    KDV düşülür (ithalat KDV'si indirilebildiği için maliyet değildir), komisyon KDV dahil fiyattan
+    hesaplanır ve kendi KDV'si indirilir; kargo/platform/ambalaj sipariş başına sabit masraftır.
+    """
+    p = kurallar["pazaryeri"]
+    kdv_haric = satis_kdv_dahil_try / (1 + kdv_pct / 100)
+    komisyon = satis_kdv_dahil_try * p["komisyon_pct"] / 100
+    if p.get("komisyon_kdv_dahil_fiyattan", True):
+        komisyon /= (1 + kdv_pct / 100)
+    sabit = p["kargo_try"] + p["platform_bedeli_try"] + p["ambalaj_try"]
+    vergi_oncesi = kdv_haric - komisyon - sabit - urun_maliyeti_try
+    if vergi_oncesi > 0:
+        return vergi_oncesi * (1 - p["gelir_vergisi_pct"] / 100)
+    return vergi_oncesi
+
+
+def basabas_fiyat(urun_maliyeti_try: float, kurallar: dict, kdv_pct: float = 20.0) -> float:
+    """Zarar etmemek için gereken en düşük KDV dahil satış fiyatı."""
+    p = kurallar["pazaryeri"]
+    kom = p["komisyon_pct"] / 100
+    pay = (1 - kom) / (1 + kdv_pct / 100) if p.get("komisyon_kdv_dahil_fiyattan", True) \
+        else 1 / (1 + kdv_pct / 100) - kom
+    return (p["kargo_try"] + p["platform_bedeli_try"] + p["ambalaj_try"] + urun_maliyeti_try) / pay
+
+
 @dataclass
 class Sonuc:
     kategori: dict
@@ -31,7 +58,8 @@ class Sonuc:
     guven: float = 0.0
     vergi_yuku_pct: float = 0.0
     maliyet: dict | None = None
-    marj_pct: float | None = None
+    marj_pct: float | None = None      # net kâr / KDV dahil satış fiyatı
+    birim_kar_try: float | None = None  # satış başına vergi sonrası net kâr
     uyarilar: list[str] = field(default_factory=list)
 
     @property
@@ -73,8 +101,11 @@ def score_category(kategori: dict, sinyaller: dict, kurallar: dict, usd_try: flo
         toptan = float(s["dunya_fiyat_usd"]) * TOPTAN_INDIRIM
         r.uyarilar.append("Toptan fiyat AliExpress fiyatından tahmin edildi (Alibaba verisi yok).")
 
+    t = kurallar["ticari_ithalat"]
+    sabit_usd = (t.get("parti_sabit_masraf_try", 0) / max(t.get("parti_adet", 1), 1) / usd_try
+                 if usd_try else 0.0)
     if toptan:
-        m = ticari_maliyet(float(toptan), kategori, kurallar, navlun_usd_kg)
+        m = ticari_maliyet(float(toptan), kategori, kurallar, navlun_usd_kg, sabit_usd)
         r.maliyet = m.sozluk()
         r.vergi_yuku_pct = m.vergi_yuku_pct
     else:
@@ -90,13 +121,13 @@ def score_category(kategori: dict, sinyaller: dict, kurallar: dict, usd_try: flo
 
     if r.maliyet and s.get("tr_fiyat_try") and usd_try:
         kdv = float(kategori.get("kdv", kurallar.get("kdv_varsayilan", 20)))
-        net = float(s["tr_fiyat_try"]) / (1 + kdv / 100) * (1 - PAZARYERI_KOMISYON_PCT / 100)
-        maliyet_try = r.maliyet["varis_maliyeti_usd"] * usd_try
-        r.marj_pct = (net - maliyet_try) / net * 100 if net > 0 else None
-        if r.marj_pct is not None:
-            puan["marj"] = _sinirla(r.marj_pct * 2)
-            if r.marj_pct < 15:
-                r.uyarilar.append(f"Brüt marj düşük (%{r.marj_pct:.0f}).")
+        r.birim_kar_try = satis_basina_kar(float(s["tr_fiyat_try"]), r.maliyet["varis_maliyeti_usd"] * usd_try,
+                                           kurallar, kdv)
+        r.marj_pct = r.birim_kar_try / float(s["tr_fiyat_try"]) * 100
+        puan["marj"] = _sinirla(r.marj_pct * 100 / 30)  # %30 net marj = 100 puan
+        if r.marj_pct < 10:
+            r.uyarilar.append(f"Satış başına net kâr düşük ({r.birim_kar_try:.0f} TL, %{r.marj_pct:.0f}). "
+                              "Paket/set satışıyla sepet tutarını büyütün.")
 
     agirlik_toplam = sum(AGIRLIKLAR[k] for k, v in puan.items() if v is not None)
     r.toplam = (sum(AGIRLIKLAR[k] * v for k, v in puan.items() if v is not None) / agirlik_toplam
@@ -116,9 +147,11 @@ def score_category(kategori: dict, sinyaller: dict, kurallar: dict, usd_try: flo
     return r
 
 
-def sirala(sonuclar: list[Sonuc], riskli_dahil: bool = False, min_puan: float = 0) -> list[Sonuc]:
+def sirala(sonuclar: list[Sonuc], riskli_dahil: bool = False, min_puan: float = 0,
+          segment: str | None = None) -> list[Sonuc]:
     secilen = [x for x in sonuclar
                if x.kategori["risk"] != "yasak"
+               and (not segment or segment in x.kategori.get("segment", []))
                and (riskli_dahil or x.kategori["risk"] != "yuksek")
                and x.toplam >= min_puan]
     return sorted(secilen, key=lambda x: x.toplam, reverse=True)

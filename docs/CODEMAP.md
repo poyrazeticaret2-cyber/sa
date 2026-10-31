@@ -1,5 +1,5 @@
 # CODEMAP
-_Son güncelleme: 2026-10-31_
+_Son güncelleme: 2026-11-01_
 
 ## Teknoloji
 PHP 8.2 (framework yok) / MySQL-MariaDB (PDO) / Composer-npm yok; Plesk-Apache üzerinde çalışır. Ek: `urun-bot/` Python 3.10+ (yalnız stdlib) ürün araştırma botu.
@@ -40,6 +40,7 @@ PHP 8.2 (framework yok) / MySQL-MariaDB (PDO) / Composer-npm yok; Plesk-Apache �
 | SEO / robots | `robots.txt`, `layout.php` | | |
 | Apache kuralları | `.htaccess` | | |
 | Ürün botu CSV içe aktarma (Alibaba vb.) | `urun-bot/urun_bot/sources/csv_veri.py` | `oku()` | Sütun listesi dosya başında |
+| Ürün botu pazaryeri kesintileri | `urun-bot/urun_bot/data/customs_rules.json` | `pazaryeri`, `ticari_ithalat.parti_sabit_masraf_try` | Komisyon, kargo, gelir vergisi |
 | Ürün botu ayarları | `urun-bot/urun_bot/data/categories.json`, `urun-bot/urun_bot/data/customs_rules.json` | | Vergi oranları, izinler, anahtar kelimeler |
 
 ## Ana akışlar
@@ -73,7 +74,9 @@ PHP 8.2 (framework yok) / MySQL-MariaDB (PDO) / Composer-npm yok; Plesk-Apache �
 | `render_app_start()` | `layout.php` | Uygulama sayfa iskeleti |
 | `telegram_call()` | `telegram-api.php` | Bot API çağrısı |
 | `ticari_maliyet()`, `posta_maliyet()` | `urun-bot/urun_bot/customs.py` | Türkiye varış maliyeti (beyanname / posta %60) |
-| `score_category()` | `urun-bot/urun_bot/scoring.py` | Fırsat skoru |
+| `score_category()`, `sirala()` | `urun-bot/urun_bot/scoring.py` | Fırsat skoru, risk/segment filtresi |
+| `satis_basina_kar()`, `basabas_fiyat()` | `urun-bot/urun_bot/scoring.py` | Trendyol satış başına net kâr, başabaş fiyat |
+| `tek_urun_hesabi()` | `urun-bot/urun_bot/cli.py` | `--hesap ALIS_USD SATIS_TL` döküm |
 
 ## Veri modeli
 | Tablo / model | Dosya | Önemli alanlar / ilişkiler |

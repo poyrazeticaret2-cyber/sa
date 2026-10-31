@@ -16,7 +16,10 @@ Her kategori için 5 puan (0–100) hesaplanır ve ağırlıklı toplanır:
 | **Türkiye boşluğu** | %30 | Trendyol ilan sayısı (az ilan = boşluk), Google Trends'te Türkiye'nin payı |
 | **Vergi uygunluğu** | %20 | GV + İGV + ÖTV yükü (KDV indirilebilir, dahil edilmez) |
 | **Mevzuat kolaylığı** | %15 | Gereken belgeler: TAREKS, BTK, TSE, TİTCK, damping… |
-| **Marj** | %10 | Alibaba toptan fiyat → Türkiye varış maliyeti ↔ Trendyol satış fiyatı |
+| **Marj** | %10 | Satış başına net kâr: Trendyol fiyatı − KDV − komisyon − kargo/platform/ambalaj − geliş maliyeti − gelir vergisi |
+
+**Ucuz ürün tuzağı:** Trendyol'da her siparişte komisyona ek ~75 TL sabit masraf (kargo, platform, ambalaj) var.
+Bu yüzden 250 TL'nin altındaki ürünlerde kâr kalmaz; set/paket satışıyla sepet tutarını büyütün.
 
 Veri gelmeyen puanlar hesaba katılmaz; rapordaki **güven** yüzdesi bunu gösterir.
 Yasak (e-sigara, cep telefonu) ve yüksek riskli (ayakkabı, giyim, oyuncak, kozmetik,
@@ -68,10 +71,21 @@ python3 -m urun_bot --demo                         # ağa çıkmadan örnek veri
 python3 -m urun_bot                                # tüm kaynaklarla gerçek tarama
 python3 -m urun_bot --csv alibaba.csv              # Alibaba fiyatlarıyla marj hesabı
 python3 -m urun_bot --kategori olcum-test,cnc-uc   # sadece seçilen kategoriler
+python3 -m urun_bot --segment tuketici             # sadece son kullanıcı ürünleri (hobi, b2b da var)
 python3 -m urun_bot --riskli-dahil                 # yüksek riskli grupları da göster
 python3 -m urun_bot --listele                      # kategori id'leri
 python3 -m urun_bot --telegram                     # özeti Telegram'a gönder
 ```
+
+### Tek ürün kâr hesabı
+Alibaba birim fiyatı ($) ve Trendyol KDV dahil satış fiyatı (TL) ile satış başına net kârı hesaplar:
+
+```bash
+python3 -m urun_bot --hesap 1.24 1200 --kategori cnc-uc --adet 300
+```
+
+Döküm: alış → navlun → gümrük vergileri → gümrük masrafı payı → geliş maliyeti; satıştan KDV,
+komisyon, kargo/platform/ambalaj ve gelir vergisi düşülür; başabaş fiyatı ve parti toplamı gösterilir.
 
 Çıktı: `raporlar/firsatlar-YYYYMMDD-HHMM.html` (açılır kartlı rapor) ve `.csv` (Excel'de açılır).
 
@@ -84,7 +98,9 @@ python3 -m urun_bot --telegram                     # özeti Telegram'a gönder
 
 - `urun_bot/data/categories.json` → kategori, anahtar kelimeler (EN: AliExpress/Trends, TR: Trendyol),
   GTİP, `gv`, `igv`, `otv`, `kdv`, `izinler`, `risk` (`dusuk`/`orta`/`yuksek`/`yasak`), `birim_kg`.
-- `urun_bot/data/customs_rules.json` → navlun $/kg, posta maktu oranları, izin cezaları.
+- `urun_bot/data/customs_rules.json` → navlun $/kg, parti sabit gümrük masrafı, posta maktu oranları, izin cezaları
+  ve `pazaryeri` bölümü (komisyon %, sipariş başına kargo/platform/ambalaj TL, gelir vergisi %).
+- Her kategoride `segment`: `tuketici` (son kullanıcı), `hobi`, `b2b`.
 
 İGV oranları sık değişir (ör. 10791 ve 11508 sayılı Kararlar). Değişiklikte bu iki dosyayı güncelleyin.
 

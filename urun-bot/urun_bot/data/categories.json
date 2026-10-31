@@ -25,7 +25,10 @@
    "risk": "dusuk",
    "birim_kg": 0.03,
    "vergi_guveni": "orta",
-   "not": "Entegre devreler ve modüller ITA kapsamında genelde %0 GV."
+   "not": "Entegre devreler ve modüller ITA kapsamında genelde %0 GV.",
+   "segment": [
+    "hobi"
+   ]
   },
   {
    "id": "pc-aksesuar",
@@ -54,7 +57,10 @@
    "risk": "dusuk",
    "birim_kg": 0.15,
    "vergi_guveni": "orta",
-   "not": "Bilgisayar ve parçaları ITA kapsamında %0 GV; kablosuz modeller BTK gerektirir."
+   "not": "Bilgisayar ve parçaları ITA kapsamında %0 GV; kablosuz modeller BTK gerektirir.",
+   "segment": [
+    "tuketici"
+   ]
   },
   {
    "id": "olcum-test",
@@ -83,7 +89,10 @@
    "risk": "dusuk",
    "birim_kg": 0.6,
    "vergi_guveni": "orta",
-   "not": "Ölçüm aletleri düşük GV; kalibrasyon belgesi satışı kolaylaştırır."
+   "not": "Ölçüm aletleri düşük GV; kalibrasyon belgesi satışı kolaylaştırır.",
+   "segment": [
+    "b2b"
+   ]
   },
   {
    "id": "endustriyel-sensor",
@@ -112,7 +121,10 @@
    "risk": "dusuk",
    "birim_kg": 0.1,
    "vergi_guveni": "orta",
-   "not": "B2B satış: fabrikalar, bakım atölyeleri."
+   "not": "B2B satış: fabrikalar, bakım atölyeleri.",
+   "segment": [
+    "b2b"
+   ]
   },
   {
    "id": "3d-yazici-parca",
@@ -140,7 +152,10 @@
    "risk": "dusuk",
    "birim_kg": 0.1,
    "vergi_guveni": "orta",
-   "not": "Filament (3916) plastik grubunda İGV riski taşır; parçalar daha avantajlı."
+   "not": "Filament (3916) plastik grubunda İGV riski taşır; parçalar daha avantajlı.",
+   "segment": [
+    "hobi"
+   ]
   },
   {
    "id": "cnc-uc",
@@ -166,7 +181,11 @@
    "risk": "dusuk",
    "birim_kg": 0.05,
    "vergi_guveni": "dusuk",
-   "not": "Değiştirilebilir takımlar; İGV satırını TARA'dan teyit edin."
+   "not": "Değiştirilebilir takımlar; İGV satırını TARA'dan teyit edin.",
+   "segment": [
+    "b2b",
+    "hobi"
+   ]
   },
   {
    "id": "obd-teshis",
@@ -193,7 +212,11 @@
    "risk": "dusuk",
    "birim_kg": 0.4,
    "vergi_guveni": "orta",
-   "not": "Bluetooth/Wi-Fi modeller BTK kapsamına girer; kablolu modelleri tercih edin."
+   "not": "Bluetooth/Wi-Fi modeller BTK kapsamına girer; kablolu modelleri tercih edin.",
+   "segment": [
+    "tuketici",
+    "b2b"
+   ]
   },
   {
    "id": "dijital-mikroskop",
@@ -220,7 +243,11 @@
    "risk": "dusuk",
    "birim_kg": 0.9,
    "vergi_guveni": "dusuk",
-   "not": "Telefon tamircileri ve elektronik atölyeleri hedef kitle."
+   "not": "Telefon tamircileri ve elektronik atölyeleri hedef kitle.",
+   "segment": [
+    "hobi",
+    "b2b"
+   ]
   },
   {
    "id": "lehim-ekipman",
@@ -248,7 +275,11 @@
    "risk": "orta",
    "birim_kg": 0.8,
    "vergi_guveni": "orta",
-   "not": "Şebeke gerilimli cihazlar TAREKS risk analizine takılabilir."
+   "not": "Şebeke gerilimli cihazlar TAREKS risk analizine takılabilir.",
+   "segment": [
+    "hobi",
+    "b2b"
+   ]
   },
   {
    "id": "hassas-el-aleti",
@@ -272,7 +303,11 @@
    "risk": "dusuk",
    "birim_kg": 0.3,
    "vergi_guveni": "dusuk",
-   "not": "El aletlerinde Çin menşei İGV olabilir; TARA'dan teyit edin."
+   "not": "El aletlerinde Çin menşei İGV olabilir; TARA'dan teyit edin.",
+   "segment": [
+    "tuketici",
+    "hobi"
+   ]
   },
   {
    "id": "muzik-aksesuar",
@@ -301,7 +336,11 @@
    "risk": "dusuk",
    "birim_kg": 0.4,
    "vergi_guveni": "dusuk",
-   "not": "Niş ama sadık müşteri kitlesi."
+   "not": "Niş ama sadık müşteri kitlesi.",
+   "segment": [
+    "tuketici",
+    "hobi"
+   ]
   },
   {
    "id": "foto-video-rig",
@@ -327,7 +366,10 @@
    "risk": "dusuk",
    "birim_kg": 0.5,
    "vergi_guveni": "orta",
-   "not": "V-mount bataryalar lityum kuralına girer; sadece mekanik parçalar bu grupta."
+   "not": "V-mount bataryalar lityum kuralına girer; sadece mekanik parçalar bu grupta.",
+   "segment": [
+    "hobi"
+   ]
   },
   {
    "id": "ag-kablolu",
@@ -356,7 +398,11 @@
    "risk": "dusuk",
    "birim_kg": 0.4,
    "vergi_guveni": "orta",
-   "not": "Kablolu cihazlar BTK gerektirmez; ITA kapsamında %0 GV."
+   "not": "Kablolu cihazlar BTK gerektirmez; ITA kapsamında %0 GV.",
+   "segment": [
+    "b2b",
+    "tuketici"
+   ]
   },
   {
    "id": "etiket-barkod",
@@ -383,7 +429,10 @@
    "risk": "dusuk",
    "birim_kg": 0.8,
    "vergi_guveni": "orta",
-   "not": "E-ticaret satıcılarına B2B satış; Bluetooth modeller BTK ister."
+   "not": "E-ticaret satıcılarına B2B satış; Bluetooth modeller BTK ister.",
+   "segment": [
+    "b2b"
+   ]
   },
   {
    "id": "dikis-parca",
@@ -407,7 +456,10 @@
    "risk": "dusuk",
    "birim_kg": 0.05,
    "vergi_guveni": "dusuk",
-   "not": "Türkiye tekstil sektörü büyük; yerel tedarik de güçlü olabilir."
+   "not": "Türkiye tekstil sektörü büyük; yerel tedarik de güçlü olabilir.",
+   "segment": [
+    "b2b"
+   ]
   },
   {
    "id": "robot-supurge-parca",
@@ -431,7 +483,10 @@
    "risk": "dusuk",
    "birim_kg": 0.2,
    "vergi_guveni": "dusuk",
-   "not": "Uyumlu (marka dışı) parça; marka/logo kullanmayın."
+   "not": "Uyumlu (marka dışı) parça; marka/logo kullanmayın.",
+   "segment": [
+    "tuketici"
+   ]
   },
   {
    "id": "solar-mppt",
@@ -459,7 +514,11 @@
    "risk": "orta",
    "birim_kg": 0.6,
    "vergi_guveni": "orta",
-   "not": "Güneş paneli ve çerçevesi DAMPİNG kapsamında; yalnız elektronik kısım."
+   "not": "Güneş paneli ve çerçevesi DAMPİNG kapsamında; yalnız elektronik kısım.",
+   "segment": [
+    "hobi",
+    "b2b"
+   ]
   },
   {
    "id": "tamir-aleti-telefon",
@@ -486,7 +545,10 @@
    "risk": "dusuk",
    "birim_kg": 3.0,
    "vergi_guveni": "dusuk",
-   "not": "Tamircilere B2B; makineler ağır, navlun maliyeti yüksek."
+   "not": "Tamircilere B2B; makineler ağır, navlun maliyeti yüksek.",
+   "segment": [
+    "b2b"
+   ]
   },
   {
    "id": "akilli-ev-zigbee",
@@ -515,7 +577,10 @@
    "risk": "orta",
    "birim_kg": 0.1,
    "vergi_guveni": "orta",
-   "not": "Telsiz cihaz: RED/BTK uygunluğu şart; şebeke prizleri TAREKS."
+   "not": "Telsiz cihaz: RED/BTK uygunluğu şart; şebeke prizleri TAREKS.",
+   "segment": [
+    "tuketici"
+   ]
   },
   {
    "id": "ebike-donusum",
@@ -542,7 +607,11 @@
    "risk": "orta",
    "birim_kg": 4.0,
    "vergi_guveni": "dusuk",
-   "not": "Bisiklet parçalarında damping olasılığı var; GTİP'i mutlaka kontrol edin."
+   "not": "Bisiklet parçalarında damping olasılığı var; GTİP'i mutlaka kontrol edin.",
+   "segment": [
+    "tuketici",
+    "hobi"
+   ]
   },
   {
    "id": "balikcilik",
@@ -566,7 +635,11 @@
    "risk": "orta",
    "birim_kg": 0.4,
    "vergi_guveni": "dusuk",
-   "not": "Spor malzemelerinde İGV olabilir (tahmini %10)."
+   "not": "Spor malzemelerinde İGV olabilir (tahmini %10).",
+   "segment": [
+    "tuketici",
+    "hobi"
+   ]
   },
   {
    "id": "evcil-tekno",
@@ -594,7 +667,10 @@
    "risk": "orta",
    "birim_kg": 1.0,
    "vergi_guveni": "orta",
-   "not": "Wi-Fi/GPS modeller BTK; sıradan mama kapları yerelde yaygın."
+   "not": "Wi-Fi/GPS modeller BTK; sıradan mama kapları yerelde yaygın.",
+   "segment": [
+    "tuketici"
+   ]
   },
   {
    "id": "plastik-ev-esyasi",
@@ -618,7 +694,10 @@
    "risk": "orta",
    "birim_kg": 0.3,
    "vergi_guveni": "dusuk",
-   "not": "Plastik ürünlerde İGV ve gözetim yaygın; yerel üretim güçlü."
+   "not": "Plastik ürünlerde İGV ve gözetim yaygın; yerel üretim güçlü.",
+   "segment": [
+    "tuketici"
+   ]
   },
   {
    "id": "ayakkabi",
@@ -642,7 +721,10 @@
    "risk": "yuksek",
    "birim_kg": 0.8,
    "vergi_guveni": "orta",
-   "not": "Damping + İGV + gözetim; Çin'den kârlı değil."
+   "not": "Damping + İGV + gözetim; Çin'den kârlı değil.",
+   "segment": [
+    "tuketici"
+   ]
   },
   {
    "id": "hazir-giyim",
@@ -664,7 +746,10 @@
    "risk": "yuksek",
    "birim_kg": 0.3,
    "vergi_guveni": "orta",
-   "not": "Yüksek İGV, güçlü yerel üretim."
+   "not": "Yüksek İGV, güçlü yerel üretim.",
+   "segment": [
+    "tuketici"
+   ]
   },
   {
    "id": "oyuncak",
@@ -687,7 +772,10 @@
    "risk": "yuksek",
    "birim_kg": 0.5,
    "vergi_guveni": "orta",
-   "not": "Oyuncak yönetmeliği: TAREKS + CE zorunlu, sık red."
+   "not": "Oyuncak yönetmeliği: TAREKS + CE zorunlu, sık red.",
+   "segment": [
+    "tuketici"
+   ]
   },
   {
    "id": "kozmetik",
@@ -709,7 +797,10 @@
    "risk": "yuksek",
    "birim_kg": 0.2,
    "vergi_guveni": "orta",
-   "not": "ÜTS kaydı, sorumlu kişi gerekir."
+   "not": "ÜTS kaydı, sorumlu kişi gerekir.",
+   "segment": [
+    "tuketici"
+   ]
   },
   {
    "id": "takviye-gida",
@@ -731,7 +822,10 @@
    "risk": "yuksek",
    "birim_kg": 0.3,
    "vergi_guveni": "orta",
-   "not": "Tarım Bakanlığı onayı gerekir."
+   "not": "Tarım Bakanlığı onayı gerekir.",
+   "segment": [
+    "tuketici"
+   ]
   },
   {
    "id": "gunes-gozlugu",
@@ -754,7 +848,10 @@
    "risk": "yuksek",
    "birim_kg": 0.1,
    "vergi_guveni": "orta",
-   "not": "Çin menşei gözlüklerde damping."
+   "not": "Çin menşei gözlüklerde damping.",
+   "segment": [
+    "tuketici"
+   ]
   },
   {
    "id": "bisiklet",
@@ -777,7 +874,10 @@
    "risk": "yuksek",
    "birim_kg": 15,
    "vergi_guveni": "orta",
-   "not": "Damping kapsamında."
+   "not": "Damping kapsamında.",
+   "segment": [
+    "tuketici"
+   ]
   },
   {
    "id": "seramik-sofra",
@@ -800,7 +900,10 @@
    "risk": "yuksek",
    "birim_kg": 2,
    "vergi_guveni": "orta",
-   "not": "Damping kapsamında."
+   "not": "Damping kapsamında.",
+   "segment": [
+    "tuketici"
+   ]
   },
   {
    "id": "gunes-paneli",
@@ -822,7 +925,10 @@
    "risk": "yuksek",
    "birim_kg": 20,
    "vergi_guveni": "orta",
-   "not": "Panel ve çerçevede damping (çerçeve için %45,99 – 2026/23 tebliği)."
+   "not": "Panel ve çerçevede damping (çerçeve için %45,99 – 2026/23 tebliği).",
+   "segment": [
+    "tuketici"
+   ]
   },
   {
    "id": "dron",
@@ -845,7 +951,10 @@
    "risk": "yuksek",
    "birim_kg": 1,
    "vergi_guveni": "orta",
-   "not": "SHGM kaydı ve frekans kısıtları."
+   "not": "SHGM kaydı ve frekans kısıtları.",
+   "segment": [
+    "tuketici"
+   ]
   },
   {
    "id": "cep-telefonu",
@@ -868,7 +977,10 @@
    "risk": "yasak",
    "birim_kg": 0.3,
    "vergi_guveni": "orta",
-   "not": "IMEI kayıt ücreti + ÖTV; ticari ithalat için uygun değil."
+   "not": "IMEI kayıt ücreti + ÖTV; ticari ithalat için uygun değil.",
+   "segment": [
+    "tuketici"
+   ]
   },
   {
    "id": "e-sigara",
@@ -888,7 +1000,392 @@
    "risk": "yasak",
    "birim_kg": 0.1,
    "vergi_guveni": "orta",
-   "not": "Türkiye'de ithalatı ve satışı yasak."
+   "not": "Türkiye'de ithalatı ve satışı yasak.",
+   "segment": [
+    "tuketici"
+   ]
+  },
+  {
+   "id": "klavye-mouse",
+   "ad": "Mekanik klavye, oyuncu mouse, keycap ve switch setleri",
+   "anahtar_en": [
+    "mechanical keyboard",
+    "custom keycaps",
+    "gaming mouse wireless",
+    "keyboard switches"
+   ],
+   "anahtar_tr": [
+    "mekanik klavye",
+    "keycap seti",
+    "oyuncu mouse",
+    "klavye switch"
+   ],
+   "gtip": "8471.60 / 8473.30",
+   "gv": 0,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "CE",
+    "EEE"
+   ],
+   "risk": "dusuk",
+   "birim_kg": 1.0,
+   "vergi_guveni": "orta",
+   "segment": [
+    "tuketici"
+   ],
+   "not": "Bilgisayar çevre birimi: ITA kapsamında %0 GV. Kablosuz modeller BTK ister; keycap/switch belgesiz ve hafif."
+  },
+  {
+   "id": "oyun-aksesuar",
+   "ad": "Oyun aksesuarları (retro el konsolu, oyun kolu, kol şarj standı)",
+   "anahtar_en": [
+    "retro handheld game console",
+    "wireless game controller",
+    "controller charging dock"
+   ],
+   "anahtar_tr": [
+    "retro el konsolu",
+    "oyun kolu",
+    "kol şarj istasyonu"
+   ],
+   "gtip": "9504.50 / 9504.90",
+   "gv": 0,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "CE",
+    "EEE",
+    "BTK"
+   ],
+   "risk": "orta",
+   "birim_kg": 0.5,
+   "vergi_guveni": "dusuk",
+   "segment": [
+    "tuketici"
+   ],
+   "not": "Kablosuz kollar BTK; marka (PlayStation/Xbox/Nintendo) logolu ürünler taklit sayılır."
+  },
+  {
+   "id": "masa-duzeni",
+   "ad": "Masa düzeni (monitör kolu, laptop standı, kablo düzenleyici)",
+   "anahtar_en": [
+    "monitor arm",
+    "aluminum laptop stand",
+    "cable management tray"
+   ],
+   "anahtar_tr": [
+    "monitör kolu",
+    "laptop standı",
+    "kablo düzenleyici"
+   ],
+   "gtip": "8302.50 / 7616",
+   "gv": 3.0,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [],
+   "risk": "dusuk",
+   "birim_kg": 2.0,
+   "vergi_guveni": "dusuk",
+   "segment": [
+    "tuketici"
+   ],
+   "not": "Mobilya (94) yerine metal aksam olarak sınıflanırsa düşük vergi; GTİP'i teyit edin. Ağır: navlun yüksek."
+  },
+  {
+   "id": "arac-kamerasi",
+   "ad": "Araç kamerası ve geri görüş kamerası",
+   "anahtar_en": [
+    "dash cam 4k",
+    "rear view camera wireless",
+    "car dvr"
+   ],
+   "anahtar_tr": [
+    "araç kamerası",
+    "geri görüş kamerası",
+    "araç içi kamera"
+   ],
+   "gtip": "8525.89",
+   "gv": 2.0,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "CE",
+    "EEE",
+    "BTK"
+   ],
+   "risk": "orta",
+   "birim_kg": 0.4,
+   "vergi_guveni": "dusuk",
+   "segment": [
+    "tuketici"
+   ],
+   "not": "Wi-Fi'li modeller BTK; süperkapasitörlü modeller lityum sorunu yaşatmaz."
+  },
+  {
+   "id": "bisiklet-aksesuar",
+   "ad": "Bisiklet aksesuarları (şarjlı far/stop, bisiklet bilgisayarı, telefon tutucu)",
+   "anahtar_en": [
+    "bike light usb rechargeable",
+    "bike computer gps",
+    "bike phone mount"
+   ],
+   "anahtar_tr": [
+    "bisiklet farı şarjlı",
+    "bisiklet kilometre saati",
+    "bisiklet telefon tutucu"
+   ],
+   "gtip": "8512.10 / 9029 / 8714",
+   "gv": 2.7,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "LITYUM"
+   ],
+   "risk": "orta",
+   "birim_kg": 0.3,
+   "vergi_guveni": "dusuk",
+   "segment": [
+    "tuketici"
+   ],
+   "not": "Bisiklet (8712) dampingli, aksesuarlar değil; parça (8714) olarak sınıflanırsa damping kontrol edin."
+  },
+  {
+   "id": "masaj-aleti",
+   "ad": "Masaj aletleri (masaj tabancası, boyun/ayak masaj aleti)",
+   "anahtar_en": [
+    "massage gun",
+    "neck massager",
+    "foot massager electric"
+   ],
+   "anahtar_tr": [
+    "masaj tabancası",
+    "boyun masaj aleti",
+    "ayak masaj aleti"
+   ],
+   "gtip": "9019.10",
+   "gv": 0,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "CE",
+    "EEE",
+    "LITYUM",
+    "TAREKS"
+   ],
+   "risk": "orta",
+   "birim_kg": 1.2,
+   "vergi_guveni": "dusuk",
+   "segment": [
+    "tuketici"
+   ],
+   "not": "9019.10 GV düşük; şarjlı modeller lityum kuralı, şebekeye bağlı olanlar TAREKS."
+  },
+  {
+   "id": "kahve-ekipman",
+   "ad": "Kahve ekipmanı (manuel değirmen, hassas kahve terazisi, tamper, WDT, sütlük)",
+   "anahtar_en": [
+    "manual coffee grinder",
+    "coffee scale with timer",
+    "espresso tamper",
+    "wdt tool"
+   ],
+   "anahtar_tr": [
+    "manuel kahve değirmeni",
+    "kahve terazisi",
+    "espresso tamper",
+    "wdt aleti"
+   ],
+   "gtip": "8210 / 8423.10 / 7323",
+   "gv": 2.7,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [],
+   "risk": "dusuk",
+   "birim_kg": 0.6,
+   "vergi_guveni": "dusuk",
+   "segment": [
+    "tuketici"
+   ],
+   "not": "Büyüyen hobi pazarı; çelik mutfak eşyasında (7323) İGV olabilir."
+  },
+  {
+   "id": "mutfak-olcum",
+   "ad": "Mutfak ölçüm aletleri (dijital et termometresi, mutfak tartısı, kablosuz sıcaklık probu)",
+   "anahtar_en": [
+    "meat thermometer digital",
+    "kitchen scale",
+    "wireless meat probe"
+   ],
+   "anahtar_tr": [
+    "et termometresi",
+    "mutfak tartısı",
+    "kablosuz et termometresi"
+   ],
+   "gtip": "9025.19 / 8423.10",
+   "gv": 2.0,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "CE"
+   ],
+   "risk": "dusuk",
+   "birim_kg": 0.2,
+   "vergi_guveni": "dusuk",
+   "segment": [
+    "tuketici"
+   ],
+   "not": "Hafif, küçük, iadesi az. Bluetooth problu modeller BTK ister."
+  },
+  {
+   "id": "led-aydinlatma",
+   "ad": "Dekoratif LED aydınlatma (LED şerit, gün batımı lambası, RGB panel)",
+   "anahtar_en": [
+    "led strip lights rgb",
+    "sunset lamp",
+    "hexagon led light panel"
+   ],
+   "anahtar_tr": [
+    "led şerit",
+    "gün batımı lambası",
+    "altıgen led panel"
+   ],
+   "gtip": "9405 / 8539",
+   "gv": 4.7,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "CE",
+    "EEE",
+    "TAREKS"
+   ],
+   "risk": "orta",
+   "birim_kg": 0.5,
+   "vergi_guveni": "dusuk",
+   "segment": [
+    "tuketici"
+   ],
+   "not": "Şebeke adaptörlü ürünler TAREKS kapsamına girebilir; aydınlatmada İGV olabilir."
+  },
+  {
+   "id": "kamp-aydinlatma",
+   "ad": "Kamp ve outdoor aydınlatma (şarjlı kamp feneri, kafa lambası)",
+   "anahtar_en": [
+    "camping lantern rechargeable",
+    "headlamp rechargeable"
+   ],
+   "anahtar_tr": [
+    "şarjlı kamp feneri",
+    "kafa lambası şarjlı"
+   ],
+   "gtip": "8513.10 / 9405",
+   "gv": 5.7,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "LITYUM"
+   ],
+   "risk": "orta",
+   "birim_kg": 0.3,
+   "vergi_guveni": "dusuk",
+   "segment": [
+    "tuketici"
+   ],
+   "not": "Lityum pil: UN38.3/MSDS belgesi isteyin."
+  },
+  {
+   "id": "saat-kayisi",
+   "ad": "Akıllı saat kayışları ve aksesuarları (metal/örgü kayış, koruyucu kasa)",
+   "anahtar_en": [
+    "apple watch band",
+    "smart watch strap",
+    "watch case protector"
+   ],
+   "anahtar_tr": [
+    "akıllı saat kordonu",
+    "apple watch kordon",
+    "saat koruyucu kasa"
+   ],
+   "gtip": "9113 / 3926",
+   "gv": 6.0,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [],
+   "risk": "dusuk",
+   "birim_kg": 0.05,
+   "vergi_guveni": "dusuk",
+   "segment": [
+    "tuketici"
+   ],
+   "not": "Çok hafif, yüksek marj; ama Trendyol'da çok doygun. Marka logosu kullanmayın."
+  },
+  {
+   "id": "telefon-aksesuar",
+   "ad": "Telefon aksesuarları (araç tutucu, tripod, selfie çubuğu)",
+   "anahtar_en": [
+    "magnetic car phone holder",
+    "phone tripod",
+    "selfie stick"
+   ],
+   "anahtar_tr": [
+    "mıknatıslı telefon tutucu",
+    "telefon tripodu",
+    "selfie çubuğu"
+   ],
+   "gtip": "8302 / 9620 / 3926",
+   "gv": 3.0,
+   "igv": 10,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [],
+   "risk": "orta",
+   "birim_kg": 0.3,
+   "vergi_guveni": "dusuk",
+   "segment": [
+    "tuketici"
+   ],
+   "not": "Türkiye'de aşırı doygun; plastik ağırlıklı ürünlerde İGV olabilir."
+  },
+  {
+   "id": "bluetooth-ses",
+   "ad": "Bluetooth kulaklık ve hoparlör",
+   "anahtar_en": [
+    "bluetooth earbuds",
+    "portable bluetooth speaker"
+   ],
+   "anahtar_tr": [
+    "bluetooth kulaklık",
+    "bluetooth hoparlör"
+   ],
+   "gtip": "8518",
+   "gv": 2.5,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "CE",
+    "EEE",
+    "BTK",
+    "LITYUM"
+   ],
+   "risk": "orta",
+   "birim_kg": 0.3,
+   "vergi_guveni": "dusuk",
+   "segment": [
+    "tuketici"
+   ],
+   "not": "Çok doygun ve BTK uygunluğu gerekli; taklit marka riski yüksek."
   }
  ]
 }

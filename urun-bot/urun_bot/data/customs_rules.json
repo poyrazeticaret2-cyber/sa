@@ -3,10 +3,21 @@
   "son_kontrol": "2026-10-31",
   "kdv_varsayilan": 20,
   "ticari_ithalat": {
-    "_aciklama": "Şirket adına gümrük beyannamesiyle (hava/deniz kargo) ithalat. KDV indirilebilir olduğu için maliyete dahil edilmez, ayrıca gösterilir.",
+    "_aciklama": "Şirket adına gümrük beyannamesiyle (hava/deniz kargo) ithalat. KDV indirilebilir olduğu için maliyete dahil edilmez, ayrıca gösterilir. Parti sabit masrafı: gümrük müşaviri, beyanname, ardiye (TL/parti), parti adedine bölünür.",
     "sigorta_orani_pct": 0.5,
     "navlun_usd_kg": 6.0,
-    "yerel_masraf_pct": 3.0
+    "yerel_masraf_pct": 1.0,
+    "parti_sabit_masraf_try": 5000,
+    "parti_adet": 300
+  },
+  "pazaryeri": {
+    "_aciklama": "Trendyol satış kesintileri (sipariş başına). Kendi panelinizdeki gerçek tarifelerle güncelleyin.",
+    "komisyon_pct": 20,
+    "komisyon_kdv_dahil_fiyattan": true,
+    "kargo_try": 60,
+    "platform_bedeli_try": 10,
+    "ambalaj_try": 5,
+    "gelir_vergisi_pct": 25
   },
   "posta_hizli_kargo": {
     "_aciklama": "Bireysel posta / hızlı kargo (AliExpress paketleri). 30 € muafiyeti 10813 sayılı Karar ile kaldırıldı (Şubat 2026'dan itibaren). Kıymeti 1500 €'yu geçmeyen eşyada tek ve maktu vergi.",
@@ -16,20 +27,61 @@
     "ust_limit_eur": 1500
   },
   "izinler": {
-    "EEE":     {"ad": "AEEE üretici/ithalatçı kaydı (EEE kayıt sistemi)", "ceza": 5},
-    "CE":      {"ad": "CE uygunluk beyanı ve teknik dosya", "ceza": 5},
-    "BTK":     {"ad": "Telsiz (Wi-Fi/Bluetooth/RF) uygunluğu – RED / BTK", "ceza": 15},
-    "TAREKS":  {"ad": "TAREKS ürün güvenliği denetimi (risk analizine göre)", "ceza": 15},
-    "TSE":     {"ad": "TSE / standart uygunluk belgesi", "ceza": 15},
-    "LITYUM":  {"ad": "Lityum pil: UN38.3 + MSDS taşıma, atık pil (TAP) kaydı", "ceza": 15},
-    "GOZETIM": {"ad": "Gözetim belgesi (birim kıymet eşiği altında)", "ceza": 20},
-    "DAMPING": {"ad": "Dampinge karşı önlem vergisi (Çin menşei)", "ceza": 30},
-    "TITCK":   {"ad": "TİTCK / ÜTS kaydı (tıbbi cihaz, kozmetik)", "ceza": 35},
-    "TARIM":   {"ad": "Tarım ve Orman Bakanlığı kontrol belgesi", "ceza": 35},
-    "SHGM":    {"ad": "SHGM kaydı / izni (dron)", "ceza": 35},
-    "IMEI":    {"ad": "IMEI kayıt ücreti + ÖTV (cep telefonu)", "ceza": 50}
+    "EEE": {
+      "ad": "AEEE üretici/ithalatçı kaydı (EEE kayıt sistemi)",
+      "ceza": 5
+    },
+    "CE": {
+      "ad": "CE uygunluk beyanı ve teknik dosya",
+      "ceza": 5
+    },
+    "BTK": {
+      "ad": "Telsiz (Wi-Fi/Bluetooth/RF) uygunluğu – RED / BTK",
+      "ceza": 15
+    },
+    "TAREKS": {
+      "ad": "TAREKS ürün güvenliği denetimi (risk analizine göre)",
+      "ceza": 15
+    },
+    "TSE": {
+      "ad": "TSE / standart uygunluk belgesi",
+      "ceza": 15
+    },
+    "LITYUM": {
+      "ad": "Lityum pil: UN38.3 + MSDS taşıma, atık pil (TAP) kaydı",
+      "ceza": 15
+    },
+    "GOZETIM": {
+      "ad": "Gözetim belgesi (birim kıymet eşiği altında)",
+      "ceza": 20
+    },
+    "DAMPING": {
+      "ad": "Dampinge karşı önlem vergisi (Çin menşei)",
+      "ceza": 30
+    },
+    "TITCK": {
+      "ad": "TİTCK / ÜTS kaydı (tıbbi cihaz, kozmetik)",
+      "ceza": 35
+    },
+    "TARIM": {
+      "ad": "Tarım ve Orman Bakanlığı kontrol belgesi",
+      "ceza": 35
+    },
+    "SHGM": {
+      "ad": "SHGM kaydı / izni (dron)",
+      "ceza": 35
+    },
+    "IMEI": {
+      "ad": "IMEI kayıt ücreti + ÖTV (cep telefonu)",
+      "ceza": 50
+    }
   },
-  "risk_taban_puani": {"dusuk": 100, "orta": 75, "yuksek": 40, "yasak": 0},
+  "risk_taban_puani": {
+    "dusuk": 100,
+    "orta": 75,
+    "yuksek": 40,
+    "yasak": 0
+  },
   "resmi_kaynaklar": [
     "Ticaret Bakanlığı TARA – Türkiye Entegre Tarife sorgulama (GTİP bazında GV, İGV, KDV, ÖTV, önlemler)",
     "Resmî Gazete: İthalat Rejimi Kararı 2026, İGV kararları (ör. 10791, 11508), 10813 sayılı Karar (posta/hızlı kargo)",

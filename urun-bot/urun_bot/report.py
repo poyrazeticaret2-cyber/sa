@@ -29,7 +29,7 @@ def konsol(sonuclar: list[Sonuc], adet: int = 15) -> str:
 CSV_ALANLARI = ["sira", "kategori_id", "kategori", "toplam_puan", "guven_pct", "talep", "bosluk",
                 "vergi", "mevzuat", "marj", "vergi_yuku_pct", "risk", "izinler", "gtip",
                 "dunya_siparis", "dunya_fiyat_usd", "alibaba_fiyat_usd", "tr_ilan_sayisi",
-                "tr_fiyat_try", "varis_maliyeti_usd", "marj_pct", "uyarilar"]
+                "tr_fiyat_try", "varis_maliyeti_usd", "birim_kar_try", "marj_pct", "segment", "uyarilar"]
 
 
 def csv_yaz(sonuclar: list[Sonuc], yol: Path) -> None:
@@ -48,7 +48,9 @@ def csv_yaz(sonuclar: list[Sonuc], yol: Path) -> None:
                 "alibaba_fiyat_usd": s.get("alibaba_fiyat_usd"), "tr_ilan_sayisi": s.get("tr_ilan_sayisi"),
                 "tr_fiyat_try": s.get("tr_fiyat_try"),
                 "varis_maliyeti_usd": (r.maliyet or {}).get("varis_maliyeti_usd"),
+                "birim_kar_try": round(r.birim_kar_try, 1) if r.birim_kar_try is not None else None,
                 "marj_pct": round(r.marj_pct, 1) if r.marj_pct is not None else None,
+                "segment": ", ".join(k.get("segment", [])),
                 "uyarilar": " | ".join(r.uyarilar),
             })
 
@@ -98,7 +100,7 @@ def html_yaz(sonuclar: list[Sonuc], yol: Path, kurallar: dict, meta: dict) -> No
           <th>Gereken belgeler</th><td>{izinler}</td></tr>
       <tr><th>Dünya siparişi (ilk sayfalar)</th><td>{_f(s.get('dunya_siparis'))}</td><th>Trendyol ilan sayısı</th><td>{_f(s.get('tr_ilan_sayisi'))}</td></tr>
       <tr><th>AliExpress medyan fiyat</th><td>{_f(s.get('dunya_fiyat_usd'), ' $', 2)}</td><th>Trendyol medyan fiyat</th><td>{_f(s.get('tr_fiyat_try'), ' ₺')}</td></tr>
-      <tr><th>Tahmini brüt marj</th><td>{_f(r.marj_pct, '%')}</td><th>Veri güveni</th><td>%{r.guven:.0f}</td></tr>
+      <tr><th>Satış başına net kâr</th><td>{_f(r.birim_kar_try, ' ₺')} ({_f(r.marj_pct, '%')})</td><th>Veri güveni</th><td>%{r.guven:.0f}</td></tr>
     </table>
     {maliyet}
     <p class="not">{e(k.get('not', ''))}</p>
@@ -132,10 +134,11 @@ th{{color:var(--soluk);font-weight:500;width:20%}}.etiket{{display:inline-block;
 a{{color:var(--vurgu)}}@media(max-width:600px){{th{{width:auto}}table,tr,td,th{{display:block}}}}
 </style></head><body><main>
 <h1>Ürün Fırsat Raporu</h1>
-<div class="meta">{e(meta.get('tarih', ''))} · {len(sonuclar)} kategori · kaynaklar: {e(meta.get('kaynaklar', ''))} · USD/TRY: {_f(meta.get('usd_try'), '', 2)}</div>
+<div class="meta">{e(meta.get('tarih', ''))} · {len(sonuclar)} kategori{' · segment: ' + e(meta['segment']) if meta.get('segment') else ''} · kaynaklar: {e(meta.get('kaynaklar', ''))} · USD/TRY: {_f(meta.get('usd_try'), '', 2)}</div>
 {'<div class="bant"><b>DEMO verisi.</b> Bu rapordaki sayılar örnektir, gerçek pazar verisi değildir.</div>' if meta.get('demo') else ''}
 <div class="bant">Vergi oranları <b>tahminidir</b> (kural dosyası son kontrol: {e(kurallar.get('son_kontrol', ''))}). Sipariş vermeden önce GTİP'i gümrük müşavirinizle ve TARA'dan doğrulayın.
-Bireysel posta/hızlı kargoda (≤ {posta['ust_limit_eur']} €) AB dışı menşeli eşyaya <b>%{posta['ab_disi_oran_pct']}</b> maktu vergi uygulanır; bu nedenle hesap ticari ithalata göre yapılmıştır.</div>
+Bireysel posta/hızlı kargoda (≤ {posta['ust_limit_eur']} €) AB dışı menşeli eşyaya <b>%{posta['ab_disi_oran_pct']}</b> maktu vergi uygulanır; bu nedenle hesap ticari ithalata göre yapılmıştır.
+Net kâr: Trendyol komisyonu %{kurallar['pazaryeri']['komisyon_pct']}, sipariş başına {kurallar['pazaryeri']['kargo_try'] + kurallar['pazaryeri']['platform_bedeli_try'] + kurallar['pazaryeri']['ambalaj_try']} TL kargo/platform/ambalaj ve %{kurallar['pazaryeri']['gelir_vergisi_pct']} gelir vergisi düşülerek hesaplanır.</div>
 {''.join(satirlar)}
 <h2>Doğrulama kaynakları</h2><ul>{kaynaklar}</ul>
 </main></body></html>"""
