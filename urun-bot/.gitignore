@@ -1,0 +1,5 @@
+.env
+.cache/
+raporlar/
+__pycache__/
+*.pyc

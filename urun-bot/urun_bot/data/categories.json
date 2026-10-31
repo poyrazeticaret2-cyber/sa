@@ -1,0 +1,894 @@
+{
+ "_aciklama": "Kategori kataloğu. gv/igv/otv/kdv yüzde olarak TAHMİNİDİR (Çin menşei, ticari ithalat). Yeni kategori eklemek için aynı yapıda bir kayıt ekleyin.",
+ "kategoriler": [
+  {
+   "id": "elektronik-modul",
+   "ad": "Geliştirme kartları ve sensör modülleri (ESP32, Arduino uyumlu, röle, sürücü)",
+   "anahtar_en": [
+    "esp32 development board",
+    "arduino sensor module",
+    "stepper motor driver module"
+   ],
+   "anahtar_tr": [
+    "esp32 geliştirme kartı",
+    "arduino sensör modülü",
+    "step motor sürücü"
+   ],
+   "gtip": "8542 / 8543 / 8473",
+   "gv": 0,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "EEE"
+   ],
+   "risk": "dusuk",
+   "birim_kg": 0.03,
+   "vergi_guveni": "orta",
+   "not": "Entegre devreler ve modüller ITA kapsamında genelde %0 GV."
+  },
+  {
+   "id": "pc-aksesuar",
+   "ad": "Bilgisayar çevre birimleri (USB-C hub, KVM switch, SSD/NVMe kutusu, dock)",
+   "anahtar_en": [
+    "usb c hub",
+    "kvm switch",
+    "nvme enclosure",
+    "usb c docking station"
+   ],
+   "anahtar_tr": [
+    "usb c hub",
+    "kvm switch",
+    "nvme harici kutu",
+    "usb c dock"
+   ],
+   "gtip": "8471 / 8473",
+   "gv": 0,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "CE",
+    "EEE"
+   ],
+   "risk": "dusuk",
+   "birim_kg": 0.15,
+   "vergi_guveni": "orta",
+   "not": "Bilgisayar ve parçaları ITA kapsamında %0 GV; kablosuz modeller BTK gerektirir."
+  },
+  {
+   "id": "olcum-test",
+   "ad": "Ölçüm ve test cihazları (osiloskop, LCR metre, termal kamera, güç analizörü)",
+   "anahtar_en": [
+    "handheld oscilloscope",
+    "lcr meter",
+    "thermal imaging camera",
+    "usb power meter"
+   ],
+   "anahtar_tr": [
+    "osiloskop",
+    "lcr metre",
+    "termal kamera",
+    "usb güç ölçer"
+   ],
+   "gtip": "9030 / 9025 / 9027",
+   "gv": 1.5,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "CE",
+    "EEE"
+   ],
+   "risk": "dusuk",
+   "birim_kg": 0.6,
+   "vergi_guveni": "orta",
+   "not": "Ölçüm aletleri düşük GV; kalibrasyon belgesi satışı kolaylaştırır."
+  },
+  {
+   "id": "endustriyel-sensor",
+   "ad": "Endüstriyel otomasyon parçaları (endüktif sensör, enkoder, SSR, PLC genişleme)",
+   "anahtar_en": [
+    "inductive proximity sensor",
+    "rotary encoder industrial",
+    "solid state relay",
+    "plc expansion module"
+   ],
+   "anahtar_tr": [
+    "endüktif sensör",
+    "enkoder",
+    "ssr röle",
+    "plc modül"
+   ],
+   "gtip": "8536 / 9031 / 8537",
+   "gv": 2.3,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "CE",
+    "EEE"
+   ],
+   "risk": "dusuk",
+   "birim_kg": 0.1,
+   "vergi_guveni": "orta",
+   "not": "B2B satış: fabrikalar, bakım atölyeleri."
+  },
+  {
+   "id": "3d-yazici-parca",
+   "ad": "3D yazıcı yedek parçaları (hotend, nozzle, PEI tabla, step motor, extruder)",
+   "anahtar_en": [
+    "3d printer hotend",
+    "hardened steel nozzle",
+    "pei build plate",
+    "bmg extruder"
+   ],
+   "anahtar_tr": [
+    "3d yazıcı hotend",
+    "sertleştirilmiş nozzle",
+    "pei tabla",
+    "extruder"
+   ],
+   "gtip": "8485 / 8501 / 8483",
+   "gv": 2.0,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "CE"
+   ],
+   "risk": "dusuk",
+   "birim_kg": 0.1,
+   "vergi_guveni": "orta",
+   "not": "Filament (3916) plastik grubunda İGV riski taşır; parçalar daha avantajlı."
+  },
+  {
+   "id": "cnc-uc",
+   "ad": "CNC freze uçları ve kesici takımlar (karbür freze, V-uç, router bit seti)",
+   "anahtar_en": [
+    "carbide end mill",
+    "cnc router bits set",
+    "v bit engraving",
+    "spiral upcut bit"
+   ],
+   "anahtar_tr": [
+    "karbür freze ucu",
+    "cnc router ucu",
+    "v uç gravür",
+    "spiral freze"
+   ],
+   "gtip": "8207",
+   "gv": 2.7,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [],
+   "risk": "dusuk",
+   "birim_kg": 0.05,
+   "vergi_guveni": "dusuk",
+   "not": "Değiştirilebilir takımlar; İGV satırını TARA'dan teyit edin."
+  },
+  {
+   "id": "obd-teshis",
+   "ad": "Araç teşhis cihazları (kablolu OBD2 tarayıcı, akü test cihazı, TPMS aracı)",
+   "anahtar_en": [
+    "obd2 scanner professional",
+    "car battery tester",
+    "tpms programming tool"
+   ],
+   "anahtar_tr": [
+    "obd2 arıza tespit cihazı",
+    "akü test cihazı",
+    "tpms programlama"
+   ],
+   "gtip": "9031 / 9030",
+   "gv": 2.0,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "CE",
+    "EEE"
+   ],
+   "risk": "dusuk",
+   "birim_kg": 0.4,
+   "vergi_guveni": "orta",
+   "not": "Bluetooth/Wi-Fi modeller BTK kapsamına girer; kablolu modelleri tercih edin."
+  },
+  {
+   "id": "dijital-mikroskop",
+   "ad": "Dijital mikroskoplar (HDMI lehim mikroskobu, USB mikroskop, stereo mikroskop)",
+   "anahtar_en": [
+    "hdmi digital microscope",
+    "soldering microscope",
+    "usb microscope 1000x"
+   ],
+   "anahtar_tr": [
+    "dijital mikroskop",
+    "lehim mikroskobu",
+    "usb mikroskop"
+   ],
+   "gtip": "9011 / 8525",
+   "gv": 3.0,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "CE",
+    "EEE"
+   ],
+   "risk": "dusuk",
+   "birim_kg": 0.9,
+   "vergi_guveni": "dusuk",
+   "not": "Telefon tamircileri ve elektronik atölyeleri hedef kitle."
+  },
+  {
+   "id": "lehim-ekipman",
+   "ad": "Lehim ve rework ekipmanı (akıllı havya, sıcak hava istasyonu, ön ısıtıcı)",
+   "anahtar_en": [
+    "smart soldering iron",
+    "hot air rework station",
+    "pcb preheater"
+   ],
+   "anahtar_tr": [
+    "akıllı havya",
+    "sıcak hava istasyonu",
+    "pcb ön ısıtıcı"
+   ],
+   "gtip": "8515",
+   "gv": 2.5,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "CE",
+    "EEE",
+    "TAREKS"
+   ],
+   "risk": "orta",
+   "birim_kg": 0.8,
+   "vergi_guveni": "orta",
+   "not": "Şebeke gerilimli cihazlar TAREKS risk analizine takılabilir."
+  },
+  {
+   "id": "hassas-el-aleti",
+   "ad": "Hassas el aletleri (saat tamir seti, hassas tornavida seti, mücevher aletleri)",
+   "anahtar_en": [
+    "precision screwdriver set",
+    "watch repair tool kit",
+    "jewelry making tools"
+   ],
+   "anahtar_tr": [
+    "hassas tornavida seti",
+    "saat tamir seti",
+    "takı yapım aletleri"
+   ],
+   "gtip": "8205 / 8203",
+   "gv": 3.7,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [],
+   "risk": "dusuk",
+   "birim_kg": 0.3,
+   "vergi_guveni": "dusuk",
+   "not": "El aletlerinde Çin menşei İGV olabilir; TARA'dan teyit edin."
+  },
+  {
+   "id": "muzik-aksesuar",
+   "ad": "Müzik ekipmanı aksesuarları (gitar pedalı, MIDI kontrolcü, pickup, pedalboard)",
+   "anahtar_en": [
+    "guitar effects pedal",
+    "midi controller",
+    "guitar pickup humbucker",
+    "pedalboard"
+   ],
+   "anahtar_tr": [
+    "gitar pedalı",
+    "midi klavye kontrolcü",
+    "gitar manyetiği",
+    "pedalboard"
+   ],
+   "gtip": "8543 / 9209 / 8518",
+   "gv": 2.5,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "CE",
+    "EEE"
+   ],
+   "risk": "dusuk",
+   "birim_kg": 0.4,
+   "vergi_guveni": "dusuk",
+   "not": "Niş ama sadık müşteri kitlesi."
+  },
+  {
+   "id": "foto-video-rig",
+   "ad": "Foto/video rig ekipmanı (kamera kafesi, follow focus, V-mount plaka, matte box)",
+   "anahtar_en": [
+    "camera cage",
+    "follow focus",
+    "v mount battery plate",
+    "matte box"
+   ],
+   "anahtar_tr": [
+    "kamera kafesi",
+    "follow focus",
+    "v mount plaka",
+    "matte box"
+   ],
+   "gtip": "9620 / 9006",
+   "gv": 2.7,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [],
+   "risk": "dusuk",
+   "birim_kg": 0.5,
+   "vergi_guveni": "orta",
+   "not": "V-mount bataryalar lityum kuralına girer; sadece mekanik parçalar bu grupta."
+  },
+  {
+   "id": "ag-kablolu",
+   "ad": "Kablolu ağ ekipmanı (gigabit/2.5G switch, PoE injector, SFP modül, patch panel)",
+   "anahtar_en": [
+    "2.5g ethernet switch",
+    "poe injector",
+    "sfp module 10g",
+    "patch panel cat6"
+   ],
+   "anahtar_tr": [
+    "2.5g switch",
+    "poe injector",
+    "sfp modül",
+    "patch panel"
+   ],
+   "gtip": "8517.62 / 8544",
+   "gv": 0,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "CE",
+    "EEE"
+   ],
+   "risk": "dusuk",
+   "birim_kg": 0.4,
+   "vergi_guveni": "orta",
+   "not": "Kablolu cihazlar BTK gerektirmez; ITA kapsamında %0 GV."
+  },
+  {
+   "id": "etiket-barkod",
+   "ad": "Etiket yazıcı ve barkod okuyucu (termal etiket yazıcı, 2D barkod okuyucu)",
+   "anahtar_en": [
+    "thermal label printer",
+    "2d barcode scanner usb",
+    "shipping label printer"
+   ],
+   "anahtar_tr": [
+    "termal etiket yazıcı",
+    "barkod okuyucu",
+    "kargo etiket yazıcı"
+   ],
+   "gtip": "8443.32 / 8471.90",
+   "gv": 0,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "CE",
+    "EEE"
+   ],
+   "risk": "dusuk",
+   "birim_kg": 0.8,
+   "vergi_guveni": "orta",
+   "not": "E-ticaret satıcılarına B2B satış; Bluetooth modeller BTK ister."
+  },
+  {
+   "id": "dikis-parca",
+   "ad": "Sanayi dikiş makinesi parçaları ve ayakları",
+   "anahtar_en": [
+    "industrial sewing machine presser foot",
+    "sewing machine bobbin case",
+    "overlock parts"
+   ],
+   "anahtar_tr": [
+    "dikiş makinesi ayağı",
+    "masura mekik",
+    "overlok yedek parça"
+   ],
+   "gtip": "8452.90",
+   "gv": 2.0,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [],
+   "risk": "dusuk",
+   "birim_kg": 0.05,
+   "vergi_guveni": "dusuk",
+   "not": "Türkiye tekstil sektörü büyük; yerel tedarik de güçlü olabilir."
+  },
+  {
+   "id": "robot-supurge-parca",
+   "ad": "Robot süpürge yedek parçaları (ana fırça, HEPA filtre, mop bezi)",
+   "anahtar_en": [
+    "robot vacuum replacement parts",
+    "roborock filter",
+    "main brush replacement"
+   ],
+   "anahtar_tr": [
+    "robot süpürge yedek parça",
+    "robot süpürge filtre",
+    "robot süpürge fırça"
+   ],
+   "gtip": "8508.70 / 9603",
+   "gv": 2.5,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [],
+   "risk": "dusuk",
+   "birim_kg": 0.2,
+   "vergi_guveni": "dusuk",
+   "not": "Uyumlu (marka dışı) parça; marka/logo kullanmayın."
+  },
+  {
+   "id": "solar-mppt",
+   "ad": "Küçük solar elektronik (MPPT şarj kontrol cihazı, DC-DC dönüştürücü)",
+   "anahtar_en": [
+    "mppt charge controller",
+    "dc dc buck converter",
+    "solar battery monitor"
+   ],
+   "anahtar_tr": [
+    "mppt şarj kontrol",
+    "dc dc dönüştürücü",
+    "akü monitörü"
+   ],
+   "gtip": "8504.40",
+   "gv": 2.0,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "CE",
+    "EEE",
+    "TAREKS"
+   ],
+   "risk": "orta",
+   "birim_kg": 0.6,
+   "vergi_guveni": "orta",
+   "not": "Güneş paneli ve çerçevesi DAMPİNG kapsamında; yalnız elektronik kısım."
+  },
+  {
+   "id": "tamir-aleti-telefon",
+   "ad": "Telefon/tablet tamir ekipmanı (ekran ayırıcı, OCA laminasyon, programlayıcı)",
+   "anahtar_en": [
+    "lcd screen separator",
+    "oca laminating machine",
+    "phone repair programmer"
+   ],
+   "anahtar_tr": [
+    "ekran ayırma makinesi",
+    "oca laminasyon",
+    "telefon tamir programlayıcı"
+   ],
+   "gtip": "8479 / 8543",
+   "gv": 1.7,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "CE",
+    "EEE"
+   ],
+   "risk": "dusuk",
+   "birim_kg": 3.0,
+   "vergi_guveni": "dusuk",
+   "not": "Tamircilere B2B; makineler ağır, navlun maliyeti yüksek."
+  },
+  {
+   "id": "akilli-ev-zigbee",
+   "ad": "Akıllı ev (Zigbee sensör, akıllı priz, Matter köprü)",
+   "anahtar_en": [
+    "zigbee sensor",
+    "smart plug zigbee",
+    "matter bridge"
+   ],
+   "anahtar_tr": [
+    "zigbee sensör",
+    "akıllı priz",
+    "matter hub"
+   ],
+   "gtip": "8517.62 / 8536",
+   "gv": 0,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "CE",
+    "EEE",
+    "BTK",
+    "TAREKS"
+   ],
+   "risk": "orta",
+   "birim_kg": 0.1,
+   "vergi_guveni": "orta",
+   "not": "Telsiz cihaz: RED/BTK uygunluğu şart; şebeke prizleri TAREKS."
+  },
+  {
+   "id": "ebike-donusum",
+   "ad": "E-bisiklet dönüşüm kiti (hub motor, kontrol ünitesi, ekran; batarya hariç)",
+   "anahtar_en": [
+    "ebike conversion kit",
+    "hub motor 500w",
+    "ebike controller"
+   ],
+   "anahtar_tr": [
+    "elektrikli bisiklet dönüşüm kiti",
+    "hub motor",
+    "e-bisiklet kontrol ünitesi"
+   ],
+   "gtip": "8501 / 8714",
+   "gv": 3.0,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "CE",
+    "EEE"
+   ],
+   "risk": "orta",
+   "birim_kg": 4.0,
+   "vergi_guveni": "dusuk",
+   "not": "Bisiklet parçalarında damping olasılığı var; GTİP'i mutlaka kontrol edin."
+  },
+  {
+   "id": "balikcilik",
+   "ad": "Balıkçılık ekipmanı (olta makinesi, suni yem, balık bulucu)",
+   "anahtar_en": [
+    "fishing reel",
+    "fishing lure set",
+    "fish finder sonar"
+   ],
+   "anahtar_tr": [
+    "olta makinesi",
+    "suni yem seti",
+    "balık bulucu sonar"
+   ],
+   "gtip": "9507 / 9014",
+   "gv": 3.0,
+   "igv": 10,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [],
+   "risk": "orta",
+   "birim_kg": 0.4,
+   "vergi_guveni": "dusuk",
+   "not": "Spor malzemelerinde İGV olabilir (tahmini %10)."
+  },
+  {
+   "id": "evcil-tekno",
+   "ad": "Evcil hayvan teknolojisi (otomatik mama kabı, su çeşmesi, GPS tasma)",
+   "anahtar_en": [
+    "automatic pet feeder",
+    "pet water fountain",
+    "gps pet tracker"
+   ],
+   "anahtar_tr": [
+    "otomatik mama kabı",
+    "kedi su çeşmesi",
+    "gps tasma"
+   ],
+   "gtip": "8509 / 8526",
+   "gv": 2.2,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "CE",
+    "EEE",
+    "BTK"
+   ],
+   "risk": "orta",
+   "birim_kg": 1.0,
+   "vergi_guveni": "orta",
+   "not": "Wi-Fi/GPS modeller BTK; sıradan mama kapları yerelde yaygın."
+  },
+  {
+   "id": "plastik-ev-esyasi",
+   "ad": "Plastik ev ve mutfak eşyası (organizer, saklama kabı)",
+   "anahtar_en": [
+    "kitchen organizer",
+    "storage container plastic"
+   ],
+   "anahtar_tr": [
+    "mutfak düzenleyici",
+    "saklama kabı"
+   ],
+   "gtip": "3924",
+   "gv": 6.5,
+   "igv": 20,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "GOZETIM"
+   ],
+   "risk": "orta",
+   "birim_kg": 0.3,
+   "vergi_guveni": "dusuk",
+   "not": "Plastik ürünlerde İGV ve gözetim yaygın; yerel üretim güçlü."
+  },
+  {
+   "id": "ayakkabi",
+   "ad": "Ayakkabı",
+   "anahtar_en": [
+    "sneakers"
+   ],
+   "anahtar_tr": [
+    "spor ayakkabı"
+   ],
+   "gtip": "64",
+   "gv": 17,
+   "igv": 30,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "DAMPING",
+    "TAREKS",
+    "GOZETIM"
+   ],
+   "risk": "yuksek",
+   "birim_kg": 0.8,
+   "vergi_guveni": "orta",
+   "not": "Damping + İGV + gözetim; Çin'den kârlı değil."
+  },
+  {
+   "id": "hazir-giyim",
+   "ad": "Hazır giyim",
+   "anahtar_en": [
+    "t shirt"
+   ],
+   "anahtar_tr": [
+    "tişört"
+   ],
+   "gtip": "61 / 62",
+   "gv": 12,
+   "igv": 30,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "GOZETIM"
+   ],
+   "risk": "yuksek",
+   "birim_kg": 0.3,
+   "vergi_guveni": "orta",
+   "not": "Yüksek İGV, güçlü yerel üretim."
+  },
+  {
+   "id": "oyuncak",
+   "ad": "Oyuncak",
+   "anahtar_en": [
+    "educational toy"
+   ],
+   "anahtar_tr": [
+    "eğitici oyuncak"
+   ],
+   "gtip": "9503",
+   "gv": 4.7,
+   "igv": 20,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "CE",
+    "TAREKS"
+   ],
+   "risk": "yuksek",
+   "birim_kg": 0.5,
+   "vergi_guveni": "orta",
+   "not": "Oyuncak yönetmeliği: TAREKS + CE zorunlu, sık red."
+  },
+  {
+   "id": "kozmetik",
+   "ad": "Kozmetik",
+   "anahtar_en": [
+    "face serum"
+   ],
+   "anahtar_tr": [
+    "yüz serumu"
+   ],
+   "gtip": "33",
+   "gv": 6.5,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "TITCK"
+   ],
+   "risk": "yuksek",
+   "birim_kg": 0.2,
+   "vergi_guveni": "orta",
+   "not": "ÜTS kaydı, sorumlu kişi gerekir."
+  },
+  {
+   "id": "takviye-gida",
+   "ad": "Gıda takviyesi",
+   "anahtar_en": [
+    "collagen supplement"
+   ],
+   "anahtar_tr": [
+    "kolajen takviyesi"
+   ],
+   "gtip": "2106",
+   "gv": 10,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "TARIM"
+   ],
+   "risk": "yuksek",
+   "birim_kg": 0.3,
+   "vergi_guveni": "orta",
+   "not": "Tarım Bakanlığı onayı gerekir."
+  },
+  {
+   "id": "gunes-gozlugu",
+   "ad": "Güneş gözlüğü",
+   "anahtar_en": [
+    "sunglasses"
+   ],
+   "anahtar_tr": [
+    "güneş gözlüğü"
+   ],
+   "gtip": "9004",
+   "gv": 2.9,
+   "igv": 20,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "DAMPING",
+    "TAREKS"
+   ],
+   "risk": "yuksek",
+   "birim_kg": 0.1,
+   "vergi_guveni": "orta",
+   "not": "Çin menşei gözlüklerde damping."
+  },
+  {
+   "id": "bisiklet",
+   "ad": "Bisiklet",
+   "anahtar_en": [
+    "mountain bike"
+   ],
+   "anahtar_tr": [
+    "dağ bisikleti"
+   ],
+   "gtip": "8712",
+   "gv": 14,
+   "igv": 10,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "DAMPING",
+    "TAREKS"
+   ],
+   "risk": "yuksek",
+   "birim_kg": 15,
+   "vergi_guveni": "orta",
+   "not": "Damping kapsamında."
+  },
+  {
+   "id": "seramik-sofra",
+   "ad": "Seramik sofra takımı",
+   "anahtar_en": [
+    "ceramic dinnerware"
+   ],
+   "anahtar_tr": [
+    "seramik tabak"
+   ],
+   "gtip": "6911 / 6912",
+   "gv": 12,
+   "igv": 20,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "DAMPING",
+    "GOZETIM"
+   ],
+   "risk": "yuksek",
+   "birim_kg": 2,
+   "vergi_guveni": "orta",
+   "not": "Damping kapsamında."
+  },
+  {
+   "id": "gunes-paneli",
+   "ad": "Güneş paneli",
+   "anahtar_en": [
+    "solar panel"
+   ],
+   "anahtar_tr": [
+    "güneş paneli"
+   ],
+   "gtip": "8541.43",
+   "gv": 0,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "DAMPING"
+   ],
+   "risk": "yuksek",
+   "birim_kg": 20,
+   "vergi_guveni": "orta",
+   "not": "Panel ve çerçevede damping (çerçeve için %45,99 – 2026/23 tebliği)."
+  },
+  {
+   "id": "dron",
+   "ad": "Dron",
+   "anahtar_en": [
+    "fpv drone"
+   ],
+   "anahtar_tr": [
+    "fpv drone"
+   ],
+   "gtip": "8806",
+   "gv": 0,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [
+    "SHGM",
+    "BTK"
+   ],
+   "risk": "yuksek",
+   "birim_kg": 1,
+   "vergi_guveni": "orta",
+   "not": "SHGM kaydı ve frekans kısıtları."
+  },
+  {
+   "id": "cep-telefonu",
+   "ad": "Cep telefonu",
+   "anahtar_en": [
+    "smartphone"
+   ],
+   "anahtar_tr": [
+    "akıllı telefon"
+   ],
+   "gtip": "8517.13",
+   "gv": 0,
+   "igv": 0,
+   "otv": 25,
+   "kdv": 20,
+   "izinler": [
+    "IMEI",
+    "BTK"
+   ],
+   "risk": "yasak",
+   "birim_kg": 0.3,
+   "vergi_guveni": "orta",
+   "not": "IMEI kayıt ücreti + ÖTV; ticari ithalat için uygun değil."
+  },
+  {
+   "id": "e-sigara",
+   "ad": "Elektronik sigara",
+   "anahtar_en": [
+    "vape"
+   ],
+   "anahtar_tr": [
+    "elektronik sigara"
+   ],
+   "gtip": "8543.40",
+   "gv": 0,
+   "igv": 0,
+   "otv": 0,
+   "kdv": 20,
+   "izinler": [],
+   "risk": "yasak",
+   "birim_kg": 0.1,
+   "vergi_guveni": "orta",
+   "not": "Türkiye'de ithalatı ve satışı yasak."
+  }
+ ]
+}

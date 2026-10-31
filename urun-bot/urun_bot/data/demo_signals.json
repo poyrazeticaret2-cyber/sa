@@ -1,0 +1,250 @@
+{
+ "_aciklama": "ÖRNEK (uydurma) sinyaller – yalnız --demo modunda botun çalışmasını göstermek içindir. Gerçek pazar verisi DEĞİLDİR.",
+ "sinyaller": {
+  "elektronik-modul": {
+   "dunya_siparis": 48000,
+   "dunya_fiyat_usd": 6.5,
+   "tr_ilan_sayisi": 9500,
+   "tr_fiyat_try": 420,
+   "trend_tr": 18
+  },
+  "pc-aksesuar": {
+   "dunya_siparis": 95000,
+   "dunya_fiyat_usd": 24,
+   "tr_ilan_sayisi": 60000,
+   "tr_fiyat_try": 1450,
+   "trend_tr": 35
+  },
+  "olcum-test": {
+   "dunya_siparis": 21000,
+   "dunya_fiyat_usd": 68,
+   "tr_ilan_sayisi": 1800,
+   "tr_fiyat_try": 5200,
+   "trend_tr": 12
+  },
+  "endustriyel-sensor": {
+   "dunya_siparis": 14000,
+   "dunya_fiyat_usd": 9.5,
+   "tr_ilan_sayisi": 2600,
+   "tr_fiyat_try": 780,
+   "trend_tr": 9
+  },
+  "3d-yazici-parca": {
+   "dunya_siparis": 36000,
+   "dunya_fiyat_usd": 11,
+   "tr_ilan_sayisi": 1400,
+   "tr_fiyat_try": 690,
+   "trend_tr": 14
+  },
+  "cnc-uc": {
+   "dunya_siparis": 27000,
+   "dunya_fiyat_usd": 8,
+   "tr_ilan_sayisi": 900,
+   "tr_fiyat_try": 520,
+   "trend_tr": 8
+  },
+  "obd-teshis": {
+   "dunya_siparis": 52000,
+   "dunya_fiyat_usd": 22,
+   "tr_ilan_sayisi": 7200,
+   "tr_fiyat_try": 1350,
+   "trend_tr": 22
+  },
+  "dijital-mikroskop": {
+   "dunya_siparis": 18000,
+   "dunya_fiyat_usd": 55,
+   "tr_ilan_sayisi": 650,
+   "tr_fiyat_try": 3900,
+   "trend_tr": 10
+  },
+  "lehim-ekipman": {
+   "dunya_siparis": 24000,
+   "dunya_fiyat_usd": 38,
+   "tr_ilan_sayisi": 1100,
+   "tr_fiyat_try": 2600,
+   "trend_tr": 11
+  },
+  "hassas-el-aleti": {
+   "dunya_siparis": 61000,
+   "dunya_fiyat_usd": 12,
+   "tr_ilan_sayisi": 14000,
+   "tr_fiyat_try": 650,
+   "trend_tr": 25
+  },
+  "muzik-aksesuar": {
+   "dunya_siparis": 16000,
+   "dunya_fiyat_usd": 29,
+   "tr_ilan_sayisi": 3300,
+   "tr_fiyat_try": 1900,
+   "trend_tr": 15
+  },
+  "foto-video-rig": {
+   "dunya_siparis": 9000,
+   "dunya_fiyat_usd": 34,
+   "tr_ilan_sayisi": 480,
+   "tr_fiyat_try": 2700,
+   "trend_tr": 7
+  },
+  "ag-kablolu": {
+   "dunya_siparis": 30000,
+   "dunya_fiyat_usd": 27,
+   "tr_ilan_sayisi": 5200,
+   "tr_fiyat_try": 1650,
+   "trend_tr": 19
+  },
+  "etiket-barkod": {
+   "dunya_siparis": 42000,
+   "dunya_fiyat_usd": 45,
+   "tr_ilan_sayisi": 4100,
+   "tr_fiyat_try": 2900,
+   "trend_tr": 16
+  },
+  "dikis-parca": {
+   "dunya_siparis": 12000,
+   "dunya_fiyat_usd": 3.5,
+   "tr_ilan_sayisi": 5800,
+   "tr_fiyat_try": 210,
+   "trend_tr": 40
+  },
+  "robot-supurge-parca": {
+   "dunya_siparis": 88000,
+   "dunya_fiyat_usd": 9,
+   "tr_ilan_sayisi": 23000,
+   "tr_fiyat_try": 480,
+   "trend_tr": 45
+  },
+  "solar-mppt": {
+   "dunya_siparis": 26000,
+   "dunya_fiyat_usd": 31,
+   "tr_ilan_sayisi": 1700,
+   "tr_fiyat_try": 2300,
+   "trend_tr": 20
+  },
+  "tamir-aleti-telefon": {
+   "dunya_siparis": 7000,
+   "dunya_fiyat_usd": 160,
+   "tr_ilan_sayisi": 420,
+   "tr_fiyat_try": 11500,
+   "trend_tr": 13
+  },
+  "akilli-ev-zigbee": {
+   "dunya_siparis": 70000,
+   "dunya_fiyat_usd": 14,
+   "tr_ilan_sayisi": 8800,
+   "tr_fiyat_try": 900,
+   "trend_tr": 24
+  },
+  "ebike-donusum": {
+   "dunya_siparis": 11000,
+   "dunya_fiyat_usd": 180,
+   "tr_ilan_sayisi": 520,
+   "tr_fiyat_try": 14500,
+   "trend_tr": 9
+  },
+  "balikcilik": {
+   "dunya_siparis": 65000,
+   "dunya_fiyat_usd": 15,
+   "tr_ilan_sayisi": 38000,
+   "tr_fiyat_try": 780,
+   "trend_tr": 30
+  },
+  "evcil-tekno": {
+   "dunya_siparis": 54000,
+   "dunya_fiyat_usd": 28,
+   "tr_ilan_sayisi": 12000,
+   "tr_fiyat_try": 1650,
+   "trend_tr": 33
+  },
+  "plastik-ev-esyasi": {
+   "dunya_siparis": 120000,
+   "dunya_fiyat_usd": 5,
+   "tr_ilan_sayisi": 150000,
+   "tr_fiyat_try": 250,
+   "trend_tr": 60
+  },
+  "ayakkabi": {
+   "dunya_siparis": 200000,
+   "dunya_fiyat_usd": 25,
+   "tr_ilan_sayisi": 900000,
+   "tr_fiyat_try": 1500,
+   "trend_tr": 70
+  },
+  "hazir-giyim": {
+   "dunya_siparis": 300000,
+   "dunya_fiyat_usd": 8,
+   "tr_ilan_sayisi": 2000000,
+   "tr_fiyat_try": 400,
+   "trend_tr": 75
+  },
+  "oyuncak": {
+   "dunya_siparis": 150000,
+   "dunya_fiyat_usd": 12,
+   "tr_ilan_sayisi": 300000,
+   "tr_fiyat_try": 600,
+   "trend_tr": 55
+  },
+  "kozmetik": {
+   "dunya_siparis": 90000,
+   "dunya_fiyat_usd": 7,
+   "tr_ilan_sayisi": 400000,
+   "tr_fiyat_try": 450,
+   "trend_tr": 65
+  },
+  "takviye-gida": {
+   "dunya_siparis": 40000,
+   "dunya_fiyat_usd": 10,
+   "tr_ilan_sayisi": 80000,
+   "tr_fiyat_try": 700,
+   "trend_tr": 50
+  },
+  "gunes-gozlugu": {
+   "dunya_siparis": 110000,
+   "dunya_fiyat_usd": 6,
+   "tr_ilan_sayisi": 120000,
+   "tr_fiyat_try": 500,
+   "trend_tr": 50
+  },
+  "bisiklet": {
+   "dunya_siparis": 5000,
+   "dunya_fiyat_usd": 250,
+   "tr_ilan_sayisi": 20000,
+   "tr_fiyat_try": 15000,
+   "trend_tr": 40
+  },
+  "seramik-sofra": {
+   "dunya_siparis": 30000,
+   "dunya_fiyat_usd": 20,
+   "tr_ilan_sayisi": 90000,
+   "tr_fiyat_try": 900,
+   "trend_tr": 45
+  },
+  "gunes-paneli": {
+   "dunya_siparis": 20000,
+   "dunya_fiyat_usd": 90,
+   "tr_ilan_sayisi": 15000,
+   "tr_fiyat_try": 4500,
+   "trend_tr": 50
+  },
+  "dron": {
+   "dunya_siparis": 25000,
+   "dunya_fiyat_usd": 120,
+   "tr_ilan_sayisi": 6000,
+   "tr_fiyat_try": 9000,
+   "trend_tr": 30
+  },
+  "cep-telefonu": {
+   "dunya_siparis": 400000,
+   "dunya_fiyat_usd": 150,
+   "tr_ilan_sayisi": 500000,
+   "tr_fiyat_try": 15000,
+   "trend_tr": 80
+  },
+  "e-sigara": {
+   "dunya_siparis": 0,
+   "dunya_fiyat_usd": 0,
+   "tr_ilan_sayisi": 0,
+   "tr_fiyat_try": 0,
+   "trend_tr": 0
+  }
+ }
+}

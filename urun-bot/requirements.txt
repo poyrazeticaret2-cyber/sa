@@ -1,0 +1,3 @@
+# Temel bot yalnız Python standart kütüphanesiyle çalışır (Python 3.10+).
+# Google Trends sinyali için opsiyonel:
+pytrends>=4.9

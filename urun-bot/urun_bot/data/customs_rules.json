@@ -1,0 +1,39 @@
+{
+  "_aciklama": "Türkiye ithalat vergi ve mevzuat varsayımları. ORANLAR TAHMİNİDİR; her GTİP için TARA (Türkiye Entegre Tarife) ve Resmî Gazete'den doğrulayın. Bu dosyayı düzenleyerek botun hesabını güncelleyebilirsiniz.",
+  "son_kontrol": "2026-10-31",
+  "kdv_varsayilan": 20,
+  "ticari_ithalat": {
+    "_aciklama": "Şirket adına gümrük beyannamesiyle (hava/deniz kargo) ithalat. KDV indirilebilir olduğu için maliyete dahil edilmez, ayrıca gösterilir.",
+    "sigorta_orani_pct": 0.5,
+    "navlun_usd_kg": 6.0,
+    "yerel_masraf_pct": 3.0
+  },
+  "posta_hizli_kargo": {
+    "_aciklama": "Bireysel posta / hızlı kargo (AliExpress paketleri). 30 € muafiyeti 10813 sayılı Karar ile kaldırıldı (Şubat 2026'dan itibaren). Kıymeti 1500 €'yu geçmeyen eşyada tek ve maktu vergi.",
+    "ab_disi_oran_pct": 60,
+    "ab_oran_pct": 30,
+    "otv_listesi_ek_pct": 20,
+    "ust_limit_eur": 1500
+  },
+  "izinler": {
+    "EEE":     {"ad": "AEEE üretici/ithalatçı kaydı (EEE kayıt sistemi)", "ceza": 5},
+    "CE":      {"ad": "CE uygunluk beyanı ve teknik dosya", "ceza": 5},
+    "BTK":     {"ad": "Telsiz (Wi-Fi/Bluetooth/RF) uygunluğu – RED / BTK", "ceza": 15},
+    "TAREKS":  {"ad": "TAREKS ürün güvenliği denetimi (risk analizine göre)", "ceza": 15},
+    "TSE":     {"ad": "TSE / standart uygunluk belgesi", "ceza": 15},
+    "LITYUM":  {"ad": "Lityum pil: UN38.3 + MSDS taşıma, atık pil (TAP) kaydı", "ceza": 15},
+    "GOZETIM": {"ad": "Gözetim belgesi (birim kıymet eşiği altında)", "ceza": 20},
+    "DAMPING": {"ad": "Dampinge karşı önlem vergisi (Çin menşei)", "ceza": 30},
+    "TITCK":   {"ad": "TİTCK / ÜTS kaydı (tıbbi cihaz, kozmetik)", "ceza": 35},
+    "TARIM":   {"ad": "Tarım ve Orman Bakanlığı kontrol belgesi", "ceza": 35},
+    "SHGM":    {"ad": "SHGM kaydı / izni (dron)", "ceza": 35},
+    "IMEI":    {"ad": "IMEI kayıt ücreti + ÖTV (cep telefonu)", "ceza": 50}
+  },
+  "risk_taban_puani": {"dusuk": 100, "orta": 75, "yuksek": 40, "yasak": 0},
+  "resmi_kaynaklar": [
+    "Ticaret Bakanlığı TARA – Türkiye Entegre Tarife sorgulama (GTİP bazında GV, İGV, KDV, ÖTV, önlemler)",
+    "Resmî Gazete: İthalat Rejimi Kararı 2026, İGV kararları (ör. 10791, 11508), 10813 sayılı Karar (posta/hızlı kargo)",
+    "Ticaret Bakanlığı Ürün Güvenliği ve Denetimi tebliğleri (TAREKS kapsamı)",
+    "Dampinge karşı önlem tebliğleri (Ticaret Bakanlığı İthalat Genel Müdürlüğü)"
+  ]
+}
