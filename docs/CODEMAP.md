@@ -76,6 +76,7 @@ PHP 8.2 (framework yok) / MySQL-MariaDB (PDO) / Composer-npm yok; Plesk-Apache �
 | `ticari_maliyet()`, `posta_maliyet()` | `urun-bot/urun_bot/customs.py` | Türkiye varış maliyeti (beyanname / posta %60) |
 | `score_category()`, `sirala()` | `urun-bot/urun_bot/scoring.py` | Fırsat skoru, risk/segment filtresi |
 | `satis_basina_kar()`, `basabas_fiyat()` | `urun-bot/urun_bot/scoring.py` | Trendyol satış başına net kâr, başabaş fiyat |
+| `cok_satanlar.topla()`, `filtrele()` | `urun-bot/urun_bot/cok_satanlar.py` | `--cok-satanlar`: AliExpress çok satan + yüksek puanlı ürünler, Alibaba/Trendyol linkleri |
 | `tek_urun_hesabi()` | `urun-bot/urun_bot/cli.py` | `--hesap ALIS_USD SATIS_TL` döküm |
 
 ## Veri modeli

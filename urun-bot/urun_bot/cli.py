@@ -31,6 +31,12 @@ def arguman_ayristir(argv=None) -> argparse.Namespace:
                    help="Tek ürün kâr hesabı: Alibaba birim fiyatı ($) ve Trendyol KDV dahil fiyatı (TL). "
                         "--kategori ile tek kategori verin")
     p.add_argument("--adet", type=int, help="Hesapta parti adedi (varsayılan kural dosyasından)")
+    p.add_argument("--cok-satanlar", action="store_true",
+                   help="AliExpress'te çok satan ve çok beğenilen ürün listesi (Alibaba/Trendyol linkleriyle)")
+    p.add_argument("--kelime", action="append", default=[], metavar="EN_KELIME",
+                   help="--cok-satanlar için ek İngilizce arama kelimesi (birden fazla verilebilir)")
+    p.add_argument("--min-olumlu", type=float, default=95, help="En düşük olumlu değerlendirme %% (varsayılan 95)")
+    p.add_argument("--min-satis", type=int, default=500, help="En düşük son dönem satış (varsayılan 500)")
     p.add_argument("--riskli-dahil", action="store_true", help="Yüksek riskli kategorileri de listele")
     p.add_argument("--min-puan", type=float, default=0)
     p.add_argument("--ilk", type=int, default=15, help="Konsolda gösterilecek satır")
@@ -55,6 +61,9 @@ def main(argv=None) -> int:
 
     if a.hesap:
         return tek_urun_hesabi(a, kurallar, kategoriler)
+
+    if a.cok_satanlar:
+        return cok_satanlar_listesi(a, kategoriler)
 
     if a.kategori:
         secim = {x.strip() for x in a.kategori.split(",")}
@@ -169,4 +178,33 @@ def tek_urun_hesabi(a: argparse.Namespace, kurallar: dict, kategoriler: list[dic
     print(f"  {t['parti_adet']} adetin tamamı satılırsa: yatırım ≈ {(maliyet_try + m.kdv_usd * kur) * t['parti_adet']:,.0f} TL "
           f"(KDV dahil), net kâr ≈ {kar * t['parti_adet']:,.0f} TL")
     print("\n  Vergi oranları ve pazaryeri kesintileri tahminidir; customs_rules.json'dan güncelleyin.")
+    return 0
+
+
+def cok_satanlar_listesi(a: argparse.Namespace, kategoriler: list[dict]) -> int:
+    from . import cok_satanlar
+    from .report import dosya_adi
+
+    if not aliexpress.yapilandirildi():
+        print("Bu liste AliExpress API anahtarı ister: .env içine ALIEXPRESS_APP_KEY ve "
+              "ALIEXPRESS_APP_SECRET yazın (README > AliExpress anahtarı).")
+        return 2
+    secili = [k for k in kategoriler if k["risk"] != "yasak"
+              and (a.riskli_dahil or k["risk"] != "yuksek")
+              and (not a.segment or a.segment in k.get("segment", []))
+              and (not a.kategori or k["id"] in {x.strip() for x in a.kategori.split(",")})]
+    if a.kelime and not a.kategori and not a.segment:
+        secili = []  # yalnız verilen kelimelerle ara
+    urunler = cok_satanlar.filtrele(cok_satanlar.topla(secili, a.kelime), a.min_olumlu, a.min_satis)
+    print(f"\n{len(urunler)} ürün eşiği geçti (olumlu ≥ %{a.min_olumlu}, satış ≥ {a.min_satis}).\n")
+    for i, u in enumerate(urunler[:a.ilk], 1):
+        oran = "" if u.olumlu_pct is None else f"%{u.olumlu_pct:.1f}"
+        print(f"{i:>3}. {u.satis:>7}  {oran:>6}  {u.baslik[:70]}")
+    dizin = Path(a.cikti)
+    csv_yolu = dosya_adi(dizin, "csv").with_name(dosya_adi(dizin, "csv").name.replace("firsatlar", "cok-satanlar"))
+    html_yolu = csv_yolu.with_suffix(".html")
+    cok_satanlar.csv_yaz(urunler, csv_yolu)
+    cok_satanlar.html_yaz(urunler, html_yolu, {"tarih": f"{datetime.now():%d.%m.%Y %H:%M}",
+                                               "min_olumlu": a.min_olumlu, "min_satis": a.min_satis})
+    print(f"\nListe: {html_yolu}\nCSV:   {csv_yolu}")
     return 0

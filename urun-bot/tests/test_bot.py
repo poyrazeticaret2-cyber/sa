@@ -117,6 +117,39 @@ class KaynakTest(unittest.TestCase):
             self.assertEqual(csv_veri.oku(yol), {"cnc-uc": {"alibaba_fiyat_usd": 3.2, "tr_ilan_sayisi": 900.0}})
 
 
+class CokSatanlarTest(unittest.TestCase):
+    def test_filtre_ve_siralama(self):
+        from urun_bot import cok_satanlar as cs
+        ham = [{"product_id": 1, "product_title": "A", "lastest_volume": 900, "evaluate_rate": "97.5%",
+                "target_sale_price": "4.10", "product_detail_url": "https://x/1"},
+               {"product_id": 2, "product_title": "B", "lastest_volume": 5000, "evaluate_rate": "91.0%"},
+               {"product_id": 3, "product_title": "A, B ve C", "lastest_volume": 2500, "evaluate_rate": "99.1%"},
+               {"product_id": 1, "product_title": "A", "lastest_volume": 1200, "evaluate_rate": "97.5%"},
+               {"product_id": 4, "product_title": "D", "lastest_volume": 100, "evaluate_rate": "100%"}]
+        urunler = [cs.urune_cevir(u, "k", "magnetic shelf", "mıknatıslı raf") for u in ham]
+        sonuc = cs.filtrele(urunler, min_olumlu=95, min_satis=500)
+        self.assertEqual([(u.urun_id, u.satis) for u in sonuc], [("3", 2500), ("1", 1200)])
+        self.assertIn("SearchText=magnetic+shelf", sonuc[0].alibaba_url)
+        self.assertIn("trendyol.com/sr?q=m%C4%B1knat%C4%B1sl%C4%B1+raf", sonuc[0].trendyol_url)
+        with tempfile.TemporaryDirectory() as d:
+            cs.html_yaz(sonuc, Path(d) / "a.html", {"min_olumlu": 95, "min_satis": 500})
+            cs.csv_yaz(sonuc, Path(d) / "a.csv")
+            sayfa = (Path(d) / "a.html").read_text(encoding="utf-8")
+            self.assertIn("2.500", sayfa)
+            self.assertIn("A, B ve C", sayfa)
+
+    def test_anahtar_yoksa_uyarir(self):
+        import os
+        from urun_bot.cli import main
+        eski = {k: os.environ.pop(k, None) for k in ("ALIEXPRESS_APP_KEY", "ALIEXPRESS_APP_SECRET")}
+        try:
+            self.assertEqual(main(["--cok-satanlar"]), 2)
+        finally:
+            for k, v in eski.items():
+                if v is not None:
+                    os.environ[k] = v
+
+
 class VeriDosyasiTest(unittest.TestCase):
     def test_kategoriler_gecerli(self):
         izinler = set(KURALLAR["izinler"])

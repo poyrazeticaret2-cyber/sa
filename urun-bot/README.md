@@ -77,6 +77,18 @@ python3 -m urun_bot --listele                      # kategori id'leri
 python3 -m urun_bot --telegram                     # özeti Telegram'a gönder
 ```
 
+### Çok satan ve çok beğenilen ürünler
+AliExpress'te son dönemde en çok satan ve olumlu değerlendirmesi yüksek ürünleri listeler; her ürünün
+yanına Alibaba toptan arama ve Trendyol arama linki koyar (Alibaba'nın satış/yorum verisi veren açık API'si yok):
+
+```bash
+python3 -m urun_bot --cok-satanlar --segment tuketici            # katalogdaki tüketici kategorileri
+python3 -m urun_bot --cok-satanlar --kelime "magnetic shelf" --kelime "water vortex fidget"
+python3 -m urun_bot --cok-satanlar --min-olumlu 97 --min-satis 2000 --ilk 50
+```
+
+Çıktı: `raporlar/cok-satanlar-*.html` (görselli tablo) ve `.csv`.
+
 ### Tek ürün kâr hesabı
 Alibaba birim fiyatı ($) ve Trendyol KDV dahil satış fiyatı (TL) ile satış başına net kârı hesaplar:
 
