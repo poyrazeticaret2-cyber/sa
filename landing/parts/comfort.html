@@ -1,0 +1,114 @@
+<style>
+/* ---------- COMFORT: "konfor / uzun ömürlü" ---------- */
+.comfort{position:relative;overflow:hidden;background:#fff;padding:2px 0 37px;text-align:center}
+.comfort-head{position:relative;z-index:1;padding:0 24px}
+.comfort-kicker{display:block;font-family:var(--serif);font-weight:700;font-size:25px;line-height:.9;letter-spacing:0;color:#2b1a12;margin-bottom:-8px}
+.comfort-title{font-family:var(--serif);font-weight:800;font-size:68px;line-height:.9;letter-spacing:-.015em;color:#2b1a12}
+.comfort-lead{font-family:var(--sans);font-size:15px;line-height:1.35;font-weight:400;letter-spacing:0;color:#3b2f28;max-width:345px;margin:11px auto 0}
+
+/* dark panel + yellow waves (SVG, stage coordinates = 560x560); boots overflow above/below the panel (section root clips) */
+.comfort-stage{position:relative;margin-top:8px;height:560px}
+.comfort-bg{position:absolute;left:0;top:0;width:560px;height:560px;display:block;z-index:1}
+
+/* feature pills: left column over the yellow/brown area, right ends tucked under the boot */
+.comfort-pills{position:absolute;left:63px;top:110px;display:flex;flex-direction:column;gap:9px;text-align:left;z-index:2}
+.comfort-pill{display:flex;align-items:center;gap:18px;width:314px;height:39px;padding:0 14px 0 18px;border-radius:999px;color:#fff;
+  font-family:var(--sans);font-size:15px;line-height:1.1;font-weight:500;letter-spacing:0;
+  border:1.5px solid rgba(255,255,255,.85);
+  background:linear-gradient(90deg,rgba(255,255,255,.05),rgba(255,255,255,.015));
+  box-shadow:0 4px 12px rgba(0,0,0,.22)}
+.comfort-pill svg{flex:none;width:26px;height:26px;fill:#fff;filter:drop-shadow(0 1px 1px rgba(0,0,0,.35))}
+
+/* soft diffuse ground shadow under the front boot (on the white area) */
+.comfort-shadow{position:absolute;left:70px;top:520px;width:350px;height:48px;z-index:2;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 50%,rgba(0,0,0,.62) 0%,rgba(0,0,0,.34) 38%,rgba(0,0,0,0) 72%);filter:blur(9px)}
+
+.comfort-shoe{position:absolute;max-width:none;pointer-events:none;user-select:none}
+/* product 1: top-right, toe to lower-left, heel/upper clipped by the right edge (takes the suede loafer's place) */
+.comfort-shoe-a{width:400px;left:190px;top:27px;transform:rotate(-28deg);transform-origin:50% 50%;z-index:4;
+  filter:drop-shadow(0 26px 24px rgba(0,0,0,.55)) drop-shadow(0 6px 8px rgba(0,0,0,.35)) brightness(1.06) contrast(1.02)}
+/* product 2: bottom-left, heel clipped by the left edge, toe to lower-right, in front of product 1 */
+.comfort-shoe-b{width:402px;left:-3px;top:275px;transform:rotate(12deg);transform-origin:50% 50%;z-index:5;
+  filter:drop-shadow(0 30px 26px rgba(0,0,0,.5)) drop-shadow(0 10px 12px rgba(0,0,0,.3)) brightness(1.04)}
+
+.comfort-cta{position:relative;z-index:6;margin-top:10px}
+.comfort .btn{padding:0 28px;height:57px;width:285px;justify-content:center;border-radius:14px;font-size:20px;font-weight:500;border:2px solid #2b1a12;color:#2b1a12;gap:10px;line-height:1}
+.comfort .btn::after{content:none}
+.comfort .btn svg{width:20px;height:20px;flex:none;fill:currentColor}
+</style>
+<section data-sec="comfort" class="comfort" id="konfor">
+  <div class="comfort-head">
+    <span class="h-sm comfort-kicker rv">konfor</span>
+    <h2 class="h-lg comfort-title rv">uzun ömürlü</h2>
+    <p class="lead comfort-lead rv">Yoğun iş günlerinden hafta sonu planlarına; hakiki deri işçiliği ve spor ayakkabı konforu bir arada.</p>
+  </div>
+
+  <div class="comfort-stage rv">
+    <svg class="comfort-bg" viewBox="0 0 560 560" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="comfort-gb" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#301d13"/>
+          <stop offset=".55" stop-color="#28170f"/>
+          <stop offset="1" stop-color="#1b100a"/>
+        </linearGradient>
+        <radialGradient id="comfort-vig" cx=".45" cy=".5" r=".8">
+          <stop offset="0" stop-color="#3a2416" stop-opacity=".35"/>
+          <stop offset="1" stop-color="#000" stop-opacity=".12"/>
+        </radialGradient>
+        <linearGradient id="comfort-gy" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ffdb30"/>
+          <stop offset=".55" stop-color="#f8d11c"/>
+          <stop offset="1" stop-color="#ecbf10"/>
+        </linearGradient>
+        <linearGradient id="comfort-gy2" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#ffd92c"/>
+          <stop offset="1" stop-color="#efc212"/>
+        </linearGradient>
+        <linearGradient id="comfort-gy3" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#f4c814"/>
+          <stop offset="1" stop-color="#ffd72a"/>
+        </linearGradient>
+      </defs>
+
+      <!-- dark brown panel: wavy top (left mound, low crest, right sweep), bottom edge dips to form the bottom-right lens -->
+      <path id="comfort-panel" fill="url(#comfort-gb)"
+        d="M0 40 L30 40 C60 26 90 15 121 12 C150 10 185 18 204 27 C210 33 213 38 216 40 C240 33 255 33 267 33 C285 33 300 40 309 44 C325 52 345 66 360 72 C368 62 388 52 404 48 C440 38 485 28 525 24 C540 23 552 22 560 22 L560 378 Q560 394 544 394 C544 384 538 370 530 357 C515 364 470 380 430 380 C390 381 350 380 322 369 C300 382 280 396 255 399 L16 400 Q0 400 0 384 Z"/>
+      <path fill="url(#comfort-vig)"
+        d="M0 40 L30 40 C60 26 90 15 121 12 C150 10 185 18 204 27 C210 33 213 38 216 40 C240 33 255 33 267 33 C285 33 300 40 309 44 C325 52 345 66 360 72 C368 62 388 52 404 48 C440 38 485 28 525 24 C540 23 552 22 560 22 L560 378 Q560 394 544 394 C544 384 538 370 530 357 C515 364 470 380 430 380 C390 381 350 380 322 369 C300 382 280 396 255 399 L16 400 Q0 400 0 384 Z"/>
+
+      <!-- top-left yellow lens: enters from the left edge, peaks at x~120, tapers to a tip at the crest's foot -->
+      <path fill="url(#comfort-gy)"
+        d="M21 40 C30 48 38 60 58 68 C76 75 96 80 121 79 C146 78 166 65 183 53 C195 46 206 43 216 40 C212 36 208 31 204 27 C185 18 150 10 121 12 C90 15 60 26 30 40 Z"/>
+      <!-- right yellow sweep: thin band rising to the right edge, mostly behind the boot -->
+      <path fill="url(#comfort-gy3)"
+        d="M360 72 C368 62 388 52 404 48 C440 38 485 28 525 24 C540 23 552 22 560 22 L560 96 C520 96 470 94 420 90 C395 86 375 82 360 72 Z"/>
+      <!-- very thin light rim on the crest's upper edge, like the reference -->
+      <path fill="none" stroke="rgba(255,228,140,.32)" stroke-width="1.2" stroke-linecap="round"
+        d="M218 40 C240 33 255 33 267 33 C285 33 300 40 309 44 C325 52 345 66 358 71"/>
+      <!-- bottom-right yellow lens straddling the panel's bottom edge -->
+      <path fill="url(#comfort-gy2)"
+        d="M322 369 C350 340 390 324 430 325 C470 326 510 338 530 357 C515 364 470 380 430 380 C390 381 350 380 322 369 Z"/>
+    </svg>
+
+    <div class="comfort-pills">
+      <div class="comfort-pill">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M23 5c3 0 4 3 7 3s5-3 8 0c2 2 0 6 1 9s4 5 4 9c0 3-3 5-3 8s2 7-1 9-7-1-10-1-5 3-8 3-6-3-9-3-7 2-9-1 1-6 0-9-3-5-3-8 3-6 4-9 0-7 2-9 6 1 9 1 5-2 8-2z"/></svg>
+        <span>Hakiki deri</span>
+      </div>
+      <div class="comfort-pill">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M4 32c3-6 9-9 15-9 5 0 7 3 12 4 6 1 12 1 14 5 1 2 0 5-2 6H8c-3 0-5-3-4-6zm5 10h36v3H9z"/><path d="M12 15c3-3 6-3 9 0s6 3 9 0 6-3 9 0" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><path d="M14 8c3-3 6-3 9 0s6 3 9 0" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+        <span>Gün boyu konfor</span>
+      </div>
+      <div class="comfort-pill">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M4 36c0-4 4-6 8-7l5-7c2-3 5-4 8-2l4 3c5 3 10 4 14 6 2 1 3 3 3 5v3H4v-1zm0 5h42v3H4z"/><path d="M34 6l1.6 3.8L39 11l-3.4 1.4L34 16l-1.4-3.6L29 11l3.6-1.2z"/><path d="M42 16l1 2.4 2.4 1-2.4 1-1 2.4-1-2.4-2.4-1 2.4-1z"/><path d="M12 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1L9 17l2.1-.9z"/></svg>
+        <span>Her ortama uygun</span>
+      </div>
+    </div>
+
+    <img class="comfort-shoe comfort-shoe-a" src="assets/cut-sol.webp" alt="" aria-hidden="true" loading="lazy">
+    <div class="comfort-shadow" aria-hidden="true"></div>
+    <img class="comfort-shoe comfort-shoe-b" src="assets/cut-sag.webp" alt="Siyah hakiki deri Chelsea bot" loading="lazy">
+  </div>
+
+  <div class="comfort-cta rv"><a class="btn" href="#siparis">Çiftimi Bul<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.2 4.6 20.6 12l-7.4 7.4-2.6-2.6 3-3H3.4v-3.6h10.2l-3-3z"/></svg></a></div>
+</section>

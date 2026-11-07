@@ -1,0 +1,102 @@
+<style>
+/* ---------- PLAN: "tek çift / her plan" ---------- */
+/* Ölçek: referans kırpımı 804px'in 20-753 arası sayfa (733px) -> 560px; css = (crop-20)*0.764 */
+.plan{position:relative;overflow:hidden;background:#fff;padding:24px 0 12px;text-align:center}
+.plan-h1,.plan-h2{display:block;font-family:var(--serif);font-weight:900;color:#2b1a12;letter-spacing:-.012em}
+.plan-h1{font-size:86px;line-height:.8}
+.plan-h2{font-size:66px;line-height:.78;margin-top:8px}
+.plan-lead{font-size:16px;line-height:23px;font-weight:500;color:#3b2f29;max-width:440px;margin:26px auto 0;letter-spacing:.005em}
+
+/* satırlar: daire merkezi x=98, hap sağ kenarı x=495 */
+.plan-rows{position:relative;margin:32px 0 0 59px;width:436px;display:flex;flex-direction:column;gap:15px;text-align:left}
+/* dikey çizgi: daire merkezlerinden geçer, ilk dairenin 21px üstünden başlar, üçüncünün 14px altına iner */
+.plan-rows::before{content:"";position:absolute;left:37.8px;top:-21px;bottom:-14px;width:2.5px;z-index:0;
+  background:repeating-linear-gradient(180deg,#2b1a12 0 5px,rgba(43,26,18,.7) 5px 7px)}
+.plan-row{position:relative;display:flex;align-items:center;height:78px;padding-left:100px;color:#fff;z-index:1}
+/* koyu kahve hap: dikey degrade + fırça kenarı (SVG turbulence) + sol-üst 1px ışık */
+.plan-bar{position:absolute;top:3.5px;bottom:3.5px;left:39px;right:0;border-radius:44px 20px 20px 44px;z-index:-1;
+  background:linear-gradient(180deg,#3b2b22 0%,#2a1a14 55%,#1c120e 100%);
+  box-shadow:inset 1px 1px 0 rgba(255,255,255,.08),inset 0 -1px 0 rgba(0,0,0,.35);filter:url(#plan-rough)}
+.plan-ic{position:absolute;left:0;top:0;width:78px;height:78px;display:grid;place-items:center;z-index:2}
+/* sarı disk: düz #FFD60A + sağ-alt iç gölge; arkasında 6px kaydırılmış koyu "ikinci damga" */
+.plan-ic::before,.plan-ic::after{content:"";position:absolute;inset:0;border-radius:50%;filter:url(#plan-rough2)}
+.plan-ic::before{background:#FFD60A;box-shadow:inset -3px -3px 6px rgba(120,80,0,.35)}
+.plan-ic::after{background:rgba(92,70,0,.5);transform:translate(6px,6px);z-index:-1}
+.plan-ic svg{position:relative;width:54px;height:54px;fill:#2b1a12;display:block}
+.plan-row b{display:block;font-family:var(--serif);font-weight:800;font-size:22px;line-height:1;letter-spacing:0;text-transform:uppercase;color:#fff}
+.plan-row span{display:block;font-family:var(--sans);font-size:15px;line-height:1.15;font-weight:500;margin-top:2px;color:#f6f0ea}
+
+/* yaşam fotoğrafı: üç dikey panel (orta en uzun) + panel altından taşan botlar */
+.plan-stage{position:relative;height:674px;margin-top:23px;z-index:1;
+  background:radial-gradient(ellipse at 50% 60%,#f1efeb 0%,#ffffff 70%)}
+.plan-blob{position:absolute;border-radius:999px;background:#e6e2dd;filter:blur(7px);z-index:0;opacity:.75}
+.plan-blob.plan-b1{left:16px;top:420px;width:60px;height:130px}
+.plan-blob.plan-b2{left:-28px;top:-6px;width:92px;height:112px}
+.plan-blob.plan-b3{right:-36px;top:130px;width:116px;height:230px}
+.plan-fg{position:absolute;right:-8px;top:52px;font-family:var(--serif);font-weight:700;font-size:48px;line-height:.95;text-align:right;
+  color:#cdc6bf;z-index:0;letter-spacing:.02em;pointer-events:none}
+/* ortak fotoğraf ölçüsü: 1229x691, sahne içinde sol -345, üst 2 */
+.plan-pane{position:absolute;overflow:hidden;border-radius:20px;background:#d9cbbd;
+  box-shadow:0 20px 40px rgba(27,16,11,.15),0 5px 12px rgba(27,16,11,.08)}
+.plan-pane img{position:absolute;width:1229px;height:691px;max-width:none}
+.plan-p1{left:44px;top:0;width:150px;height:540px;z-index:1}
+.plan-p1 img{left:-389px;top:2px}
+.plan-p2{left:194px;top:0;width:190px;height:636px;z-index:2}
+.plan-p2 img{left:-539px;top:2px}
+.plan-p3{left:370px;top:48px;width:162px;height:612px;z-index:1}
+.plan-p3 img{left:-715px;top:-46px}
+/* botlar: aynı fotoğraf, yalnızca bot bölgesi görünür; panellerin altından taşar */
+.plan-feet{position:absolute;left:0;top:0;width:560px;height:674px;z-index:3;pointer-events:none;
+  -webkit-mask:radial-gradient(ellipse 72px 74px at 275px 624px,#000 72%,transparent 100%),radial-gradient(ellipse 104px 68px at 440px 614px,#000 72%,transparent 100%);
+          mask:radial-gradient(ellipse 72px 74px at 275px 624px,#000 72%,transparent 100%),radial-gradient(ellipse 104px 68px at 440px 614px,#000 72%,transparent 100%)}
+.plan-feet img{position:absolute;left:-345px;top:2px;width:1229px;height:691px;max-width:none}
+.plan-cta{margin-top:-14px;position:relative;z-index:4}
+.plan .btn{padding:0 26px;height:61px;border-radius:13px;font-size:22px;font-weight:500;border:1.5px solid #2b1a12;color:#2b1a12;gap:9px;min-width:312px;justify-content:center;
+  box-shadow:0 1px 0 rgba(43,26,18,.08)}
+.plan .btn::after{content:"➜";font-size:22px;font-weight:700}
+</style>
+<section data-sec="plan" class="plan" id="plan">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <filter id="plan-rough" x="-5%" y="-20%" width="110%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency=".025 .06" numOctaves="2" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="plan-rough2" x="-10%" y="-10%" width="125%" height="125%">
+      <feTurbulence type="fractalNoise" baseFrequency=".06" numOctaves="2" seed="3" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </svg>
+  <h2 class="rv"><span class="plan-h1">tek çift</span><span class="plan-h2">her plan</span></h2>
+  <p class="lead plan-lead rv">Spor ayakkabı konforunda şık bir bot;<br>iş günleri, hafta sonları ve aradaki<br>her şey için.</p>
+
+  <div class="plan-rows">
+    <div class="plan-row rv">
+      <i class="plan-bar" aria-hidden="true"></i>
+      <span class="plan-ic" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M18 11a3 3 0 013-3h6a3 3 0 013 3v4h8a3 3 0 013 3v6H7v-6a3 3 0 013-3h8zm3 0v4h6v-4z"/><path d="M7 27h14v2.5a1.5 1.5 0 001.5 1.5h3a1.5 1.5 0 001.5-1.5V27h14v10a3 3 0 01-3 3H10a3 3 0 01-3-3z"/></svg></span>
+      <div><b>İş</b><span>Toplantılar için yeterince şık</span></div>
+    </div>
+    <div class="plan-row rv">
+      <i class="plan-bar" aria-hidden="true"></i>
+      <span class="plan-ic" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M19 6h10v3h-2.5v5h-5V9H19z"/><path d="M14 14h20a3 3 0 013 3v20a3 3 0 01-3 3H14a3 3 0 01-3-3V17a3 3 0 013-3zm4 5v16h2.4V19zm4.8 0v16h2.4V19zm4.8 0v16H30V19z"/><path d="M15 40h4v3h-4zm14 0h4v3h-4z"/></svg></span>
+      <div><b>Seyahat</b><span>Uzun günler için rahat</span></div>
+    </div>
+    <div class="plan-row rv">
+      <i class="plan-bar" aria-hidden="true"></i>
+      <span class="plan-ic" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M4 31.5c0-2.5 1.2-4.2 3.2-5.3l8-4.4c1.6-.9 2.6-2.2 3.3-3.8l1.3-2.8c.3-.6 1-.8 1.5-.4l2.2 1.6-1.3 2.1c-.3.5-.1 1.1.4 1.4.5.3 1.1.1 1.4-.4l1.3-2 2 1.4-1.2 1.9c-.3.5-.2 1.1.3 1.4.5.3 1.1.2 1.4-.3l1.2-1.8 2 1.4-1.1 1.7c-.3.5-.2 1.1.3 1.4.5.3 1.1.2 1.4-.3l1-1.6c3.5 2.3 7.6 3.6 11.5 4.4 1.1.2 1.9 1.2 1.9 2.3V33H4z"/><path d="M4 35h40v2.2a2.3 2.3 0 01-2.3 2.3H6.3A2.3 2.3 0 014 37.2zm4 1.5h3v1.2H8zm6 0h3v1.2h-3zm6 0h3v1.2h-3z"/></svg></span>
+      <div><b>Günlük</b><span>Nereye gidersen hazır</span></div>
+    </div>
+  </div>
+
+  <div class="plan-stage rv">
+    <span class="plan-blob plan-b2" aria-hidden="true"></span>
+    <span class="plan-blob plan-b1" aria-hidden="true"></span>
+    <span class="plan-blob plan-b3" aria-hidden="true"></span>
+    <span class="plan-fg" aria-hidden="true">F<br>G</span>
+    <div class="plan-pane plan-p3"><img src="assets/model.jpg" alt="" loading="lazy"></div>
+    <div class="plan-pane plan-p1"><img src="assets/model.jpg" alt="" loading="lazy"></div>
+    <div class="plan-pane plan-p2"><img src="assets/model.jpg" alt="Atölyede oturan, lacivert kazak ve bej pantolonla siyah Chelsea bot giyen adam" loading="lazy"></div>
+    <div class="plan-feet" aria-hidden="true"><img src="assets/model.jpg" alt="" loading="lazy"></div>
+  </div>
+
+  <div class="plan-cta rv"><a class="btn" href="#siparis">Konforumu Yükselt</a></div>
+</section>

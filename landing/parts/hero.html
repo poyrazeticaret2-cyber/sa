@@ -1,52 +1,51 @@
 <style>
 /* ===== HERO ===== */
-.hero{position:relative;overflow:hidden;text-align:center;
+.hero{position:relative;overflow:hidden;text-align:center;border-radius:16px 16px 0 0;
   background:
-    radial-gradient(60% 30% at 18% 36%,rgba(221,212,198,.45),transparent 70%),
-    radial-gradient(45% 28% at 82% 58%,rgba(221,212,198,.4),transparent 70%),
-    linear-gradient(180deg,#f8f5f0 0%,#f0ebe3 55%,#e9e3d9 100%)}
-/* arka plandaki yumuşak beyaz kurdele dokusu */
-.hero::before{content:"";position:absolute;left:-10%;top:110px;width:120%;height:560px;pointer-events:none;
+    radial-gradient(55% 26% at 16% 30%,rgba(255,255,255,.7),transparent 70%),
+    radial-gradient(40% 22% at 86% 44%,rgba(255,255,255,.55),transparent 70%),
+    radial-gradient(60% 30% at 20% 60%,rgba(214,204,190,.35),transparent 70%),
+    radial-gradient(50% 30% at 90% 80%,rgba(214,204,190,.3),transparent 70%),
+    linear-gradient(180deg,#f7f3ee 0%,#eee8e0 45%,#e9e2d8 100%)}
+/* arka plandaki yumuşak saten kurdele dokusu */
+.hero::before{content:"";position:absolute;left:-14%;top:60px;width:128%;height:760px;pointer-events:none;z-index:0;
   background:
-    radial-gradient(38% 9% at 30% 18%,rgba(255,255,255,.75),transparent 70%),
-    radial-gradient(30% 7% at 78% 34%,rgba(255,255,255,.7),transparent 70%),
-    radial-gradient(34% 8% at 22% 62%,rgba(255,255,255,.65),transparent 70%),
-    radial-gradient(28% 7% at 82% 80%,rgba(255,255,255,.6),transparent 70%);
-  transform:rotate(-24deg);filter:blur(6px)}
-/* başlık çubuğu (koyu kahve, altı dalgalı) */
-.hero-top{position:relative;z-index:2;height:120px;background:linear-gradient(180deg,#17100c 0%,#2b1b13 55%,#3a2619 100%)}
-.hero-top::before{content:"";position:absolute;inset:0;background:radial-gradient(70% 90% at 50% 120%,rgba(255,255,255,.07),transparent 70%)}
-.hero-top .logo{position:absolute;left:0;right:0;top:50px;font-size:24px;letter-spacing:.05em;line-height:1;z-index:1}
-.hero-top::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:52px;
-  background:linear-gradient(180deg,#fbfaf8,#faf8f5);
-  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 560 52' preserveAspectRatio='none'%3E%3Cpath d='M0 52V35C70 35 150 34 209 13C250 -1 300 48 365 48C420 48 490 30 560 24V52Z'/%3E%3C/svg%3E") center/100% 100% no-repeat;
-          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 560 52' preserveAspectRatio='none'%3E%3Cpath d='M0 52V35C70 35 150 34 209 13C250 -1 300 48 365 48C420 48 490 30 560 24V52Z'/%3E%3C/svg%3E") center/100% 100% no-repeat}
-/* metin */
-.hero-head{position:relative;z-index:6;padding:25px 24px 0}
-.hero-head .h-xs{font-size:25px;line-height:1;margin:0}
-.hero-head .h-xl{font-size:68px;line-height:.9;margin:4px 0 0;letter-spacing:-.005em}
-.hero-head .h-md{font-size:35px;line-height:1.05;margin:3px 0 0}
-.hero-head .lead{max-width:330px;margin:12px auto 0;font-size:14px;line-height:1.45;color:#2a221d;text-wrap:balance}
-.hero-head .btn{margin-top:27px;min-width:282px;justify-content:center;padding:14px 20px;font-size:17px;font-weight:500;border-width:1.5px;border-radius:12px;
-  background:linear-gradient(180deg,#fff,#f8f6f2);box-shadow:0 2px 0 rgba(0,0,0,.02)}
-.hero-head .btn::after{font-size:16px;margin-left:-2px}
-/* ürün sahnesi */
-.hero-stage{position:relative;z-index:1;height:440px;margin-top:0}
-.hero-yellow{position:absolute;left:143px;top:0;width:247px;height:422px;border-radius:14px;z-index:1;
-  background:
-    radial-gradient(70% 45% at 20% 10%,rgba(255,245,180,.55),transparent 70%),
-    linear-gradient(100deg,#fbd43c 0%,#f7cb1a 45%,#f0c014 100%);
-  box-shadow:inset -14px -18px 36px rgba(170,120,0,.12),inset 10px 14px 30px rgba(255,255,255,.25)}
-.hero-ghost{position:absolute;left:0;font-size:104px;line-height:1;letter-spacing:.015em;color:rgba(255,255,255,.8);
-  -webkit-text-stroke:1.2px rgba(27,20,16,.2);z-index:2;white-space:nowrap;text-align:left}
-.hero-ghost.hero-g1{left:42px;top:-26px}
-.hero-ghost.hero-g2{left:84px;top:132px;line-height:.82}
-.hero-ghost.hero-g2 span{display:block}
-.hero-ghost.hero-g2 span:nth-child(1){margin-left:6px}
+    radial-gradient(42% 7% at 26% 14%,rgba(255,255,255,.95),rgba(255,255,255,.5) 50%,transparent 72%),
+    radial-gradient(34% 6% at 82% 28%,rgba(255,255,255,.9),rgba(255,255,255,.45) 50%,transparent 72%),
+    radial-gradient(38% 7% at 18% 54%,rgba(255,255,255,.85),rgba(255,255,255,.4) 50%,transparent 72%),
+    radial-gradient(30% 6% at 86% 74%,rgba(255,255,255,.8),transparent 72%),
+    radial-gradient(44% 5% at 40% 36%,rgba(200,190,176,.35),transparent 70%),
+    radial-gradient(40% 5% at 60% 66%,rgba(200,190,176,.3),transparent 70%);
+  transform:rotate(-28deg);filter:blur(5px)}
+/* başlık çubuğu: koyu kahve; alt kenar referanstaki gibi W dalgası (kenarlar ~92px, iki tümsek ~62px, orta çukur 118px) */
+.hero-top{position:relative;z-index:2;height:118px;background:linear-gradient(180deg,#1b100a 0%,#27170f 55%,#30201a 100%);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 560 118' preserveAspectRatio='none'%3E%3Cpath d='M0 0H560V78C542 66 500 58 462 60C398 64 362 118 280 118C198 118 162 64 100 64C62 64 28 72 0 92Z'/%3E%3C/svg%3E") center/100% 100% no-repeat;
+          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 560 118' preserveAspectRatio='none'%3E%3Cpath d='M0 0H560V78C542 66 500 58 462 60C398 64 362 118 280 118C198 118 162 64 100 64C62 64 28 72 0 92Z'/%3E%3C/svg%3E") center/100% 100% no-repeat}
+.hero-top::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 80% at 50% 110%,rgba(255,255,255,.08),transparent 70%)}
+.hero-top .logo{position:absolute;left:0;right:0;top:57px;font-size:24px;letter-spacing:.04em;line-height:1;z-index:1}
+/* metin bloğu (dikey ritim referanstan ölçüldü: satır1 cap üstü 160px, satır2 197px, satır3 262px, gövde 316px, buton 388px) */
+.hero-head{position:relative;z-index:6;padding:36px 20px 0}
+.hero-head .h-xs{font-size:28px;font-weight:600;line-height:1;margin:0}
+.hero-head .h-xl{font-size:80px;font-weight:900;line-height:.9;margin:0;letter-spacing:-.005em}
+.hero-head .h-md{font-size:35px;font-weight:400;line-height:1;margin:0;letter-spacing:.004em}
+.hero-head .lead{max-width:470px;margin:18px auto 0;font-size:15px;font-weight:500;line-height:1.45;color:#3b2f29;text-wrap:balance}
+.hero-cta{margin-top:20px;line-height:0}
+.hero-head .btn{width:303px;height:60px;gap:7px;justify-content:center;padding:0 16px;font-size:18px;font-weight:500;letter-spacing:.005em;
+  border:2px solid #2b1a14;border-radius:17px;background:transparent;box-shadow:none}
+.hero-head .btn::after{content:"➔";font-size:19px;font-weight:700;line-height:1;margin:0;transform:translateY(1px)}
+/* ürün sahnesi: üst kenar = buton altı + 2px (referansta sarı dikdörtgen butonun hemen altında başlar) */
+.hero-stage{position:relative;z-index:1;height:474px;margin-top:2px}
+.hero-yellow{position:absolute;left:50%;margin-left:-122px;top:0;width:244px;height:458px;border-radius:22px;z-index:1;
+  background:linear-gradient(180deg,#f8d81d 0%,#f6d300 55%,#f4cf00 100%)}
+/* kontur KARA / CUMA yazısı: 3 satır, kalın serif, beyaz kontur + hafif gri kabartma gölgesi */
+.hero-ghost{position:absolute;left:56px;top:-52px;z-index:2;font-size:132px;font-weight:900;line-height:170px;letter-spacing:-.025em;white-space:nowrap;text-align:left;
+  color:rgba(255,255,255,.12);-webkit-text-stroke:1.7px rgba(255,255,255,.92);text-shadow:0 1px 2px rgba(0,0,0,.18)}
+.hero-ghost span{display:block;position:relative}
+.hero-ghost span::before{content:attr(data-t);position:absolute;left:1.5px;top:2px;z-index:-1;color:transparent;-webkit-text-stroke:1.6px rgba(70,58,48,.3);text-shadow:none}
 /* ayakkabılar */
-.hero-shoe-a{position:absolute;left:22px;top:-2px;width:290px;max-width:none;z-index:4;transform:rotate(16deg);
-  filter:drop-shadow(-10px 26px 18px rgba(0,0,0,.42)) drop-shadow(0 4px 4px rgba(0,0,0,.2))}
-.hero-shoe-b{position:absolute;left:130px;top:32px;width:374px;max-width:none;z-index:7;transform:rotate(-18deg) scaleX(-1);
+.hero-shoe-a{position:absolute;left:10px;top:30px;width:280px;max-width:none;z-index:4;transform:rotate(16deg);
+  filter:drop-shadow(-6px 20px 16px rgba(0,0,0,.42)) drop-shadow(0 4px 4px rgba(0,0,0,.2))}
+.hero-shoe-b{position:absolute;left:163px;top:62px;width:352px;max-width:none;z-index:7;transform:rotate(-26deg) scaleX(-1);
   filter:drop-shadow(14px 30px 26px rgba(0,0,0,.5)) drop-shadow(0 6px 6px rgba(0,0,0,.25))}
 /* cila kutusu */
 .hero-tin{position:absolute;border-radius:50%;display:grid;place-items:center;
@@ -57,17 +56,17 @@
 .hero-tin::before{content:"";position:absolute;inset:7%;border-radius:50%;
   background:radial-gradient(circle at 42% 36%,#fffefb,#f7f3ea 60%,#e6e0d4 100%);
   box-shadow:inset 0 0 0 1px rgba(0,0,0,.12),inset 0 0 0 4px #e9e9e9,inset 0 0 0 5px #8a8a8a,inset 0 3px 8px rgba(0,0,0,.08)}
-.hero-tin-1{left:105px;top:158px;width:146px;height:146px;z-index:5;transform:rotate(-6deg)}
-.hero-tin-2{left:258px;top:74px;width:86px;height:86px;z-index:3;transform:rotate(-14deg);filter:brightness(.92)}
+.hero-tin-1{left:110px;top:188px;width:150px;height:150px;z-index:5;transform:rotate(-8deg)}
+.hero-tin-2{left:263px;top:80px;width:95px;height:95px;z-index:3;transform:rotate(-16deg);filter:brightness(.92)}
 .hero-tin-label{position:relative;z-index:1;color:#1b1410;line-height:1;padding-top:2px}
 .hero-tin-label b{display:block;font-family:var(--serif);font-weight:800;font-size:17px;letter-spacing:.01em}
-.hero-tin-label span{display:block;font-family:var(--serif);font-weight:700;font-size:9.5px;letter-spacing:.14em;margin-top:5px}
-.hero-tin-label small{display:block;font-family:var(--sans);font-weight:600;font-size:5px;letter-spacing:.18em;margin-top:4px;color:#5f554e}
-.hero-tin-2 .hero-tin-label b{font-size:10px}
-.hero-tin-2 .hero-tin-label span{font-size:5.5px;margin-top:3px}
+.hero-tin-label span{display:block;font-family:var(--serif);font-weight:700;font-size:9px;letter-spacing:.14em;margin-top:5px}
+.hero-tin-label small{display:block;font-family:var(--sans);font-weight:600;font-size:4.5px;letter-spacing:.18em;margin-top:4px;color:#5f554e}
+.hero-tin-2 .hero-tin-label b{font-size:11px}
+.hero-tin-2 .hero-tin-label span{font-size:6px;margin-top:3px}
 .hero-tin-2 .hero-tin-label small{font-size:3.5px;margin-top:2px}
-/* kırmızı fiyonk */
-.hero-bow{position:absolute;left:92px;top:150px;width:100px;height:82px;z-index:6;transform:rotate(-14deg);
+/* kırmızı fiyonk: kutunun sol üst kenarında, kuyruklar sol alta sarkar */
+.hero-bow{position:absolute;left:86px;top:160px;width:112px;height:100px;z-index:6;transform:rotate(-6deg);
   filter:drop-shadow(0 8px 8px rgba(0,0,0,.35))}
 </style>
 <section data-sec="hero" class="hero" id="firsat">
@@ -80,28 +79,32 @@
     <h1 class="h-xl rv">Ücretsiz</h1>
     <div class="h-md rv">Deri Bakım Seti</div>
     <p class="lead rv">Bu Kara Cuma, her siparişe ayakkabılarını ilk günkü gibi tutacak bir deri bakım seti hediye.</p>
-    <a class="btn rv" href="#satin-al">Fırsatı Gör</a>
+    <div class="hero-cta rv"><a class="btn" href="#satin-al">Fırsatı Gör</a></div>
   </div>
   <div class="hero-stage">
     <div class="hero-yellow"></div>
-    <div class="ghost hero-ghost hero-g1" aria-hidden="true">Kara</div>
-    <div class="ghost hero-ghost hero-g2" aria-hidden="true"><span>Cuma</span><span>Kara</span><span>Cuma</span></div>
+    <div class="ghost hero-ghost" aria-hidden="true"><span data-t="Kara">Kara</span><span data-t="Kara">Kara</span><span data-t="Cuma">Cuma</span></div>
     <div class="hero-tin hero-tin-2" aria-hidden="true"><div class="hero-tin-label"><b>MARKA</b><span>DERİ BAKIM</span><small>LEATHER CARE</small></div></div>
     <img class="hero-shoe-a" src="assets/cut-sag.webp" alt="" aria-hidden="true" width="850" height="529" loading="eager">
     <div class="hero-tin hero-tin-1" role="img" aria-label="Hediye deri bakım seti"><div class="hero-tin-label"><b>MARKA</b><span>DERİ BAKIM</span><small>LEATHER CARE</small></div></div>
-    <svg class="hero-bow" viewBox="0 0 100 80" aria-hidden="true">
+    <svg class="hero-bow" viewBox="0 0 112 108" aria-hidden="true">
       <defs>
         <linearGradient id="hero-bowg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff3b52"/><stop offset=".55" stop-color="#d6102b"/><stop offset="1" stop-color="#8e0a1d"/></linearGradient>
-        <linearGradient id="hero-bowt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c70f29"/><stop offset="1" stop-color="#7d0818"/></linearGradient>
+        <linearGradient id="hero-bowt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d4122d"/><stop offset="1" stop-color="#7d0818"/></linearGradient>
       </defs>
-      <path d="M48 44 L30 79 L42 71 L50 80 L54 50Z" fill="url(#hero-bowt)"/>
-      <path d="M52 44 L72 79 L60 71 L52 80 L47 50Z" fill="url(#hero-bowt)"/>
-      <path d="M50 38C34 8 2 12 6 34c3 18 30 16 44 4z" fill="url(#hero-bowg)"/>
-      <path d="M50 38C66 8 98 12 94 34c-3 18-30 16-44 4z" fill="url(#hero-bowg)"/>
-      <path d="M48 38C36 20 14 20 14 32c0 10 20 10 34 6z" fill="#a60c22" opacity=".55"/>
-      <path d="M52 38C64 20 86 20 86 32c0 10-20 10-34 6z" fill="#a60c22" opacity=".55"/>
-      <ellipse cx="50" cy="39" rx="8" ry="7.5" fill="#b30d25"/>
-      <ellipse cx="48" cy="36.5" rx="4" ry="2.5" fill="#ff6b7d" opacity=".7"/>
+      <!-- kuyruklar (sol alta) -->
+      <path d="M50 50 L10 92 L22 90 L20 104 L58 60Z" fill="url(#hero-bowt)"/>
+      <path d="M54 52 L34 104 L44 98 L52 108 L62 62Z" fill="url(#hero-bowt)"/>
+      <path d="M52 52 L26 82 L50 62Z" fill="#7a0716" opacity=".5"/>
+      <!-- sol ilmek (sol üste) -->
+      <path d="M54 48C32 14 -2 16 4 40c4 20 36 20 50 8z" fill="url(#hero-bowg)"/>
+      <path d="M52 46C36 26 12 24 12 36c0 10 24 14 40 10z" fill="#a60c22" opacity=".55"/>
+      <!-- sağ ilmek (sağa) -->
+      <path d="M54 48C80 20 112 30 106 52c-4 16-36 12-52-4z" fill="url(#hero-bowg)"/>
+      <path d="M56 48C72 32 98 34 96 46c-2 10-26 8-40 2z" fill="#a60c22" opacity=".55"/>
+      <!-- düğüm -->
+      <ellipse cx="54" cy="49" rx="9" ry="8" fill="#b30d25"/>
+      <ellipse cx="52" cy="46" rx="4.5" ry="2.5" fill="#ff6b7d" opacity=".7"/>
     </svg>
     <img class="hero-shoe-b" src="assets/cut-onden.webp" alt="Siyah hakiki deri Chelsea bot" width="839" height="690" fetchpriority="high">
   </div>
