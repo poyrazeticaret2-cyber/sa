@@ -1,0 +1,40 @@
+# Her satır bir tohum ürün/ürün tipi. Keşif bu kelimelerin "ilgili sorgularından" genişler.
+telefon kılıfı
+kablosuz kulaklık
+akıllı saat
+akıllı bileklik
+powerbank
+bluetooth hoparlör
+tablet
+laptop
+oyun konsolu
+gaming mouse
+televizyon
+robot süpürge
+airfryer
+kahve makinesi
+mini buzdolabı
+su arıtma cihazı
+çamaşır makinesi
+led ışık
+ofis koltuğu
+spor ayakkabı
+mont
+çanta
+güneş gözlüğü
+parfüm
+cilt bakım seti
+yüz serumu
+yoga matı
+protein tozu
+termos
+kamp çadırı
+elektrikli scooter
+elektrikli bisiklet
+hoverboard
+selfie çubuğu
+fidget spinner
+çocuk oyuncak
+bebek arabası
+evcil hayvan maması
+bahçe mobilyası
