@@ -11,3 +11,6 @@ Thumbs.db
 
 # Calisma zamani log dizini
 storage/
+
+# landing derleme gecici dosyalari
+landing/.tmp/

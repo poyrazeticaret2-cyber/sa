@@ -1,0 +1,48 @@
+/* ===== ORTAK TOKENLAR (marka logosu/renkleri gelince sadece burası değişir) ===== */
+:root{
+  --dark:#2b1b13;       /* koyu kahve: header, pill'ler, panel */
+  --dark-2:#160d09;
+  --yellow:#f7cb1a;     /* ana sarı */
+  --yellow-2:#e6b70c;
+  --gold:#c9a227;
+  --paper:#ffffff;      /* bölüm zemini (referansta beyaz) */
+  --ink:#1b1410;
+  --muted:#5f554e;
+  --red:#c8102e;
+  --serif:"Playfair Display",Georgia,"Times New Roman",serif;
+  --sans:"Montserrat","Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#0b0b0b;font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+.page{max-width:560px;margin:0 auto;background:var(--paper);overflow:hidden;position:relative}
+
+/* Tipografi (referans ölçeği: 560px genişlik için) */
+.h-xs{font-family:var(--serif);font-weight:800;font-size:24px;line-height:1.05;color:var(--ink)}   /* "Buy Anything" */
+.h-xl{font-family:var(--serif);font-weight:900;font-size:66px;line-height:.98;letter-spacing:-.01em;color:var(--ink)} /* "Get a Free" */
+.h-lg{font-family:var(--serif);font-weight:900;font-size:52px;line-height:1;letter-spacing:-.01em;color:var(--ink)}    /* "Best Pair Yet" */
+.h-md{font-family:var(--serif);font-weight:800;font-size:34px;line-height:1.05;color:var(--ink)}  /* "Leather Polish" */
+.h-sm{font-family:var(--serif);font-weight:800;font-size:22px;line-height:1.1;color:var(--ink)}   /* "comfort", "extras await" */
+.lead{font-family:var(--sans);font-size:14px;line-height:1.5;color:var(--ink);max-width:400px;margin:14px auto 0}
+.center{text-align:center}
+
+/* Buton: beyaz zemin, ince siyah çerçeve, sağda ok */
+.btn{display:inline-flex;align-items:center;gap:10px;padding:13px 34px;border:1.5px solid var(--ink);border-radius:12px;
+  font-family:var(--sans);font-size:15px;font-weight:500;color:var(--ink);background:#fff;transition:.2s;position:relative;z-index:5}
+.btn::after{content:"➔";font-size:14px}
+.btn:hover{background:var(--ink);color:#fff;transform:translateY(-1px)}
+
+/* Kontur (hayalet) yazı: ürünlerin arkasındaki büyük harfler */
+.ghost{font-family:var(--serif);font-weight:900;text-transform:uppercase;line-height:.86;letter-spacing:.01em;
+  color:transparent;-webkit-text-stroke:1.5px rgba(27,20,16,.28);pointer-events:none;user-select:none}
+
+/* Logo yer tutucu */
+.logo{font-family:var(--serif);font-weight:800;font-size:22px;letter-spacing:.01em;color:#fff}
+.logo-img{height:28px;width:auto;margin:0 auto}
+
+/* kaydırınca beliren */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
